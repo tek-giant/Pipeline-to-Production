@@ -4,6 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Kubernetes Migration | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A comprehensive DevOps article by Ebenezer Tetteh on migrating a workload from a virtual machine to Kubernetes with Docker, Deployments, Services, Ingress, probes, autoscaling, observability, and rollback planning."
+    />
     <link rel="stylesheet" href="../styles.css" />
     <link rel="stylesheet" href="post.css" />
   </head>
@@ -13,19 +17,530 @@
         <span class="brand-mark">P2P</span>
         <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
       </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
     </header>
 
     <main class="post-shell">
       <p class="section-kicker">Kubernetes</p>
       <h1>Migrating a workload from a VM to Kubernetes</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+
       <p class="post-lead">
-        A safe migration keeps the old service understandable while the new platform proves itself.
+        Migrating a workload from a virtual machine to Kubernetes is not just a lift-and-shift exercise. It is a change in
+        how the application is packaged, configured, deployed, scaled, monitored, and recovered when something goes wrong.
       </p>
-      <h2>The approach</h2>
+
       <p>
-        Containerise the application, define Kubernetes manifests, add probes, test rollouts, monitor service health, and
-        prepare rollback steps before production traffic moves.
+        If I were responsible for migrating a VM-hosted workload to Kubernetes, my priority would be to reduce operational
+        risk while proving that the new platform can run the service reliably. The migration should not begin with YAML.
+        It should begin with understanding how the current application behaves on the VM, what dependencies it has, how it
+        starts, how it fails, how users reach it, and what the business expects from it.
       </p>
+
+      <h2>The starting point</h2>
+      <p>
+        A VM-based workload often has hidden operational knowledge. The application may depend on manually installed
+        packages, local configuration files, cron jobs, shared folders, systemd services, firewall rules, certificates, or
+        log paths that are not documented clearly. Before containerising the workload, I would capture these details so the
+        Kubernetes version does not accidentally miss something important.
+      </p>
+
+      <p>The discovery stage would include:</p>
+      <ul>
+        <li>Application runtime, language version, package dependencies, and build process</li>
+        <li>Startup command, environment variables, ports, and health endpoints</li>
+        <li>External dependencies such as databases, queues, APIs, file shares, and identity providers</li>
+        <li>Current CPU, memory, disk, and network usage patterns</li>
+        <li>Logging paths, monitoring checks, backup needs, and operational runbooks</li>
+        <li>Release process, rollback process, and known failure modes</li>
+      </ul>
+
+      <h2>Migration goals</h2>
+      <p>
+        I would define clear goals before moving production traffic. The aim is not simply to say the workload now runs in
+        Kubernetes. The aim is to make it easier to deploy, scale, observe, secure, and recover.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Goal</th>
+            <th>Why it matters</th>
+            <th>Kubernetes control</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Repeatable deployment</td>
+            <td>The service should be deployed the same way every time</td>
+            <td>Deployment manifest and CI/CD pipeline</td>
+          </tr>
+          <tr>
+            <td>Reliable traffic routing</td>
+            <td>Users should reach healthy application instances</td>
+            <td>Service, Ingress, readiness probe</td>
+          </tr>
+          <tr>
+            <td>Controlled resource use</td>
+            <td>The workload should not starve other workloads or be starved itself</td>
+            <td>CPU and memory requests and limits</td>
+          </tr>
+          <tr>
+            <td>Safer release process</td>
+            <td>New versions should roll out gradually with rollback options</td>
+            <td>Rolling updates and rollout history</td>
+          </tr>
+          <tr>
+            <td>Better availability</td>
+            <td>The service should tolerate pod or node disruption</td>
+            <td>Replicas, anti-affinity, PodDisruptionBudget</td>
+          </tr>
+          <tr>
+            <td>Operational visibility</td>
+            <td>Engineers should know whether the service is healthy</td>
+            <td>Logs, metrics, dashboards, and alerts</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Target migration flow</h2>
+      <p>
+        A safe migration should move through controlled stages rather than jumping straight from one VM to production
+        Kubernetes traffic.
+      </p>
+
+      <pre><code>assess current VM
+  -> document runtime and dependencies
+  -> create Docker image
+  -> run locally
+  -> create Kubernetes manifests
+  -> deploy to development namespace
+  -> add probes and resource controls
+  -> deploy to staging
+  -> run smoke and load checks
+  -> test rollback
+  -> route limited production traffic
+  -> monitor health
+  -> complete cutover
+  -> decommission VM only after confidence</code></pre>
+
+      <h2>Containerising the workload</h2>
+      <p>
+        The first technical step is usually to create a Docker image. I would avoid copying the whole VM into a container.
+        Instead, I would package only what the application needs: runtime, dependencies, application files, startup command,
+        and required configuration points.
+      </p>
+
+      <p>
+        Docker recommends multi-stage builds because they separate build-time tooling from the final runtime image. This
+        helps reduce image size and attack surface. That is especially useful when migrating from a VM, because VMs often
+        carry extra packages that were installed over time and are not required by the application.
+      </p>
+
+      <pre><code>FROM python:3.12-slim AS runtime
+
+WORKDIR /app
+COPY requirements.txt .
+RUN pip install --no-cache-dir -r requirements.txt
+
+COPY app/ .
+EXPOSE 8080
+
+CMD ["python", "main.py"]</code></pre>
+
+      <p>
+        For a real production image, I would also use a non-root user, pin versions carefully, scan the image, and avoid
+        placing secrets inside the image. Configuration should come from the deployment environment rather than being baked
+        into the container.
+      </p>
+
+      <h2>Designing the Kubernetes Deployment</h2>
+      <p>
+        A Kubernetes Deployment manages replicas of the application and provides rollout behaviour when the Pod template
+        changes. For a VM migration, this is one of the biggest operational differences: instead of manually replacing a
+        server process, the desired state is declared and Kubernetes reconciles the running Pods toward that state.
+      </p>
+
+      <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: banking-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: banking-api
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 1
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: banking-api
+    spec:
+      containers:
+        - name: banking-api
+          image: ghcr.io/tek-giant/banking-api:1.0.0
+          ports:
+            - containerPort: 8080
+          resources:
+            requests:
+              cpu: "250m"
+              memory: "256Mi"
+            limits:
+              cpu: "500m"
+              memory: "512Mi"</code></pre>
+
+      <p>
+        The replica count, CPU, and memory values would come from real measurement. I would not guess blindly. I would use
+        current VM metrics, staging load tests, and production monitoring to tune the workload over time.
+      </p>
+
+      <h2>Requests and limits</h2>
+      <p>
+        Kubernetes uses resource requests to decide where Pods can be scheduled, and resource limits to constrain how much
+        CPU or memory a container can use. The Kubernetes documentation explains that the scheduler checks whether a node
+        has enough capacity for the requested resources before placing a Pod there.
+      </p>
+
+      <p>
+        This matters during a VM migration because VM workloads often assume they can use whatever is available on the
+        server. In Kubernetes, noisy workloads can affect neighbours if resource boundaries are missing. I would begin with
+        measured values, then adjust after observing real traffic.
+      </p>
+
+      <h2>Health checks with probes</h2>
+      <p>
+        Kubernetes probes are critical for safe operation. The kubelet can use startup, liveness, and readiness probes to
+        decide whether the application has started, whether it should be restarted, and whether it should receive traffic.
+      </p>
+
+      <ul>
+        <li><strong>Startup probe:</strong> useful when the application needs extra time to initialise.</li>
+        <li><strong>Readiness probe:</strong> tells Kubernetes whether the Pod should receive traffic.</li>
+        <li><strong>Liveness probe:</strong> tells Kubernetes whether the container should be restarted.</li>
+      </ul>
+
+      <pre><code>startupProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  failureThreshold: 30
+  periodSeconds: 10
+
+readinessProbe:
+  httpGet:
+    path: /ready
+    port: 8080
+  periodSeconds: 5
+  timeoutSeconds: 2
+
+livenessProbe:
+  httpGet:
+    path: /healthz
+    port: 8080
+  initialDelaySeconds: 20
+  periodSeconds: 10
+  failureThreshold: 3</code></pre>
+
+      <p>
+        I would be careful with liveness probes. A badly designed liveness probe can restart Pods unnecessarily and make an
+        incident worse. Readiness should usually protect traffic first; liveness should restart the process only when the
+        application is genuinely stuck or unrecoverable.
+      </p>
+
+      <h2>Exposing the workload with a Service</h2>
+      <p>
+        Pods are temporary. Their IP addresses can change when they are replaced. A Kubernetes Service gives clients a
+        stable way to reach the application while the backing Pods change behind the scenes. This is important because the
+        migrated service should not require users or other applications to know which Pod is currently running.
+      </p>
+
+      <pre><code>apiVersion: v1
+kind: Service
+metadata:
+  name: banking-api
+spec:
+  selector:
+    app: banking-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 8080</code></pre>
+
+      <p>
+        The Service uses labels to find the right Pods. As long as the Deployment creates Pods with the expected labels,
+        the Service can route traffic to healthy endpoints.
+      </p>
+
+      <h2>Ingress and external traffic</h2>
+      <p>
+        If the workload serves HTTP or HTTPS traffic, I would use an Ingress or Gateway API implementation to expose it
+        externally. Kubernetes Ingress manages HTTP routing rules such as hostnames and paths, and an Ingress controller
+        implements those rules using a load balancer or proxy.
+      </p>
+
+      <pre><code>apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: banking-api
+spec:
+  ingressClassName: nginx
+  rules:
+    - host: banking-api.example.com
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: banking-api
+                port:
+                  number: 80</code></pre>
+
+      <p>
+        In production, I would also account for TLS certificates, DNS changes, Web Application Firewall requirements,
+        allowed source ranges, ingress controller behaviour, and timeout settings. A migration can fail if the application
+        works inside the cluster but external traffic is not routed correctly.
+      </p>
+
+      <h2>Configuration and secrets</h2>
+      <p>
+        VM applications often read configuration from local files or environment variables. In Kubernetes, I would separate
+        non-sensitive configuration from secrets. ConfigMaps can hold normal configuration values, while Secrets or an
+        external secrets manager should handle sensitive values such as passwords, tokens, and certificates.
+      </p>
+
+      <p>
+        I would not bake credentials into the Docker image, commit them into Git, or store them in plain text deployment
+        manifests. The migration is a good opportunity to improve secret handling rather than copy old habits into a new
+        platform.
+      </p>
+
+      <h2>Persistent data and state</h2>
+      <p>
+        Not every VM workload is stateless. Some applications write files locally, store uploaded content, or depend on
+        disk paths. Before moving to Kubernetes, I would decide whether that state belongs in the container, a Persistent
+        Volume, object storage, a database, or another managed service.
+      </p>
+
+      <p>
+        In general, I would avoid relying on local container filesystem state for anything important. Containers can be
+        restarted or rescheduled, and local writes can disappear. If the VM currently stores files locally, that part of
+        the migration needs a deliberate storage design.
+      </p>
+
+      <h2>Rolling updates and rollback</h2>
+      <p>
+        Kubernetes rolling updates gradually replace old Pods with new Pods. This helps keep the application available
+        during deployment. The Kubernetes documentation describes rolling updates as a way to update a Deployment without
+        downtime by replacing Pods incrementally.
+      </p>
+
+      <pre><code>kubectl apply -f k8s/
+kubectl rollout status deployment/banking-api
+kubectl rollout history deployment/banking-api
+kubectl rollout undo deployment/banking-api</code></pre>
+
+      <p>
+        I would always test rollback before production cutover. Rollback should not be a theory written in a document. It
+        should be a practised operational action with clear commands, expected behaviour, and known limitations.
+      </p>
+
+      <h2>Autoscaling</h2>
+      <p>
+        After the workload is stable, I would consider Horizontal Pod Autoscaling. Kubernetes HPA can adjust the number of
+        replicas for a Deployment or similar workload based on observed metrics such as CPU, memory, or custom metrics.
+      </p>
+
+      <pre><code>apiVersion: autoscaling/v2
+kind: HorizontalPodAutoscaler
+metadata:
+  name: banking-api
+spec:
+  scaleTargetRef:
+    apiVersion: apps/v1
+    kind: Deployment
+    name: banking-api
+  minReplicas: 3
+  maxReplicas: 10
+  metrics:
+    - type: Resource
+      resource:
+        name: cpu
+        target:
+          type: Utilization
+          averageUtilization: 70</code></pre>
+
+      <p>
+        I would not enable autoscaling without monitoring. Scaling rules need to match how the application behaves. For
+        example, CPU-based scaling may not help if the real bottleneck is database connections, queue latency, or a third
+        party API.
+      </p>
+
+      <h2>Handling disruption</h2>
+      <p>
+        Kubernetes workloads need to tolerate disruption. Nodes can be drained for maintenance, Pods can be rescheduled,
+        and clusters can autoscale. PodDisruptionBudgets help limit how many Pods can be unavailable during voluntary
+        disruptions, which matters for high availability services.
+      </p>
+
+      <pre><code>apiVersion: policy/v1
+kind: PodDisruptionBudget
+metadata:
+  name: banking-api
+spec:
+  minAvailable: 2
+  selector:
+    matchLabels:
+      app: banking-api</code></pre>
+
+      <p>
+        A PDB does not solve every availability problem, and it does not protect against every type of failure. It is one
+        part of a wider availability design that should include replicas, sensible resource requests, health checks, and
+        multi-node or multi-zone placement where appropriate.
+      </p>
+
+      <h2>Observability and logging</h2>
+      <p>
+        A VM migration is not complete until the new Kubernetes workload can be operated confidently. I would ensure logs
+        go to standard output and standard error so the platform can collect them. Metrics should expose application health,
+        request rate, latency, error rate, resource usage, and dependency failures.
+      </p>
+
+      <p>I would create dashboards for:</p>
+      <ul>
+        <li>Pod status, restarts, and readiness</li>
+        <li>CPU and memory usage against requests and limits</li>
+        <li>HTTP request rate, latency, and error rate</li>
+        <li>Ingress status and response codes</li>
+        <li>Database or queue dependency errors</li>
+        <li>Deployment events and rollout history</li>
+      </ul>
+
+      <p>
+        Alerts should be actionable. A useful alert should explain what is failing, how serious it is, which service is
+        affected, and where the runbook lives.
+      </p>
+
+      <h2>Security controls</h2>
+      <p>
+        Moving to Kubernetes should also improve security. I would avoid running containers as root, restrict unnecessary
+        Linux capabilities, scan container images, keep base images patched, and use Kubernetes RBAC carefully.
+      </p>
+
+      <p>Security controls I would include:</p>
+      <ul>
+        <li>Namespace separation between environments</li>
+        <li>Least-privilege service accounts</li>
+        <li>NetworkPolicies where the cluster network plugin supports them</li>
+        <li>Image scanning before deployment</li>
+        <li>Secrets handled outside the image and outside plain Git history</li>
+        <li>Admission or policy checks for risky manifests</li>
+        <li>Audit logging for deployment and cluster changes</li>
+      </ul>
+
+      <h2>Cutover strategy</h2>
+      <p>
+        The safest cutover depends on how critical the workload is. For a low-risk internal service, a planned DNS switch
+        after staging validation may be enough. For a customer-facing banking service, I would prefer a more cautious
+        approach, such as parallel running, limited traffic shifting, or a blue-green style release.
+      </p>
+
+      <p>The cutover plan should define:</p>
+      <ul>
+        <li>Who approves the production migration</li>
+        <li>What testing must pass before traffic moves</li>
+        <li>How DNS, load balancer, or ingress changes will be made</li>
+        <li>How health will be monitored during and after cutover</li>
+        <li>What rollback means and how long rollback remains possible</li>
+        <li>When the old VM can be decommissioned</li>
+      </ul>
+
+      <h2>Post-migration validation</h2>
+      <p>
+        After cutover, I would keep the old VM available for a short agreed period if rollback depends on it. I would then
+        compare the new Kubernetes workload against the old operational baseline.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Check</th>
+            <th>What I would confirm</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Availability</td>
+            <td>The service remains reachable and healthy during normal traffic</td>
+          </tr>
+          <tr>
+            <td>Performance</td>
+            <td>Latency, throughput, and error rate are acceptable</td>
+          </tr>
+          <tr>
+            <td>Scaling</td>
+            <td>Replica and resource behaviour matches demand</td>
+          </tr>
+          <tr>
+            <td>Observability</td>
+            <td>Logs, metrics, dashboards, and alerts work as expected</td>
+          </tr>
+          <tr>
+            <td>Recovery</td>
+            <td>Rollback and restart behaviour are understood and documented</td>
+          </tr>
+          <tr>
+            <td>Security</td>
+            <td>Secrets, RBAC, image scanning, and network access are controlled</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Common mistakes I would avoid</h2>
+      <ul>
+        <li>Containerising the whole VM instead of packaging only the application</li>
+        <li>Moving production traffic before readiness probes and rollback are tested</li>
+        <li>Forgetting hidden VM dependencies such as cron jobs, certificates, or local files</li>
+        <li>Using only one replica for a service that needs high availability</li>
+        <li>Skipping resource requests and limits</li>
+        <li>Adding liveness probes that restart Pods during temporary slowness</li>
+        <li>Leaving secrets inside images, scripts, or Git repositories</li>
+        <li>Decommissioning the VM before the Kubernetes workload has proved stable</li>
+      </ul>
+
+      <h2>Expected outcome</h2>
+      <p>
+        A successful migration should leave the team with a workload that is easier to deploy, easier to observe, easier to
+        scale, and easier to recover. The application should no longer depend on manual VM changes or undocumented server
+        state. Instead, its runtime, configuration, deployment process, health checks, and operational controls should be
+        declared clearly and version controlled.
+      </p>
+
+      <p>
+        For a DevOps engineer, this kind of migration proves more than Kubernetes syntax. It shows an ability to understand
+        existing systems, reduce operational risk, improve delivery practices, and design platforms that support real
+        production workloads.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://kubernetes.io/docs/tasks/run-application/update-deployment-rolling/" target="_blank" rel="noopener">Kubernetes Docs: Update a Deployment Without Downtime</a></li>
+        <li><a href="https://kubernetes.io/docs/concepts/workloads/pods/probes/" target="_blank" rel="noopener">Kubernetes Docs: Liveness, Readiness, and Startup Probes</a></li>
+        <li><a href="https://kubernetes.io/docs/concepts/services-networking/service/" target="_blank" rel="noopener">Kubernetes Docs: Service</a></li>
+        <li><a href="https://kubernetes.io/docs/concepts/services-networking/ingress/" target="_blank" rel="noopener">Kubernetes Docs: Ingress</a></li>
+        <li><a href="https://kubernetes.io/docs/concepts/configuration/manage-resources-containers/" target="_blank" rel="noopener">Kubernetes Docs: Resource Management for Pods and Containers</a></li>
+        <li><a href="https://kubernetes.io/docs/concepts/workloads/autoscaling/horizontal-pod-autoscale/" target="_blank" rel="noopener">Kubernetes Docs: Horizontal Pod Autoscaling</a></li>
+        <li><a href="https://kubernetes.io/docs/concepts/workloads/pods/disruptions/" target="_blank" rel="noopener">Kubernetes Docs: Disruptions and PodDisruptionBudgets</a></li>
+        <li><a href="https://docs.docker.com/build/building/best-practices/" target="_blank" rel="noopener">Docker Docs: Building best practices</a></li>
+        <li><a href="https://docs.docker.com/build/building/multi-stage/" target="_blank" rel="noopener">Docker Docs: Multi-stage builds</a></li>
+      </ul>
     </main>
   </body>
 </html>
