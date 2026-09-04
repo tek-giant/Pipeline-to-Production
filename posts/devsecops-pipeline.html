@@ -4,6 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>DevSecOps Pipeline | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A comprehensive DevOps article by Ebenezer Tetteh on adding security checks to CI/CD pipelines without slowing every deployment."
+    />
     <link rel="stylesheet" href="../styles.css" />
     <link rel="stylesheet" href="post.css" />
   </head>
@@ -13,19 +17,444 @@
         <span class="brand-mark">P2P</span>
         <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
       </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
     </header>
 
     <main class="post-shell">
       <p class="section-kicker">DevSecOps</p>
       <h1>Adding security checks without slowing every deployment</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+
       <p class="post-lead">
-        Security checks should help teams catch risk early while keeping delivery practical.
+        DevSecOps is not about adding a wall of security tools at the end of delivery. It is about placing the right
+        checks at the right stage, giving developers fast feedback, and making production releases safer without turning
+        every deployment into a slow approval queue.
       </p>
-      <h2>The approach</h2>
+
       <p>
-        Add secret scanning, dependency scanning, image scanning, infrastructure policy checks, and approval gates at the
-        right points in the pipeline.
+        If I were improving security in a CI/CD pipeline, my goal would be to reduce risk while preserving delivery flow.
+        Security should help the team find problems earlier, fix them with clear ownership, and prove that important
+        controls were applied before production. The pipeline should protect the business, but it should also respect the
+        reality that engineering teams need to ship small changes regularly.
       </p>
+
+      <h2>The problem with slow security gates</h2>
+      <p>
+        A common mistake is to treat security as one large checkpoint just before production. By that point, the change has
+        already been designed, coded, reviewed, packaged, and scheduled for release. If a serious problem appears late, the
+        team faces delay, rework, pressure, and sometimes risky exceptions.
+      </p>
+
+      <p>
+        A better approach is to shift useful checks earlier while keeping production gates focused on the highest-risk
+        decisions. Developers should receive quick feedback while they are still working on the change. Security teams
+        should get visibility into risk trends. Operations teams should know that deployed artifacts were built, scanned,
+        and approved through a repeatable process.
+      </p>
+
+      <h2>What I would optimise for</h2>
+      <p>I would design the security checks around five principles:</p>
+      <ul>
+        <li><strong>Fast feedback:</strong> lightweight checks should run early on pull requests.</li>
+        <li><strong>Risk-based gating:</strong> only serious or policy-breaking issues should block release automatically.</li>
+        <li><strong>Clear ownership:</strong> every finding should have a responsible team and a practical fix path.</li>
+        <li><strong>Repeatable evidence:</strong> the pipeline should record what was scanned, what passed, and what was approved.</li>
+        <li><strong>Least privilege:</strong> pipeline jobs, secrets, runners, and deployment identities should use only the access they need.</li>
+      </ul>
+
+      <h2>Target DevSecOps pipeline</h2>
+      <p>
+        The pipeline should layer security checks throughout delivery. This avoids one slow security phase and gives the
+        team several chances to catch issues before production.
+      </p>
+
+      <pre><code>developer workstation
+  -> pre-commit secret checks
+  -> pull request review
+  -> linting and unit tests
+  -> SAST and dependency scanning
+  -> build container image
+  -> image vulnerability scan
+  -> generate SBOM and provenance
+  -> infrastructure as code scan
+  -> deploy to staging
+  -> smoke tests and optional DAST
+  -> production approval gate
+  -> deploy immutable artifact
+  -> monitor runtime signals</code></pre>
+
+      <p>
+        Not every check needs to block every commit. The pipeline should distinguish between quick developer feedback,
+        release-blocking policy checks, and continuous monitoring that creates follow-up work.
+      </p>
+
+      <h2>Security checks by stage</h2>
+      <table>
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>Security check</th>
+            <th>Purpose</th>
+            <th>Should it block?</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Before commit</td>
+            <td>Secret scanning and formatting</td>
+            <td>Prevent credentials and obvious mistakes from entering Git history</td>
+            <td>Yes for secrets</td>
+          </tr>
+          <tr>
+            <td>Pull request</td>
+            <td>SAST, dependency scan, peer review</td>
+            <td>Catch insecure code paths and vulnerable packages before merge</td>
+            <td>Yes for high-confidence critical issues</td>
+          </tr>
+          <tr>
+            <td>Build</td>
+            <td>Container scan, SBOM, image signing</td>
+            <td>Prove what was built and detect vulnerable runtime components</td>
+            <td>Yes for critical exploitable issues</td>
+          </tr>
+          <tr>
+            <td>Infrastructure</td>
+            <td>IaC policy checks</td>
+            <td>Prevent risky cloud, Kubernetes, and network configuration</td>
+            <td>Yes for policy violations</td>
+          </tr>
+          <tr>
+            <td>Staging</td>
+            <td>Smoke tests, DAST where suitable</td>
+            <td>Validate deployed behaviour before production</td>
+            <td>Yes for release-breaking failures</td>
+          </tr>
+          <tr>
+            <td>Production</td>
+            <td>Approval gate and runtime monitoring</td>
+            <td>Confirm release evidence and watch real service health</td>
+            <td>Approval blocks; monitoring triggers response</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Secret scanning</h2>
+      <p>
+        Secret scanning is one of the first controls I would add because leaked credentials can create immediate risk.
+        Secrets should not be committed into repositories, stored in Docker images, printed in logs, or left in pipeline
+        command history. OWASP's CI/CD and Secrets Management guidance both emphasise strong credential hygiene and least
+        privilege because CI/CD systems often hold powerful access to production resources.
+      </p>
+
+      <p>
+        I would use secret checks at multiple points: local pre-commit hooks for developer feedback, pull request checks
+        before merge, and platform-level scanning for repository visibility. If a real secret is detected, the response
+        should include revocation and rotation, not just deleting the line from Git.
+      </p>
+
+      <pre><code>security rule:
+  if committed_secret_detected:
+    block_merge
+    revoke_secret
+    rotate_credential
+    review_access_logs
+    document_incident</code></pre>
+
+      <h2>Static application security testing</h2>
+      <p>
+        Static application security testing, often called SAST, analyses source code for insecure patterns. GitHub's code
+        scanning documentation describes code scanning as a way to identify security vulnerabilities and coding errors in a
+        repository, with alerts shown where developers can triage and fix them.
+      </p>
+
+      <p>
+        I would run SAST on pull requests and on the main branch. The important design decision is how to handle findings.
+        A noisy scanner that blocks every low-confidence issue will slow teams down and encourage bypasses. A better setup
+        blocks high-confidence critical issues, reports medium and low findings for triage, and tracks unresolved findings
+        over time.
+      </p>
+
+      <h2>Dependency scanning</h2>
+      <p>
+        Modern applications rely on external packages, so vulnerable dependencies are a real delivery risk. GitHub's
+        Dependabot documentation explains that Dependabot alerts help find and fix vulnerable dependencies before they
+        become security risks. For a DevOps pipeline, dependency scanning should be part of the normal engineering rhythm,
+        not an occasional manual exercise.
+      </p>
+
+      <p>
+        I would make sure package manifests and lock files are committed, dependency updates are reviewed, and critical
+        dependency vulnerabilities are visible to the team. Where possible, automated pull requests can update vulnerable
+        dependencies, but production impact should still be tested before release.
+      </p>
+
+      <pre><code>dependency policy:
+  critical vulnerability with fix available -> block release
+  high vulnerability in reachable package -> require review
+  medium or low vulnerability -> track with owner and target date</code></pre>
+
+      <h2>Container image scanning</h2>
+      <p>
+        Container images should be scanned after they are built because the final image may include operating system
+        packages, language dependencies, and runtime components that are not obvious from the source repository alone.
+        Docker's build guidance recommends practices such as multi-stage builds, choosing the right base image, rebuilding
+        images often, excluding unnecessary files, and avoiding unnecessary packages.
+      </p>
+
+      <p>
+        I would use a small base image, build with a multi-stage Dockerfile where appropriate, run the application as a
+        non-root user, and scan the final image before it can be promoted. I would also deploy by immutable image digest
+        rather than a mutable tag such as `latest`.
+      </p>
+
+      <pre><code>image controls:
+  use minimal base image
+  remove build tools from runtime image
+  scan final image
+  tag with commit SHA
+  deploy by image digest
+  rebuild when base images receive security updates</code></pre>
+
+      <h2>Infrastructure as Code security</h2>
+      <p>
+        Infrastructure changes can introduce risk just as easily as application changes. A security group opened to the
+        internet, an overly broad IAM role, an unencrypted storage bucket, or a privileged Kubernetes manifest can create
+        serious exposure. That is why I would scan Terraform, Kubernetes, and cloud configuration as part of the pipeline.
+      </p>
+
+      <p>
+        IaC checks should run on pull requests before changes are applied. The pipeline should show the Terraform plan or
+        Kubernetes manifest diff, then apply policy checks against the proposed change. Production infrastructure changes
+        should require approval and leave an audit trail.
+      </p>
+
+      <pre><code>terraform fmt -check
+terraform validate
+terraform plan -out=tfplan
+iac-scan tfplan
+manual approval
+terraform apply tfplan</code></pre>
+
+      <h2>Software supply chain controls</h2>
+      <p>
+        DevSecOps also needs to protect the build chain itself. The SLSA specification focuses on improving software supply
+        chain security through stronger build practices and provenance. In practical terms, I would want to know where an
+        artifact came from, what source commit created it, which workflow built it, and whether the artifact was changed
+        after the build.
+      </p>
+
+      <p>I would improve supply chain confidence by:</p>
+      <ul>
+        <li>Pinning third-party actions and build dependencies where practical</li>
+        <li>Restricting who can edit pipeline configuration</li>
+        <li>Using protected branches and required reviews</li>
+        <li>Generating a Software Bill of Materials for release artifacts</li>
+        <li>Signing images or publishing attestations where the platform supports it</li>
+        <li>Deploying the exact artifact that passed tests and scans</li>
+      </ul>
+
+      <h2>Pipeline identity and least privilege</h2>
+      <p>
+        Pipeline permissions should be explicit. GitHub recommends hardening GitHub Actions by understanding token
+        permissions, protecting secrets, and reducing the risk of untrusted code gaining access to sensitive credentials.
+        I would configure workflow permissions carefully instead of relying on broad defaults.
+      </p>
+
+      <pre><code>permissions:
+  contents: read
+  packages: write
+  security-events: write
+  id-token: write</code></pre>
+
+      <p>
+        For production deployments, I would prefer short-lived credentials through workload identity or OpenID Connect
+        rather than long-lived cloud keys stored as static secrets. If static secrets are unavoidable, they should be
+        environment-scoped, rotated, and available only to the specific deployment jobs that require them.
+      </p>
+
+      <h2>Approval gates that are useful</h2>
+      <p>
+        Approval should not be a blind click. A production approval gate should show the evidence needed to make a good
+        decision. That includes the commit, pull request, artifact version, scan results, infrastructure plan, staging test
+        outcome, rollback plan, and deployment window.
+      </p>
+
+      <p>
+        I would keep approval close to production, after automated checks have already done their work. That way, the
+        approver is not being asked to compensate for missing automation. They are checking whether a release that has
+        already passed the standard controls is ready for production.
+      </p>
+
+      <h2>Example GitHub Actions security flow</h2>
+      <p>
+        This simplified workflow shows how checks can be layered. In a real organisation, the tools and policies would be
+        chosen based on the application stack, cloud platform, risk appetite, and compliance requirements.
+      </p>
+
+      <pre><code>name: devsecops-release
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+  id-token: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Run tests
+        run: npm test
+
+      - name: Run static analysis
+        run: echo "Run SAST or CodeQL here"
+
+      - name: Scan dependencies
+        run: echo "Run dependency scanner here"
+
+      - name: Check for secrets
+        run: echo "Run secret scanning here"
+
+  build:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build image
+        run: docker build -t app:${{ github.sha }} .
+
+      - name: Scan image
+        run: echo "Run image vulnerability scan here"
+
+      - name: Generate SBOM
+        run: echo "Generate SBOM here"
+
+  deploy-staging:
+    needs: build
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Deploy staging
+        run: echo "Deploy to staging"
+
+      - name: Run smoke tests
+        run: echo "Run smoke tests"
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy production
+        run: echo "Deploy approved artifact"</code></pre>
+
+      <h2>How to avoid slowing every deployment</h2>
+      <p>
+        The trick is to separate signal from noise. Not every finding should stop a release, and not every check belongs in
+        the critical path. Some checks should run on pull requests, some should run on scheduled scans, and some should
+        create backlog items rather than blocking deployment.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Practice</th>
+            <th>How it protects speed</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Run quick checks first</td>
+            <td>Developers get feedback before waiting for slower scans</td>
+          </tr>
+          <tr>
+            <td>Use severity-based gates</td>
+            <td>Only high-risk issues block release automatically</td>
+          </tr>
+          <tr>
+            <td>Use baselines</td>
+            <td>Teams can prevent new risk while separately reducing existing backlog</td>
+          </tr>
+          <tr>
+            <td>Cache dependencies and scan results</td>
+            <td>Repeated work is reduced where the inputs have not changed</td>
+          </tr>
+          <tr>
+            <td>Run slow checks asynchronously</td>
+            <td>Deep scans can inform follow-up without delaying every small change</td>
+          </tr>
+          <tr>
+            <td>Give findings clear owners</td>
+            <td>Security work becomes planned engineering work instead of vague noise</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Measuring whether it works</h2>
+      <p>
+        A DevSecOps pipeline should improve both security and delivery confidence. I would measure whether the checks are
+        helping the team rather than simply counting how many tools were added.
+      </p>
+
+      <p>I would track:</p>
+      <ul>
+        <li>Deployment lead time before and after adding controls</li>
+        <li>Number of blocked releases and the reason for each block</li>
+        <li>Mean time to remediate critical vulnerabilities</li>
+        <li>Secret leaks detected before merge versus after merge</li>
+        <li>Container images deployed with critical vulnerabilities</li>
+        <li>False positive rate from scanners</li>
+        <li>Percentage of production deployments with complete release evidence</li>
+      </ul>
+
+      <h2>Common mistakes I would avoid</h2>
+      <ul>
+        <li>Blocking every deployment for low-confidence scanner warnings</li>
+        <li>Adding tools without defining who owns the findings</li>
+        <li>Using long-lived production credentials in CI/CD jobs</li>
+        <li>Allowing pipeline configuration changes without review</li>
+        <li>Scanning source code but ignoring the final container image</li>
+        <li>Deploying mutable image tags instead of immutable digests</li>
+        <li>Keeping secrets in repositories, images, logs, or build artifacts</li>
+        <li>Treating security as a final manual approval instead of a delivery system</li>
+      </ul>
+
+      <h2>Expected outcome</h2>
+      <p>
+        A good DevSecOps pipeline should help the team release with more confidence, not more confusion. Developers should
+        get security feedback early. Security teams should see evidence and trends. Operations teams should know what was
+        deployed and how it was verified. The business should get a delivery process that supports speed without ignoring
+        production risk.
+      </p>
+
+      <p>
+        For me, the key lesson is that DevSecOps is an engineering design problem. The best security checks are not the
+        loudest or the most numerous. They are the checks that catch real risk at the right time, produce useful evidence,
+        and help teams keep improving without breaking delivery flow.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html" target="_blank" rel="noopener">OWASP: CI/CD Security Cheat Sheet</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html" target="_blank" rel="noopener">OWASP: Secrets Management Cheat Sheet</a></li>
+        <li><a href="https://docs.github.com/en/actions/reference/security/secure-use" target="_blank" rel="noopener">GitHub Docs: Security hardening for GitHub Actions</a></li>
+        <li><a href="https://docs.github.com/en/code-security/concepts/code-scanning/code-scanning" target="_blank" rel="noopener">GitHub Docs: Code scanning</a></li>
+        <li><a href="https://docs.github.com/en/code-security/concepts/supply-chain-security/dependabot-alerts" target="_blank" rel="noopener">GitHub Docs: Dependabot alerts</a></li>
+        <li><a href="https://docs.docker.com/build/building/best-practices/" target="_blank" rel="noopener">Docker Docs: Building best practices</a></li>
+        <li><a href="https://slsa.dev/spec/v1.2/" target="_blank" rel="noopener">SLSA Specification v1.2</a></li>
+      </ul>
     </main>
   </body>
 </html>
