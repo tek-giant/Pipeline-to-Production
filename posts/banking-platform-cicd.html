@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Banking Platform CI/CD | Pipeline to Production</title>
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="post.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">P2P</span>
+        <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
+      </a>
+    </header>
+
+    <main class="post-shell">
+      <p class="section-kicker">CI/CD</p>
+      <h1>How I would modernise a banking platform CI/CD pipeline</h1>
+      <p class="post-lead">
+        In a banking environment, delivery needs to be fast, traceable, secure, and recoverable.
+      </p>
+      <h2>The approach</h2>
+      <p>
+        I would design a pipeline that builds once, tests early, scans before deployment, promotes through staging, and
+        uses approval gates before production.
+      </p>
+      <pre><code>lint -> test -> build image -> scan -> deploy staging -> smoke test -> approve -> deploy production</code></pre>
+      <h2>What this proves</h2>
+      <p>
+        This shows release discipline, automation thinking, risk awareness, and an understanding of production delivery.
+      </p>
+    </main>
+  </body>
+</html>

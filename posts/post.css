@@ -1,0 +1,26 @@
+.post-shell {
+  width: min(880px, calc(100% - 36px));
+  margin: 0 auto;
+  padding: clamp(46px, 8vw, 96px) 0;
+}
+
+.post-shell h1 {
+  margin-bottom: 18px;
+  font-size: clamp(2.2rem, 5vw, 4.4rem);
+}
+
+.post-lead {
+  color: var(--muted);
+  font-size: 1.2rem;
+}
+
+.post-shell h2 {
+  margin-top: 42px;
+  font-size: clamp(1.45rem, 3vw, 2.2rem);
+}
+
+.post-shell pre {
+  margin: 18px 0;
+  border-radius: 8px;
+  background: var(--code);
+}
