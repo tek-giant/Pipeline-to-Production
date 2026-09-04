@@ -4,6 +4,10 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Banking Platform CI/CD | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A comprehensive DevOps article by Ebenezer Tetteh on modernising a banking platform CI/CD pipeline with GitHub Actions, Docker, Kubernetes, Terraform, security gates, observability, and controlled production releases."
+    />
     <link rel="stylesheet" href="../styles.css" />
     <link rel="stylesheet" href="post.css" />
   </head>
@@ -13,24 +17,469 @@
         <span class="brand-mark">P2P</span>
         <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
       </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
     </header>
 
     <main class="post-shell">
       <p class="section-kicker">CI/CD</p>
       <h1>How I would modernise a banking platform CI/CD pipeline</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+
       <p class="post-lead">
-        In a banking environment, delivery needs to be fast, traceable, secure, and recoverable.
+        In a banking environment, a CI/CD pipeline is not just a way to deploy code faster. It is a controlled delivery
+        system that should make every change traceable, tested, secure, reviewable, and recoverable before it reaches
+        customers or internal users.
       </p>
-      <h2>The approach</h2>
+
       <p>
-        I would design a pipeline that builds once, tests early, scans before deployment, promotes through staging, and
-        uses approval gates before production.
+        If I were modernising a banking platform CI/CD pipeline, my main goal would be to improve delivery speed without
+        weakening governance. Banking systems often handle sensitive customer data, payment flows, internal financial
+        operations, audit requirements, and high availability expectations. Because of that, the pipeline must support
+        engineering productivity and operational control at the same time.
       </p>
-      <pre><code>lint -> test -> build image -> scan -> deploy staging -> smoke test -> approve -> deploy production</code></pre>
-      <h2>What this proves</h2>
+
+      <h2>The starting problem</h2>
       <p>
-        This shows release discipline, automation thinking, risk awareness, and an understanding of production delivery.
+        Many legacy banking release processes become slow because too much work happens manually. Builds may be created
+        differently by different engineers, tests may run inconsistently, deployment instructions may live in documents,
+        and production approvals may happen outside the technical workflow. This creates risk because the team cannot
+        always prove exactly what changed, who approved it, which tests passed, or how quickly the system can recover.
       </p>
+
+      <p>
+        A modern pipeline should reduce those gaps. The delivery process should be repeatable from source code to
+        production, and each stage should produce evidence: test results, scan results, deployment logs, artifact
+        versions, approvals, and monitoring signals.
+      </p>
+
+      <h2>Modernisation goals</h2>
+      <p>I would design the pipeline around seven goals:</p>
+      <ul>
+        <li><strong>Traceability:</strong> every deployment should link back to a commit, pull request, build, artifact, approver, and environment.</li>
+        <li><strong>Repeatability:</strong> the same pipeline path should build and deploy the application every time.</li>
+        <li><strong>Security:</strong> code, dependencies, container images, secrets, and infrastructure changes should be checked before release.</li>
+        <li><strong>Separation of duties:</strong> production deployment should require controlled approval, especially for regulated systems.</li>
+        <li><strong>Fast feedback:</strong> developers should find out early when code, tests, configuration, or security checks fail.</li>
+        <li><strong>Safe deployment:</strong> releases should use health checks, staged environments, and rollback options.</li>
+        <li><strong>Operational visibility:</strong> the team should monitor release health using logs, metrics, dashboards, and alerts.</li>
+      </ul>
+
+      <h2>Target pipeline design</h2>
+      <p>At a high level, I would move toward this delivery flow:</p>
+
+      <pre><code>pull request
+  -> lint and static checks
+  -> unit tests
+  -> dependency and secret scanning
+  -> build container image
+  -> image vulnerability scan
+  -> Terraform plan
+  -> deploy to staging
+  -> smoke and integration tests
+  -> approval gate
+  -> deploy to production
+  -> post-deployment monitoring
+  -> rollback if needed</code></pre>
+
+      <p>
+        This structure keeps production controlled, but it also gives engineers fast feedback before changes reach the
+        release stage. It separates continuous integration from production deployment while still keeping the whole path
+        automated and auditable.
+      </p>
+
+      <h2>Source control and branch protection</h2>
+      <p>
+        I would start by tightening the source control workflow. The main branch should represent deployable code. Changes
+        should enter through pull requests, with branch protection requiring review and successful automated checks before
+        merge. This gives the team a clear review path and prevents untested code from moving straight into the release
+        branch.
+      </p>
+
+      <p>
+        For a banking platform, I would normally recommend short-lived feature branches, pull request reviews, status
+        checks, and protected environments. Long-running branches tend to create painful merge problems and hide risk for
+        too long. Smaller changes are easier to test, review, deploy, and roll back.
+      </p>
+
+      <h2>Build once and promote the same artifact</h2>
+      <p>
+        One of the most important improvements is to build the application artifact once and promote that same artifact
+        through environments. The team should not rebuild a different image for staging and then rebuild again for
+        production, because that weakens traceability. If the production image was built separately, it becomes harder to
+        prove it is exactly the same code that passed staging tests.
+      </p>
+
+      <p>
+        For a containerised banking application, the pipeline should produce a versioned Docker image tagged with the
+        commit SHA and release version. The image should be pushed to a controlled registry, scanned, and then deployed to
+        staging. If staging passes, the same image digest should be promoted to production.
+      </p>
+
+      <h2>Container image quality</h2>
+      <p>
+        I would use multi-stage Docker builds so the final runtime image contains only what the application needs to run.
+        Docker's guidance explains that multi-stage builds separate build-time tooling from runtime output, which helps
+        reduce image size and attack surface. For a banking workload, that matters because every unnecessary tool,
+        package, or credential inside an image increases operational and security risk.
+      </p>
+
+      <pre><code>FROM node:22-alpine AS build
+WORKDIR /app
+COPY package*.json ./
+RUN npm ci
+COPY . .
+RUN npm run build
+
+FROM nginx:stable-alpine AS runtime
+COPY --from=build /app/dist /usr/share/nginx/html
+EXPOSE 80</code></pre>
+
+      <p>
+        The exact base image depends on the application stack, but the principle stays the same: keep the runtime image
+        small, patched, predictable, and free from build tools and secrets.
+      </p>
+
+      <h2>Security checks inside the pipeline</h2>
+      <p>
+        A banking CI/CD pipeline should include security checks without turning the pipeline into a slow manual queue.
+        OWASP's CI/CD Security Cheat Sheet highlights risks such as weak access control, credential hygiene problems,
+        dependency chain abuse, insecure pipeline configuration, artifact integrity issues, and poor logging visibility.
+        I would address those risks directly in the pipeline design.
+      </p>
+
+      <p>The security stage would include:</p>
+      <ul>
+        <li><strong>Secret scanning:</strong> block committed credentials before they reach the main branch.</li>
+        <li><strong>Dependency scanning:</strong> check application packages for known vulnerabilities.</li>
+        <li><strong>Static analysis:</strong> catch risky code patterns early.</li>
+        <li><strong>Container scanning:</strong> scan the built image before it can be deployed.</li>
+        <li><strong>Infrastructure scanning:</strong> check Terraform and Kubernetes configuration for risky settings.</li>
+        <li><strong>Least privilege:</strong> give pipeline jobs only the permissions they need.</li>
+        <li><strong>Environment secrets:</strong> expose production secrets only to approved production deployment jobs.</li>
+      </ul>
+
+      <p>
+        The pipeline itself should be treated as a sensitive production system. If an attacker compromises the pipeline,
+        they may be able to alter builds, steal secrets, or deploy malicious code. That is why pipeline permissions,
+        runner security, third-party actions, and deployment credentials need proper control.
+      </p>
+
+      <h2>Example GitHub Actions workflow</h2>
+      <p>
+        This is a simplified example of how I would structure a GitHub Actions workflow. A real banking environment would
+        add organisation-specific controls, approved runners, stronger secrets management, artifact signing, change
+        records, and integration with release management.
+      </p>
+
+      <pre><code>name: banking-platform-release
+
+on:
+  pull_request:
+    branches: [main]
+  push:
+    branches: [main]
+
+permissions:
+  contents: read
+  packages: write
+  security-events: write
+  id-token: write
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Run lint checks
+        run: npm run lint
+
+      - name: Run unit tests
+        run: npm test
+
+      - name: Scan for secrets
+        run: echo "Run secret scanning tool here"
+
+  build-and-scan:
+    needs: validate
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Build container image
+        run: docker build -t banking-api:${{ github.sha }} .
+
+      - name: Scan image
+        run: echo "Run image vulnerability scan here"
+
+      - name: Push image
+        run: echo "Push image by immutable digest"
+
+  deploy-staging:
+    needs: build-and-scan
+    runs-on: ubuntu-latest
+    environment: staging
+    steps:
+      - name: Deploy to staging
+        run: kubectl rollout status deployment/banking-api
+
+      - name: Run smoke tests
+        run: echo "Run smoke tests against staging"
+
+  deploy-production:
+    needs: deploy-staging
+    runs-on: ubuntu-latest
+    environment: production
+    steps:
+      - name: Deploy to production
+        run: kubectl rollout status deployment/banking-api
+
+      - name: Verify production health
+        run: echo "Check metrics, logs, and service health"</code></pre>
+
+      <p>
+        GitHub Actions environments can be used for deployment controls such as required reviewers, environment secrets,
+        and deployment protection rules. For production, I would require approval from an authorised reviewer or team
+        before the production job can access production secrets or run deployment steps.
+      </p>
+
+      <h2>Infrastructure as Code stage</h2>
+      <p>
+        If the banking platform depends on cloud infrastructure, I would manage infrastructure changes through Terraform
+        rather than manual console updates. Terraform should run in a controlled workflow with formatting checks, validation,
+        security scanning, and a plan review before apply.
+      </p>
+
+      <pre><code>terraform fmt -check
+terraform validate
+terraform plan -out=tfplan
+terraform apply tfplan</code></pre>
+
+      <p>
+        For team use, Terraform state should be stored remotely rather than only on one engineer's machine. HashiCorp's
+        documentation explains that remote state supports collaboration, and state locking helps prevent concurrent writes
+        that could corrupt infrastructure state. In a banking environment, this is important because infrastructure
+        changes need coordination, auditability, and recovery options.
+      </p>
+
+      <h2>Kubernetes deployment strategy</h2>
+      <p>
+        For the application deployment layer, I would use Kubernetes Deployments with readiness probes, liveness probes,
+        resource requests, resource limits, and rollout checks. Kubernetes rolling updates allow a Deployment to update
+        pods gradually, which helps reduce downtime when releasing a new version.
+      </p>
+
+      <p>The deployment should include:</p>
+      <ul>
+        <li><strong>Readiness probes:</strong> only send traffic to pods that are ready to serve requests.</li>
+        <li><strong>Liveness probes:</strong> restart unhealthy containers when they stop responding correctly.</li>
+        <li><strong>Resource requests and limits:</strong> reduce noisy-neighbour problems and improve scheduling.</li>
+        <li><strong>Horizontal Pod Autoscaling:</strong> scale workloads based on demand where appropriate.</li>
+        <li><strong>Pod disruption budgets:</strong> protect availability during node maintenance or voluntary disruption.</li>
+        <li><strong>Rollback commands:</strong> allow fast recovery if a release behaves badly.</li>
+      </ul>
+
+      <pre><code>kubectl apply -f k8s/
+kubectl rollout status deployment/banking-api
+kubectl get pods
+kubectl logs deployment/banking-api
+kubectl rollout undo deployment/banking-api</code></pre>
+
+      <p>
+        For higher-risk releases, I would consider blue-green or canary deployment patterns. The right choice depends on
+        the application architecture, database migration risk, traffic routing setup, and monitoring maturity.
+      </p>
+
+      <h2>Approval gates without blocking engineering flow</h2>
+      <p>
+        Banking delivery often needs approval, but approval should happen at the right point. I would not put a manual
+        approval in front of every small test stage. Instead, the pipeline should run automated checks first. If code
+        quality, security scanning, staging deployment, and smoke tests pass, then the production approval has useful
+        evidence behind it.
+      </p>
+
+      <p>A good approval gate answers these questions:</p>
+      <ul>
+        <li>What commit and pull request are being released?</li>
+        <li>Which artifact digest is being deployed?</li>
+        <li>Which tests and scans passed?</li>
+        <li>What changed in infrastructure or configuration?</li>
+        <li>What is the rollback plan?</li>
+        <li>Who approved the release?</li>
+      </ul>
+
+      <h2>Secrets and identity</h2>
+      <p>
+        Secrets are one of the highest-risk parts of CI/CD. I would avoid long-lived static credentials wherever possible.
+        A stronger design uses short-lived credentials, workload identity, environment-scoped secrets, and least privilege.
+        Production secrets should only be available to production jobs after the required approval has completed.
+      </p>
+
+      <p>
+        OWASP's Secrets Management guidance recommends treating CI/CD tooling as a production environment, monitoring it,
+        and applying least privilege. For banking, that means pipeline credentials should be reviewed, rotated, logged, and
+        limited to the exact systems and actions required.
+      </p>
+
+      <h2>Artifact integrity and supply chain security</h2>
+      <p>
+        I would also improve software supply chain assurance. The pipeline should make it clear where an artifact came
+        from, how it was built, and whether it was altered after the build. The SLSA specification provides a framework for
+        improving supply chain security through practices such as provenance and stronger build controls.
+      </p>
+
+      <p>In practical terms, I would aim to:</p>
+      <ul>
+        <li>Use trusted and version-pinned build actions.</li>
+        <li>Generate build provenance where possible.</li>
+        <li>Sign container images or publish attestations.</li>
+        <li>Deploy by immutable image digest rather than mutable tags.</li>
+        <li>Restrict who can change pipeline configuration.</li>
+        <li>Keep deployment evidence for audit and incident review.</li>
+      </ul>
+
+      <h2>Database migration safety</h2>
+      <p>
+        Banking platforms often depend on databases, and database changes can be more dangerous than application changes.
+        I would handle migrations carefully by separating backward-compatible schema changes from application releases
+        where possible. The safest pattern is usually expand, migrate, and contract.
+      </p>
+
+      <ul>
+        <li><strong>Expand:</strong> add new tables, columns, or indexes without breaking the current application.</li>
+        <li><strong>Migrate:</strong> backfill or move data safely with monitoring and retry behaviour.</li>
+        <li><strong>Contract:</strong> remove old fields only after the new application path is stable.</li>
+      </ul>
+
+      <p>
+        I would avoid pipeline steps that automatically run destructive migrations in production without review. Database
+        migration plans should be visible in the release evidence and should include rollback or forward-fix guidance.
+      </p>
+
+      <h2>Observability after deployment</h2>
+      <p>
+        A release is not finished when the deployment command succeeds. It is finished when the service is healthy under
+        real conditions. After deployment, the pipeline should verify service health using metrics, logs, traces, and
+        application-level smoke tests.
+      </p>
+
+      <p>I would track:</p>
+      <ul>
+        <li>HTTP error rate and latency</li>
+        <li>Application exceptions</li>
+        <li>Container restart counts</li>
+        <li>Database connection errors</li>
+        <li>Queue depth or background job failures</li>
+        <li>Business-level signals such as failed transactions or payment errors</li>
+      </ul>
+
+      <p>
+        For incident response, alerts should link to dashboards and runbooks. If a new deployment causes errors, engineers
+        should not waste time searching for basic commands or ownership details. The runbook should explain how to confirm
+        impact, how to roll back, how to communicate, and how to capture learning after the incident.
+      </p>
+
+      <h2>Measuring success with DORA metrics</h2>
+      <p>
+        To know whether the modernisation worked, I would measure delivery performance over time. DORA's software delivery
+        metrics focus on throughput and stability, including deployment frequency, change lead time, failed deployment
+        recovery time, change failure rate, and deployment rework rate.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Metric</th>
+            <th>What it shows</th>
+            <th>Why it matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Deployment frequency</td>
+            <td>How often successful deployments happen</td>
+            <td>Shows whether the team can release in smaller, more regular batches</td>
+          </tr>
+          <tr>
+            <td>Change lead time</td>
+            <td>How long a change takes from commit to production</td>
+            <td>Shows whether the delivery path is slow or efficient</td>
+          </tr>
+          <tr>
+            <td>Change failure rate</td>
+            <td>How often deployments cause production issues</td>
+            <td>Shows whether speed is being achieved safely</td>
+          </tr>
+          <tr>
+            <td>Failed deployment recovery time</td>
+            <td>How quickly the team recovers from failed deployments</td>
+            <td>Shows whether rollback, monitoring, and incident response are effective</td>
+          </tr>
+          <tr>
+            <td>Deployment rework rate</td>
+            <td>How much delivery work is unplanned rework</td>
+            <td>Shows whether quality problems are consuming engineering capacity</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <p>
+        I would not use these metrics to punish teams. I would use them to find bottlenecks. For example, if lead time is
+        high, the problem might be slow reviews, flaky tests, manual approvals, or environment instability. If change
+        failure rate is high, the problem might be poor test coverage, weak staging parity, risky database changes, or
+        missing observability.
+      </p>
+
+      <h2>Expected outcome</h2>
+      <p>
+        A successful modernisation should create a delivery process where engineers can release smaller changes with more
+        confidence. The team should be able to answer what changed, what passed, what was deployed, who approved it, and
+        how the system behaved after release.
+      </p>
+
+      <p>The practical outcomes I would expect are:</p>
+      <ul>
+        <li>Reduced manual deployment effort</li>
+        <li>Better audit evidence for releases</li>
+        <li>Faster feedback for developers</li>
+        <li>Fewer environment-specific deployment surprises</li>
+        <li>Stronger security checks before production</li>
+        <li>Clearer rollback and incident response steps</li>
+        <li>Better visibility into deployment health</li>
+      </ul>
+
+      <h2>What this proves about my DevOps approach</h2>
+      <p>
+        Modernising a banking platform CI/CD pipeline is not only about writing YAML. It requires understanding software
+        delivery, cloud infrastructure, security, governance, Kubernetes operations, observability, and incident response.
+        My approach is to make the delivery path automated where possible, controlled where necessary, and visible at every
+        important step.
+      </p>
+
+      <p>
+        For a DevOps engineer, that balance matters. A strong pipeline should help developers move quickly, help security
+        teams trust the release process, help operations teams recover when something fails, and help the business deliver
+        change without losing control.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments" target="_blank" rel="noopener">GitHub Docs: Deployments and environments</a></li>
+        <li><a href="https://docs.github.com/en/actions/reference/workflows-and-actions/workflow-syntax" target="_blank" rel="noopener">GitHub Docs: Workflow syntax for GitHub Actions</a></li>
+        <li><a href="https://docs.docker.com/build/building/best-practices/" target="_blank" rel="noopener">Docker Docs: Building best practices</a></li>
+        <li><a href="https://kubernetes.io/docs/tutorials/kubernetes-basics/update/update-intro/" target="_blank" rel="noopener">Kubernetes Docs: Performing a rolling update</a></li>
+        <li><a href="https://developer.hashicorp.com/terraform/language/state/locking" target="_blank" rel="noopener">Terraform Docs: State locking</a></li>
+        <li><a href="https://docs.hashicorp.com/terraform/language/state/remote" target="_blank" rel="noopener">Terraform Docs: Remote state</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/CI_CD_Security_Cheat_Sheet.html" target="_blank" rel="noopener">OWASP: CI/CD Security Cheat Sheet</a></li>
+        <li><a href="https://cheatsheetseries.owasp.org/cheatsheets/Secrets_Management_Cheat_Sheet.html" target="_blank" rel="noopener">OWASP: Secrets Management Cheat Sheet</a></li>
+        <li><a href="https://slsa.dev/spec/v1.2/" target="_blank" rel="noopener">SLSA Specification v1.2</a></li>
+        <li><a href="https://dora.dev/guides/dora-metrics/" target="_blank" rel="noopener">DORA: Software delivery performance metrics</a></li>
+      </ul>
     </main>
   </body>
 </html>
