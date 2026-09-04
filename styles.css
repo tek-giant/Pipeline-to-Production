@@ -226,7 +226,8 @@ code {
 .intro-section p,
 .contact-section p,
 .post-card p,
-.project-list p {
+.project-list p,
+.github-profile p {
   color: var(--muted);
 }
 
@@ -275,6 +276,9 @@ code {
 
 .post-card,
 .project-list article {
+  display: flex;
+  min-height: 270px;
+  flex-direction: column;
   border: 1px solid var(--line);
   border-radius: 8px;
   background: var(--surface);
@@ -307,6 +311,30 @@ code {
   color: var(--accent-dark);
   font-weight: 800;
   text-decoration: none;
+}
+
+.project-list a {
+  margin-top: auto;
+  color: var(--accent-dark);
+  font-weight: 800;
+  text-decoration: none;
+}
+
+.github-profile {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 18px;
+  margin-top: 18px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  padding: 18px 22px;
+}
+
+.github-profile p {
+  margin: 0;
+  font-weight: 700;
 }
 
 .contact-section {
@@ -362,6 +390,7 @@ code {
 @media (max-width: 720px) {
   .site-header,
   .section-heading,
+  .github-profile,
   .site-footer {
     align-items: flex-start;
     flex-direction: column;
