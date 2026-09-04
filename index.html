@@ -1,0 +1,177 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Pipeline to Production | Ebenezer Tetteh</title>
+    <meta
+      name="description"
+      content="Pipeline to Production is a DevOps technical blog by Ebenezer Tetteh covering CI/CD, Kubernetes, Terraform, automation, observability, DevSecOps, and production operations."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="#articles">Articles</a>
+        <a href="#about">About</a>
+        <a href="#projects">Projects</a>
+        <a href="#contact">Contact</a>
+      </nav>
+    </header>
+
+    <main id="top">
+      <section class="hero">
+        <div>
+          <p class="eyebrow">DevOps technical blog</p>
+          <h1>Pipeline to Production</h1>
+          <p class="hero-text">
+            Practical DevOps notes from build to production, covering CI/CD, Kubernetes, Terraform, cloud security,
+            automation, observability, and incident response.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#articles">Read articles</a>
+            <a class="button secondary" href="#projects">View project notes</a>
+          </div>
+        </div>
+
+        <aside class="terminal-card" aria-label="DevOps command examples">
+          <div class="terminal-top">
+            <span></span>
+            <span></span>
+            <span></span>
+          </div>
+          <pre><code>$ terraform plan
+3 modules reviewed
+0 policy violations
+
+$ kubectl rollout status deploy/api
+deployment "api" successfully rolled out
+
+$ gh workflow run release.yml
+pipeline queued with smoke tests</code></pre>
+        </aside>
+      </section>
+
+      <section class="section intro-section" id="about">
+        <div>
+          <p class="section-kicker">About</p>
+          <h2>DevOps writing built around real delivery work.</h2>
+        </div>
+        <p>
+          I use this blog to explain how systems move from source code to production. The focus is on practical delivery:
+          automation, deployment safety, infrastructure decisions, monitoring, security checks, and recovery planning.
+        </p>
+      </section>
+
+      <section class="section" id="articles">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Featured articles</p>
+            <h2>Start with these posts</h2>
+          </div>
+
+          <div class="filters" aria-label="Article filters">
+            <button class="filter is-active" data-filter="all" type="button">All</button>
+            <button class="filter" data-filter="cicd" type="button">CI/CD</button>
+            <button class="filter" data-filter="kubernetes" type="button">Kubernetes</button>
+            <button class="filter" data-filter="security" type="button">Security</button>
+            <button class="filter" data-filter="observability" type="button">Observability</button>
+          </div>
+        </div>
+
+        <div class="article-grid">
+          <article class="post-card" data-topic="cicd">
+            <span class="tag">CI/CD</span>
+            <h3>How I would modernise a banking platform CI/CD pipeline</h3>
+            <p>
+              A practical look at automated testing, Docker builds, security gates, staging deployments, smoke tests, and
+              controlled production releases.
+            </p>
+            <a href="posts/banking-platform-cicd.html">Read draft</a>
+          </article>
+
+          <article class="post-card" data-topic="kubernetes">
+            <span class="tag">Kubernetes</span>
+            <h3>Migrating a workload from a VM to Kubernetes</h3>
+            <p>
+              A migration-focused article covering containers, manifests, probes, rollout checks, ingress, monitoring,
+              and rollback planning.
+            </p>
+            <a href="posts/kubernetes-migration.html">Read draft</a>
+          </article>
+
+          <article class="post-card" data-topic="security">
+            <span class="tag">DevSecOps</span>
+            <h3>Adding security checks without slowing every deployment</h3>
+            <p>
+              Where secret scanning, dependency scanning, image scanning, and policy checks fit inside a healthy delivery
+              workflow.
+            </p>
+            <a href="posts/devsecops-pipeline.html">Read draft</a>
+          </article>
+
+          <article class="post-card" data-topic="observability">
+            <span class="tag">Observability</span>
+            <h3>Turning alerts into useful incident response</h3>
+            <p>
+              How to connect metrics, logs, dashboards, runbooks, and post-incident learning into a better operations
+              process.
+            </p>
+            <a href="posts/observability-incident-response.html">Read draft</a>
+          </article>
+        </div>
+      </section>
+
+      <section class="section" id="projects">
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Project notes</p>
+            <h2>Portfolio ideas to turn into posts</h2>
+          </div>
+        </div>
+
+        <div class="project-list">
+          <article>
+            <h3>Infrastructure as Code Standardisation</h3>
+            <p>Reusable Terraform modules, tagging standards, remote state, and drift management.</p>
+          </article>
+          <article>
+            <h3>Automation Operational Runbooks</h3>
+            <p>Python and Bash scripts for service health checks, backups, certificates, and reports.</p>
+          </article>
+          <article>
+            <h3>Cloud Security Enablement</h3>
+            <p>Secrets management, access control, vulnerability response, and pipeline security controls.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section contact-section" id="contact">
+        <div>
+          <p class="section-kicker">Contact</p>
+          <h2>Connect with Ebenezer Tetteh</h2>
+          <p>
+            Replace the placeholder email below with your professional email address before uploading the blog to GitHub.
+          </p>
+        </div>
+        <a class="button primary" href="mailto:ebenezer.tetteh@example.com">Email Ebenezer</a>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="#top">Back to top</a>
+    </footer>
+
+    <script src="script.js"></script>
+  </body>
+</html>
