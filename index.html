@@ -21,10 +21,15 @@
       </a>
 
       <nav class="nav-links" aria-label="Primary navigation">
-        <a href="#articles">Articles</a>
-        <a href="#about">About</a>
+        <a href="#top" class="unit-link" data-filter="all">Home</a>
+        <a href="#articles" class="unit-link" data-filter="devops">DevOps</a>
+        <a href="#articles" class="unit-link" data-filter="aws">AWS</a>
+        <a href="#articles" class="unit-link" data-filter="linux">Linux</a>
+        <a href="#articles" class="unit-link" data-filter="jenkins">Jenkins</a>
+        <a href="#articles" class="unit-link" data-filter="gitops">GitOps</a>
+        <a href="#articles" class="unit-link" data-filter="kubernetes">Kubernetes</a>
         <a href="#projects">Projects</a>
-        <a href="#contact">Contact</a>
+        <a href="#articles" class="search-nav">Search</a>
       </nav>
     </header>
 
@@ -75,28 +80,38 @@ pipeline queued with smoke tests</code></pre>
       <section class="section" id="articles">
         <div class="section-heading">
           <div>
-            <p class="section-kicker">Featured articles</p>
-            <h2>Start with these posts</h2>
+            <p class="section-kicker">Blog units</p>
+            <h2>Browse by technical area</h2>
           </div>
 
-          <div class="filters" aria-label="Article filters">
-            <button class="filter is-active" data-filter="all" type="button">All</button>
-            <button class="filter" data-filter="cicd" type="button">CI/CD</button>
-            <button class="filter" data-filter="kubernetes" type="button">Kubernetes</button>
-            <button class="filter" data-filter="security" type="button">Security</button>
-            <button class="filter" data-filter="observability" type="button">Observability</button>
-          </div>
+          <form class="search-box" role="search">
+            <label class="sr-only" for="site-search">Search blog articles</label>
+            <input id="site-search" type="search" placeholder="Search articles or projects" />
+            <button class="button primary" type="submit">Search</button>
+          </form>
         </div>
 
+        <div class="filters" aria-label="Article filters">
+            <button class="filter is-active" data-filter="all" type="button">Home</button>
+            <button class="filter" data-filter="devops" type="button">DevOps</button>
+            <button class="filter" data-filter="aws" type="button">AWS</button>
+            <button class="filter" data-filter="linux" type="button">Linux</button>
+            <button class="filter" data-filter="jenkins" type="button">Jenkins</button>
+            <button class="filter" data-filter="gitops" type="button">GitOps</button>
+            <button class="filter" data-filter="kubernetes" type="button">Kubernetes</button>
+        </div>
+
+        <p class="results-note" aria-live="polite"></p>
+
         <div class="article-grid">
-          <article class="post-card" data-topic="cicd">
+          <article class="post-card" data-topics="devops jenkins" data-title="How I would modernise a banking platform CI/CD pipeline GitHub Actions Docker Kubernetes Jenkins">
             <img
               class="card-image"
               src="assets/cicd-pipeline.png"
               alt="CI/CD pipeline dashboard with deployment gates"
             />
             <div class="card-topline">
-              <span class="tag">CI/CD</span>
+              <span class="tag">DevOps</span>
               <span class="read-time">12 min read</span>
             </div>
             <h3>How I would modernise a banking platform CI/CD pipeline</h3>
@@ -112,7 +127,7 @@ pipeline queued with smoke tests</code></pre>
             <a href="posts/banking-platform-cicd.html">Read article</a>
           </article>
 
-          <article class="post-card" data-topic="kubernetes">
+          <article class="post-card" data-topics="kubernetes devops gitops" data-title="Migrating a workload from a VM to Kubernetes Deployments Ingress Rollback GitOps">
             <img
               class="card-image"
               src="assets/kubernetes-migration.png"
@@ -135,7 +150,7 @@ pipeline queued with smoke tests</code></pre>
             <a href="posts/kubernetes-migration.html">Read article</a>
           </article>
 
-          <article class="post-card" data-topic="security">
+          <article class="post-card" data-topics="devops aws gitops" data-title="Adding security checks without slowing every deployment DevSecOps AWS SAST Secrets SLSA GitOps">
             <img
               class="card-image"
               src="assets/devsecops-security.png"
@@ -158,7 +173,7 @@ pipeline queued with smoke tests</code></pre>
             <a href="posts/devsecops-pipeline.html">Read article</a>
           </article>
 
-          <article class="post-card" data-topic="observability">
+          <article class="post-card" data-topics="devops linux aws" data-title="Turning alerts into useful incident response Observability Prometheus Grafana SLOs Linux AWS">
             <img
               class="card-image"
               src="assets/incident-response.png"
@@ -180,6 +195,14 @@ pipeline queued with smoke tests</code></pre>
             </div>
             <a href="posts/observability-incident-response.html">Read article</a>
           </article>
+        </div>
+
+        <div class="empty-state" hidden>
+          <p class="section-kicker">Coming soon</p>
+          <h3>No articles in this unit yet</h3>
+          <p>
+            This unit is ready for future notes. You can add AWS, Linux, Jenkins, and GitOps articles here as your blog grows.
+          </p>
         </div>
       </section>
 

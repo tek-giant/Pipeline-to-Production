@@ -79,11 +79,13 @@ a {
 .nav-links {
   display: flex;
   flex-wrap: wrap;
-  gap: 18px;
+  gap: 14px;
+  justify-content: flex-end;
 }
 
 .nav-links a {
   color: var(--muted);
+  font-size: 0.92rem;
   font-weight: 700;
   text-decoration: none;
 }
@@ -246,6 +248,7 @@ code {
   display: flex;
   flex-wrap: wrap;
   gap: 8px;
+  margin-bottom: 24px;
 }
 
 .filter {
@@ -275,6 +278,56 @@ code {
 
 .filter.is-active:hover {
   color: #ffffff;
+}
+
+.search-box {
+  display: flex;
+  width: min(420px, 100%);
+  gap: 8px;
+}
+
+.search-box input {
+  width: 100%;
+  min-height: 46px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: var(--surface);
+  color: var(--ink);
+  font: inherit;
+  padding: 0 14px;
+}
+
+.search-box input:focus {
+  border-color: var(--accent);
+  outline: 3px solid rgba(15, 118, 110, 0.16);
+}
+
+.results-note {
+  min-height: 24px;
+  margin-bottom: 18px;
+  color: var(--muted);
+  font-weight: 700;
+}
+
+.empty-state {
+  margin-top: 18px;
+  border: 1px dashed rgba(15, 118, 110, 0.34);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.72);
+  padding: 28px;
+}
+
+.empty-state h3 {
+  font-size: 1.35rem;
+}
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
 }
 
 .article-grid,
@@ -351,7 +404,8 @@ code {
   box-shadow: var(--card-shadow);
 }
 
-.post-card.is-hidden {
+.post-card.is-hidden,
+.project-list article.is-hidden {
   display: none;
 }
 
@@ -522,6 +576,14 @@ code {
   .github-profile,
   .site-footer {
     align-items: flex-start;
+    flex-direction: column;
+  }
+
+  .nav-links {
+    justify-content: flex-start;
+  }
+
+  .search-box {
     flex-direction: column;
   }
 
