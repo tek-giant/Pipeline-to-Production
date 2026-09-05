@@ -280,12 +280,13 @@ code {
 .article-grid,
 .project-list {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 16px;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 24px;
 }
 
 .project-list {
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 18px;
 }
 
 .post-card,
@@ -297,25 +298,50 @@ code {
   overflow: hidden;
   border: 1px solid rgba(15, 118, 110, 0.18);
   border-radius: 8px;
-  background:
-    linear-gradient(180deg, rgba(255, 255, 255, 0.96), rgba(255, 255, 255, 0.9)),
-    radial-gradient(circle at top right, rgba(197, 143, 42, 0.18), transparent 36%);
+  background: #ffffff;
   padding: 22px;
   box-shadow: 0 1px 0 rgba(255, 255, 255, 0.8) inset;
   transition: border-color 180ms ease, box-shadow 180ms ease, transform 180ms ease;
 }
 
 .post-card {
-  min-height: 320px;
+  min-height: 520px;
+  padding: 0;
+  box-shadow: 0 12px 32px rgba(20, 32, 28, 0.08);
 }
 
-.post-card::before,
 .project-list article::before {
   content: "";
   position: absolute;
   inset: 0 auto 0 0;
   width: 5px;
   background: linear-gradient(180deg, var(--accent), var(--gold));
+}
+
+.card-image {
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  object-fit: cover;
+  display: block;
+  border-bottom: 1px solid rgba(15, 118, 110, 0.16);
+  background: #10211d;
+}
+
+.post-card .card-topline,
+.post-card h3,
+.post-card p,
+.post-card .card-meta,
+.post-card > a {
+  margin-right: 22px;
+  margin-left: 22px;
+}
+
+.post-card .card-topline {
+  margin-top: 20px;
+}
+
+.post-card > a {
+  margin-bottom: 22px;
 }
 
 .post-card:hover,
@@ -402,6 +428,16 @@ code {
 
 .project-list .tag {
   margin-bottom: 18px;
+}
+
+.project-list article {
+  background:
+    linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 250, 248, 0.94)),
+    radial-gradient(circle at 92% 8%, rgba(36, 76, 120, 0.18), transparent 34%);
+}
+
+.project-list article h3 {
+  min-height: 58px;
 }
 
 .github-profile {
