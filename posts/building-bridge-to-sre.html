@@ -1,0 +1,192 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Building a Bridge to SRE | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A comprehensive DevOps article by Ebenezer Tetteh explaining how DevOps practices can lead teams toward Site Reliability Engineering, SLOs, error budgets, incident response, and operational excellence."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="post.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">P2P</span>
+        <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main class="post-shell">
+      <p class="section-kicker">DevOps and SRE</p>
+      <h1>Building a bridge to SRE: let DevOps lead the way</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+      <img
+        class="post-hero-image"
+        src="../assets/devops-to-sre.png"
+        alt="Bridge connecting DevOps delivery pipelines to reliability dashboards"
+      />
+
+      <p class="post-lead">
+        Site Reliability Engineering is not a rejection of DevOps. It is one practical way to turn DevOps principles
+        into measurable reliability work. DevOps can create the culture, automation, and delivery discipline that allow
+        SRE practices to succeed.
+      </p>
+
+      <p>
+        Many organisations begin with DevOps because they want faster delivery and better collaboration between
+        development and operations. Over time, they discover that speed is not enough. A team can deploy frequently and
+        still struggle with noisy alerts, unclear ownership, repeated incidents, manual recovery, and unreliable services.
+        This is where the bridge to SRE becomes valuable.
+      </p>
+
+      <h2>DevOps creates the foundation</h2>
+      <p>
+        DevOps focuses on breaking down silos, improving collaboration, automating delivery, and making teams responsible
+        for the full lifecycle of software. Those ideas are essential before an organisation can use SRE well. If teams
+        cannot deploy consistently, measure production health, or learn from incidents, SRE will become another label
+        rather than a real operating model.
+      </p>
+
+      <p>
+        A DevOps engineer helps build the foundation by improving CI/CD pipelines, infrastructure as code, monitoring,
+        deployment automation, configuration management, and incident response. These capabilities give SRE something to
+        build on: measurable systems, repeatable change, and shared ownership.
+      </p>
+
+      <h2>What SRE adds</h2>
+      <p>
+        SRE brings a sharper reliability framework. It asks teams to define what reliable means for users, measure it
+        with service level indicators, set service level objectives, and make engineering decisions using error budgets.
+        Instead of saying "the system should always be up", SRE asks a more useful question: what level of reliability do
+        users need, and how much change can we safely make while meeting that target?
+      </p>
+
+      <p>
+        This changes the conversation. Reliability is no longer only an operations concern, and speed is no longer only a
+        development concern. Both are managed together. When error budget is healthy, teams can release more confidently.
+        When reliability is burning too quickly, the team should reduce risk, fix causes of instability, and improve the
+        system before pushing more change.
+      </p>
+
+      <h2>The bridge in practical stages</h2>
+      <p>
+        A team does not need to create a formal SRE department on day one. It can move from DevOps toward SRE through
+        practical stages.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Stage</th>
+            <th>DevOps practice</th>
+            <th>SRE outcome</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Delivery automation</td>
+            <td>CI/CD, repeatable deployments, rollback process</td>
+            <td>Lower change failure risk</td>
+          </tr>
+          <tr>
+            <td>Observability</td>
+            <td>Metrics, logs, dashboards, meaningful alerts</td>
+            <td>Clearer understanding of service health</td>
+          </tr>
+          <tr>
+            <td>Reliability targets</td>
+            <td>Operational reviews and production readiness</td>
+            <td>SLOs, SLIs, and error budget decisions</td>
+          </tr>
+          <tr>
+            <td>Incident learning</td>
+            <td>Runbooks, post-incident reviews, automation</td>
+            <td>Reduced repeat failures and less toil</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Start with service ownership</h2>
+      <p>
+        The first step is knowing who owns each service and what "healthy" means. Ownership does not mean blaming one
+        team when something fails. It means each service has people who understand its users, dependencies, risks,
+        dashboards, alerts, deployment process, and recovery actions.
+      </p>
+
+      <p>
+        A useful service ownership checklist includes:
+      </p>
+
+      <ul>
+        <li>Where the source code, infrastructure code, and pipeline definitions live.</li>
+        <li>How the service is deployed and rolled back.</li>
+        <li>Which dashboards show user-impacting health.</li>
+        <li>Which alerts require immediate action.</li>
+        <li>Which dependencies can break the service.</li>
+        <li>Which runbooks explain common recovery steps.</li>
+      </ul>
+
+      <h2>Introduce SLOs carefully</h2>
+      <p>
+        SLOs should not begin as a complicated reporting exercise. Start with one important user journey, such as login,
+        checkout, payment processing, or API request success. Define the service level indicator that best represents
+        user experience, then set a realistic objective. For example, an API might measure the percentage of successful
+        requests served below a latency threshold.
+      </p>
+
+      <p>
+        The aim is to make reliability visible enough to guide decisions. If an SLO is missed, the team should understand
+        whether the cause was deployment failure, capacity, dependency problems, code defects, database performance,
+        network issues, or operational toil.
+      </p>
+
+      <h2>Reduce toil through automation</h2>
+      <p>
+        SRE places strong emphasis on reducing toil: repetitive, manual, automatable operational work. DevOps engineers
+        are well positioned to attack toil because they already work across automation, pipelines, infrastructure, and
+        operations.
+      </p>
+
+      <p>
+        Examples include automating certificate checks, backup verification, deployment rollback, environment creation,
+        log collection, scaling actions, and routine health reports. Each automation should remove a real burden and make
+        recovery more repeatable.
+      </p>
+
+      <h2>Improve incident response</h2>
+      <p>
+        The bridge to SRE also requires better incident response. Alerts should be actionable. Runbooks should be tested.
+        On-call engineers should know where to find dashboards and recent deployment information. Post-incident reviews
+        should focus on learning, not blame.
+      </p>
+
+      <p>
+        A strong DevOps-to-SRE incident process connects the deployment pipeline with observability. When an alert fires,
+        engineers should quickly see what changed, who deployed it, which version is running, what dependencies are
+        failing, and whether rollback is safe.
+      </p>
+
+      <h2>What this proves</h2>
+      <p>
+        Building a bridge from DevOps to SRE shows maturity. It proves that a DevOps engineer can think beyond tool
+        setup and deployment speed. The real goal is reliable, observable, recoverable systems that allow teams to ship
+        changes while protecting users.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://sre.google/workbook/how-sre-relates/" target="_blank" rel="noopener">Google SRE Workbook: How SRE relates to DevOps</a></li>
+        <li><a href="https://sre.google/workbook/implementing-slos/" target="_blank" rel="noopener">Google SRE Workbook: Implementing SLOs</a></li>
+        <li><a href="https://sre.google/sre-book/introduction/" target="_blank" rel="noopener">Google SRE Book: Introduction</a></li>
+        <li><a href="https://dora.dev/research/" target="_blank" rel="noopener">DORA: Research and reliability engineering</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

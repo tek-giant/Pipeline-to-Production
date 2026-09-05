@@ -1,0 +1,172 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>What Is a DevOps Lifecycle? | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A comprehensive DevOps article by Ebenezer Tetteh explaining the DevOps lifecycle, from planning and coding to monitoring, feedback, reliability, and continuous improvement."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="post.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">P2P</span>
+        <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main class="post-shell">
+      <p class="section-kicker">DevOps</p>
+      <h1>What is a DevOps lifecycle?</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+      <img
+        class="post-hero-image"
+        src="../assets/devops-lifecycle.png"
+        alt="DevOps lifecycle loop connecting delivery and operations"
+      />
+
+      <p class="post-lead">
+        The DevOps lifecycle is the continuous flow of work that takes an idea from planning to production and then
+        brings production feedback back into planning. It is not a one-time sequence. It is a loop of collaboration,
+        automation, measurement, and improvement.
+      </p>
+
+      <p>
+        DevOps exists because software delivery and operations cannot be treated as separate worlds. Developers need to
+        understand how their changes behave in production. Operations teams need to be involved early enough to influence
+        reliability, security, observability, and deployment design. The lifecycle gives teams a shared mental model for
+        that collaboration.
+      </p>
+
+      <h2>The lifecycle at a glance</h2>
+      <p>
+        The lifecycle is often drawn as an infinity loop because the work continues after deployment. A simple version
+        looks like this:
+      </p>
+
+      <pre><code>plan -> code -> build -> test -> release -> deploy -> operate -> monitor -> feedback</code></pre>
+
+      <p>
+        The value is not in memorising the words. The value is understanding the responsibility of each stage and how the
+        stages support one another. A weak planning process creates rushed releases. Poor test automation slows delivery.
+        Inconsistent deployment makes operations risky. Weak monitoring means the team learns about problems from users
+        instead of from the system.
+      </p>
+
+      <h2>Plan: define the right work</h2>
+      <p>
+        Planning is where teams decide what to build, why it matters, and how success will be measured. In a DevOps
+        culture, planning includes operational concerns from the beginning. The team should ask how the feature will be
+        deployed, monitored, secured, scaled, and supported.
+      </p>
+
+      <p>
+        Good planning creates small, releasable changes. Smaller changes are easier to review, easier to test, easier to
+        deploy, and easier to roll back. This supports one of the most important DevOps habits: reducing batch size so
+        feedback arrives quickly.
+      </p>
+
+      <h2>Code: build with production in mind</h2>
+      <p>
+        The coding stage is more than writing application logic. It includes tests, configuration, infrastructure code,
+        documentation, deployment scripts, and observability instrumentation. A DevOps engineer should encourage teams to
+        treat these as part of the product, not as afterthoughts.
+      </p>
+
+      <p>
+        Version control is central here. Application code, infrastructure definitions, pipeline files, configuration
+        templates, and scripts should live in repositories so changes can be reviewed, traced, and recovered. This turns
+        the repository into the source of truth for delivery.
+      </p>
+
+      <h2>Build: create a repeatable artifact</h2>
+      <p>
+        The build stage turns source code into something deployable. That might be a container image, package, static
+        site, serverless bundle, or compiled application. The key principle is repeatability: the same source should
+        produce the same kind of artifact through an automated process.
+      </p>
+
+      <p>
+        Builds should not depend on someone's laptop. They should run in CI, produce clear logs, and tag artifacts with a
+        version, commit SHA, or release identifier. This gives the team a direct link between the code that was reviewed
+        and the artifact that was deployed.
+      </p>
+
+      <h2>Test: find problems early</h2>
+      <p>
+        Testing is where the lifecycle begins to protect production. Unit tests check small parts of code. Integration
+        tests check how services, databases, queues, and APIs work together. End-to-end tests check important user
+        journeys. Security tests look for secrets, vulnerable dependencies, insecure configuration, and risky container
+        images.
+      </p>
+
+      <p>
+        A mature DevOps lifecycle balances speed and confidence. Fast checks should run on every pull request. Slower
+        checks can run before release, overnight, or in a staging environment. The aim is to give developers feedback
+        early without making the pipeline so slow that people avoid it.
+      </p>
+
+      <h2>Release and deploy: move safely toward production</h2>
+      <p>
+        Release is the decision that a change is ready. Deploy is the act of putting it into an environment. Separating
+        the two ideas helps teams control risk. A build can be ready for release without being deployed immediately, and
+        a feature can be deployed behind a flag before users see it.
+      </p>
+
+      <p>
+        Deployment should be automated and consistent. Whether the target is Kubernetes, virtual machines, serverless, or
+        static hosting, the pipeline should know how to deploy the artifact without manual guesswork. Safer strategies
+        include blue-green deployments, canary releases, feature flags, smoke tests, and automated rollback triggers.
+      </p>
+
+      <h2>Operate: run the service responsibly</h2>
+      <p>
+        Operations is where the system meets real users, real traffic, real failures, and real constraints. DevOps
+        encourages teams to own what they build, which means developers and operations engineers work together on
+        availability, performance, cost, backups, capacity, incident response, and change management.
+      </p>
+
+      <p>
+        Good operations also reduces toil. Repetitive manual work should be automated where possible. If engineers are
+        repeatedly restarting services, copying logs by hand, manually scaling resources, or following fragile deployment
+        steps, the lifecycle is showing where improvement is needed.
+      </p>
+
+      <h2>Monitor and feedback: learn from production</h2>
+      <p>
+        Monitoring closes the loop. Teams need metrics, logs, traces, dashboards, alerts, and user feedback to understand
+        whether the service is healthy. The best signals focus on user impact: availability, latency, errors, saturation,
+        and business-critical journeys.
+      </p>
+
+      <p>
+        Feedback should flow back into planning. Incidents can produce runbook improvements, better tests, clearer
+        dashboards, or architecture changes. Performance issues can influence capacity planning. User behaviour can
+        change product priorities. This is why DevOps is a lifecycle rather than a delivery checklist.
+      </p>
+
+      <h2>What this proves</h2>
+      <p>
+        Understanding the DevOps lifecycle shows that DevOps is not just CI/CD tooling. It is a way of connecting people,
+        process, automation, and production learning. A strong DevOps engineer can explain the whole loop and then improve
+        the weakest stage with practical changes.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://www.atlassian.com/devops" target="_blank" rel="noopener">Atlassian: What is DevOps?</a></li>
+        <li><a href="https://dora.dev/research/" target="_blank" rel="noopener">DORA: Research and software delivery capabilities</a></li>
+        <li><a href="https://dora.dev/capabilities/continuous-delivery/" target="_blank" rel="noopener">DORA: Continuous delivery</a></li>
+        <li><a href="https://martinfowler.com/articles/continuousIntegration.html" target="_blank" rel="noopener">Martin Fowler: Continuous Integration</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

@@ -1,0 +1,198 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DevOps for Startups: Continuous Delivery on a Budget | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A practical DevOps article by Ebenezer Tetteh on implementing a continuous delivery pipeline for startups without overspending on tools, cloud resources, or process complexity."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="post.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">P2P</span>
+        <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main class="post-shell">
+      <p class="section-kicker">CI/CD</p>
+      <h1>DevOps for startups: implementing a continuous delivery pipeline on a budget</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+      <img
+        class="post-hero-image"
+        src="../assets/startup-continuous-delivery.png"
+        alt="Startup team building a budget-friendly continuous delivery pipeline"
+      />
+
+      <p class="post-lead">
+        A startup does not need an expensive platform team or a long list of paid tools to practise continuous delivery.
+        What it needs is a simple, repeatable path from commit to production, with enough testing, security, visibility,
+        and rollback planning to release confidently.
+      </p>
+
+      <p>
+        In the early stages of a company, speed matters. Teams want to ship features, learn from users, and avoid
+        spending precious budget on over-engineered platforms. The danger is that speed can become fragile when releases
+        depend on manual steps, local laptop builds, undocumented deployment commands, or one person who knows how
+        production works. A budget-conscious DevOps approach should reduce that fragility without slowing the team down.
+      </p>
+
+      <h2>Start with the outcome, not the tool</h2>
+      <p>
+        The goal of continuous delivery is to keep software in a deployable state and make releases low-risk, repeatable,
+        and available on demand. That does not mean every commit must automatically go to production. It means every
+        change should pass through a trusted delivery path so the team can decide when to release.
+      </p>
+
+      <p>
+        For a startup, the first version of that path can be deliberately small:
+      </p>
+
+      <pre><code>pull request
+  -> lint
+  -> unit tests
+  -> build artifact or container image
+  -> basic security checks
+  -> deploy to staging
+  -> smoke test
+  -> manual approval
+  -> deploy production</code></pre>
+
+      <p>
+        This pipeline is not glamorous, but it creates a professional delivery baseline. It proves that the product can
+        be built away from a developer machine, checked automatically, deployed consistently, and recovered when a
+        release goes wrong.
+      </p>
+
+      <h2>Use managed CI before building your own platform</h2>
+      <p>
+        A startup should usually begin with managed CI/CD from the platform it already uses. GitHub Actions, GitLab CI,
+        Bitbucket Pipelines, and similar tools remove the need to operate Jenkins controllers, runners, plugins, backups,
+        and patching on day one. If the code already lives on GitHub, GitHub Actions is often the easiest starting point.
+      </p>
+
+      <p>
+        Cost control still matters. Use Linux runners where possible, because they are typically cheaper than Windows or
+        macOS runners. Keep workflows small, avoid running full integration tests on every documentation change, and use
+        path filters so expensive jobs only run when relevant files change. Cache dependencies carefully, but do not let
+        cache complexity hide broken builds.
+      </p>
+
+      <h2>Build once, promote the same artifact</h2>
+      <p>
+        A common early mistake is rebuilding the application separately for staging and production. This creates doubt
+        about what was actually tested. A better pattern is to build once, tag the artifact, scan it, deploy it to
+        staging, then promote the same version to production.
+      </p>
+
+      <p>
+        If the startup uses containers, the pipeline can produce a Docker image tagged with the commit SHA. That image
+        can be pushed to a registry and referenced by staging and production deployments. If the startup is not ready for
+        Kubernetes, the same principle still applies to a packaged application, static site build, serverless artifact,
+        or VM deployment bundle.
+      </p>
+
+      <h2>Spend money where risk is highest</h2>
+      <p>
+        Budget DevOps is not about choosing the cheapest option for everything. It is about spending where the risk is
+        real. A startup may not need a premium observability suite immediately, but it does need logs, uptime checks,
+        deployment history, basic metrics, and alerts for user-impacting failures. It may not need a complex security
+        platform, but it does need secret scanning, dependency checks, least-privilege deployment credentials, and a clear
+        way to patch vulnerable packages.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Area</th>
+            <th>Budget-friendly first step</th>
+            <th>Upgrade later when</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>CI/CD</td>
+            <td>Managed workflows in the source control platform</td>
+            <td>Build volume, compliance, or runner control becomes a real need</td>
+          </tr>
+          <tr>
+            <td>Testing</td>
+            <td>Fast unit tests and a small smoke test suite</td>
+            <td>Critical user journeys need broader automated coverage</td>
+          </tr>
+          <tr>
+            <td>Security</td>
+            <td>Secret scanning, dependency scanning, image scanning</td>
+            <td>The product handles sensitive data or regulated workloads</td>
+          </tr>
+          <tr>
+            <td>Observability</td>
+            <td>Cloud logs, dashboards, uptime checks, simple alerts</td>
+            <td>Incidents become harder to diagnose from basic signals</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Keep the pipeline fast</h2>
+      <p>
+        Developers will avoid a slow pipeline. The first rule is to split feedback by speed and purpose. Pull requests
+        should run fast checks: linting, unit tests, type checks, and lightweight security checks. Longer jobs, such as
+        full integration tests, end-to-end tests, or deeper scans, can run after merge, nightly, or before production
+        promotion.
+      </p>
+
+      <p>
+        A useful startup rule is that pull request feedback should arrive quickly enough that the developer is still in
+        the context of the change. If a check takes too long, ask whether it can be parallelised, scoped to changed
+        files, moved later in the pipeline, or made more reliable.
+      </p>
+
+      <h2>Protect production without bureaucracy</h2>
+      <p>
+        Small teams still need release discipline. Production deploys should use protected branches, required reviews,
+        environment approvals, and clear permissions. Deployment credentials should not live in code or on laptops. Use
+        the CI/CD platform's secret store, rotate secrets when people leave, and prefer short-lived cloud credentials
+        where possible.
+      </p>
+
+      <p>
+        Approval gates should be used for risk, not theatre. If the application is low-risk and has strong automated
+        tests, the team can release frequently with lightweight approval. If the deployment affects payments, customer
+        data, or core availability, approval should include evidence from tests, scans, staging validation, and monitoring.
+      </p>
+
+      <h2>Make rollback boring</h2>
+      <p>
+        A budget pipeline is incomplete if recovery depends on panic. Every production deployment should have a simple
+        rollback path. That might be redeploying the previous image tag, reverting a static build, disabling a feature
+        flag, or applying a tested database rollback strategy. The important part is that the team has practised it
+        before an incident.
+      </p>
+
+      <h2>What this proves</h2>
+      <p>
+        For a DevOps portfolio, this article demonstrates practical judgement: choosing managed tools before operating
+        unnecessary infrastructure, building once and promoting artifacts, controlling cost, protecting production, and
+        using automation to reduce risk. A strong startup pipeline is not the biggest pipeline. It is the simplest
+        pipeline that gives the team confidence to release, learn, and recover.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://dora.dev/capabilities/continuous-delivery/" target="_blank" rel="noopener">DORA: Continuous delivery</a></li>
+        <li><a href="https://martinfowler.com/articles/continuousIntegration.html" target="_blank" rel="noopener">Martin Fowler: Continuous Integration</a></li>
+        <li><a href="https://docs.github.com/en/billing/concepts/product-billing/github-actions" target="_blank" rel="noopener">GitHub Docs: GitHub Actions billing</a></li>
+        <li><a href="https://www.jenkins.io/doc/book/pipeline/" target="_blank" rel="noopener">Jenkins Documentation: Pipeline</a></li>
+      </ul>
+    </main>
+  </body>
+</html>
