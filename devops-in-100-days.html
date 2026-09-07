@@ -1,0 +1,199 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DevOps in 100 Days | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A 100-day DevOps learning roadmap by Ebenezer Tetteh covering Linux, Git, Bash, networking, cloud, Docker, CI/CD, Jenkins, Terraform, Ansible, Kubernetes, GitOps, DevSecOps, observability, SRE, and portfolio projects."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="index.html#devops-100-days">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="roadmap-hero">
+        <p class="eyebrow">DevOps learning roadmap</p>
+        <h1>DevOps in 100 Days: from basics to advanced</h1>
+        <p>
+          This journey is designed to turn daily practice into real DevOps confidence. Each day gives you a focus area, a
+          practical task, a useful note, and an idea you can turn into portfolio evidence.
+        </p>
+        <div class="hero-actions">
+          <a class="button primary" href="#daily-roadmap">Start day 1</a>
+          <a class="button secondary" href="index.html#articles">Back to articles</a>
+        </div>
+      </section>
+
+      <section class="roadmap-shell">
+        <p class="roadmap-note">
+          This roadmap covers the major DevOps toolchain. No roadmap can cover every tool ever created, but this one
+          covers the skills and tools employers most often expect: Linux, Git, Bash, Python, networking, AWS, Docker,
+          Jenkins, GitHub Actions, Terraform, Ansible, Kubernetes, Helm, Argo CD, Flux, security scanning, monitoring,
+          logging, databases, and SRE practices.
+        </p>
+
+        <div class="section-heading">
+          <div>
+            <p class="section-kicker">Phases</p>
+            <h2>The 100-day structure</h2>
+          </div>
+        </div>
+
+        <div class="phase-grid">
+          <article class="phase-card"><strong>Days 1-10</strong><span>Linux, terminal, networking basics</span></article>
+          <article class="phase-card"><strong>Days 11-20</strong><span>Git, GitHub, Bash, Python automation</span></article>
+          <article class="phase-card"><strong>Days 21-30</strong><span>Cloud foundations and AWS basics</span></article>
+          <article class="phase-card"><strong>Days 31-40</strong><span>Docker, containers, registries</span></article>
+          <article class="phase-card"><strong>Days 41-50</strong><span>CI/CD, Jenkins, GitHub Actions</span></article>
+          <article class="phase-card"><strong>Days 51-60</strong><span>Terraform, Ansible, configuration management</span></article>
+          <article class="phase-card"><strong>Days 61-75</strong><span>Kubernetes, Helm, ingress, storage</span></article>
+          <article class="phase-card"><strong>Days 76-85</strong><span>GitOps, DevSecOps, policy and secrets</span></article>
+          <article class="phase-card"><strong>Days 86-95</strong><span>Observability, SRE, incident response</span></article>
+          <article class="phase-card"><strong>Days 96-100</strong><span>Portfolio projects and interview readiness</span></article>
+        </div>
+
+        <div class="section-heading" id="daily-roadmap">
+          <div>
+            <p class="section-kicker">Daily practice</p>
+            <h2>100 daily tips, tasks, notes, and ideas</h2>
+          </div>
+        </div>
+
+        <div class="day-grid">
+          <article class="day-card"><span class="day-number">Day 1</span><h3>Understand DevOps</h3><p><strong>Task:</strong> Write what DevOps means in your own words. <strong>Note:</strong> DevOps is culture, automation, measurement, and sharing. <strong>Idea:</strong> Publish a short LinkedIn learning post.</p></article>
+          <article class="day-card"><span class="day-number">Day 2</span><h3>Set up your workstation</h3><p><strong>Task:</strong> Install VS Code, Git, a terminal, and a package manager. <strong>Note:</strong> Your local setup should be repeatable. <strong>Idea:</strong> Document your setup steps.</p></article>
+          <article class="day-card"><span class="day-number">Day 3</span><h3>Linux file system</h3><p><strong>Task:</strong> Practise ls, cd, pwd, mkdir, cp, mv, rm, cat, less. <strong>Note:</strong> Linux fluency is a DevOps foundation. <strong>Idea:</strong> Create a command cheat sheet.</p></article>
+          <article class="day-card"><span class="day-number">Day 4</span><h3>Linux permissions</h3><p><strong>Task:</strong> Practise chmod, chown, groups, sudo. <strong>Note:</strong> Permission errors are common in deployments. <strong>Idea:</strong> Explain 755 and 644 in a note.</p></article>
+          <article class="day-card"><span class="day-number">Day 5</span><h3>Processes and services</h3><p><strong>Task:</strong> Use ps, top, kill, systemctl, journalctl. <strong>Note:</strong> Services fail loudly in logs first. <strong>Idea:</strong> Troubleshoot a stopped service.</p></article>
+          <article class="day-card"><span class="day-number">Day 6</span><h3>Networking basics</h3><p><strong>Task:</strong> Learn IP, DNS, ports, TCP, HTTP, TLS. <strong>Note:</strong> Many production issues are networking issues. <strong>Idea:</strong> Diagram browser to server traffic.</p></article>
+          <article class="day-card"><span class="day-number">Day 7</span><h3>Network tools</h3><p><strong>Task:</strong> Practise ping, curl, nslookup, dig, netstat or ss. <strong>Note:</strong> curl is a daily DevOps tool. <strong>Idea:</strong> Test a public API endpoint.</p></article>
+          <article class="day-card"><span class="day-number">Day 8</span><h3>SSH</h3><p><strong>Task:</strong> Create SSH keys and connect to a Linux host. <strong>Note:</strong> Keys are safer than passwords. <strong>Idea:</strong> Write a guide on secure SSH basics.</p></article>
+          <article class="day-card"><span class="day-number">Day 9</span><h3>Logs</h3><p><strong>Task:</strong> Search logs with grep, tail, journalctl. <strong>Note:</strong> Logs tell the story of failure. <strong>Idea:</strong> Build a log investigation checklist.</p></article>
+          <article class="day-card"><span class="day-number">Day 10</span><h3>Linux mini project</h3><p><strong>Task:</strong> Deploy a simple web server on Linux. <strong>Note:</strong> Basics become real when a service runs. <strong>Idea:</strong> Add screenshots to GitHub.</p></article>
+
+          <article class="day-card"><span class="day-number">Day 11</span><h3>Git basics</h3><p><strong>Task:</strong> Practise init, add, commit, status, log. <strong>Note:</strong> Git is the memory of delivery. <strong>Idea:</strong> Create your first DevOps notes repository.</p></article>
+          <article class="day-card"><span class="day-number">Day 12</span><h3>Branching</h3><p><strong>Task:</strong> Create branches and merge them. <strong>Note:</strong> Branching supports safe collaboration. <strong>Idea:</strong> Draw a feature branch workflow.</p></article>
+          <article class="day-card"><span class="day-number">Day 13</span><h3>Pull requests</h3><p><strong>Task:</strong> Open a pull request on GitHub. <strong>Note:</strong> Reviews are quality gates. <strong>Idea:</strong> Add a PR checklist to a repository.</p></article>
+          <article class="day-card"><span class="day-number">Day 14</span><h3>GitHub essentials</h3><p><strong>Task:</strong> Learn README, issues, releases, tags. <strong>Note:</strong> Good repositories are easy to understand. <strong>Idea:</strong> Improve one README file.</p></article>
+          <article class="day-card"><span class="day-number">Day 15</span><h3>Bash scripting</h3><p><strong>Task:</strong> Write a backup or health-check script. <strong>Note:</strong> Shell scripts automate routine tasks. <strong>Idea:</strong> Publish a useful admin script.</p></article>
+          <article class="day-card"><span class="day-number">Day 16</span><h3>Bash variables and loops</h3><p><strong>Task:</strong> Use variables, conditions, and loops. <strong>Note:</strong> Scripts need predictable input handling. <strong>Idea:</strong> Build a script that checks disk usage.</p></article>
+          <article class="day-card"><span class="day-number">Day 17</span><h3>Python for DevOps</h3><p><strong>Task:</strong> Read a JSON file and print useful values. <strong>Note:</strong> Python is strong for APIs and automation. <strong>Idea:</strong> Parse a cloud inventory file.</p></article>
+          <article class="day-card"><span class="day-number">Day 18</span><h3>APIs</h3><p><strong>Task:</strong> Call an API with curl and Python requests. <strong>Note:</strong> DevOps tools are often API-driven. <strong>Idea:</strong> Build a small status checker.</p></article>
+          <article class="day-card"><span class="day-number">Day 19</span><h3>YAML and JSON</h3><p><strong>Task:</strong> Read and edit YAML and JSON configs. <strong>Note:</strong> Pipelines and Kubernetes depend on structured files. <strong>Idea:</strong> Create a YAML examples folder.</p></article>
+          <article class="day-card"><span class="day-number">Day 20</span><h3>Automation mini project</h3><p><strong>Task:</strong> Build a script that checks service health and writes a report. <strong>Note:</strong> Automation should remove toil. <strong>Idea:</strong> Add usage instructions.</p></article>
+
+          <article class="day-card"><span class="day-number">Day 21</span><h3>Cloud basics</h3><p><strong>Task:</strong> Learn regions, availability zones, IAM, VPC. <strong>Note:</strong> Cloud design starts with foundations. <strong>Idea:</strong> Draw a basic AWS architecture.</p></article>
+          <article class="day-card"><span class="day-number">Day 22</span><h3>AWS IAM</h3><p><strong>Task:</strong> Study users, groups, roles, policies. <strong>Note:</strong> Least privilege matters. <strong>Idea:</strong> Create an IAM policy explanation post.</p></article>
+          <article class="day-card"><span class="day-number">Day 23</span><h3>AWS EC2</h3><p><strong>Task:</strong> Launch an EC2 instance and connect by SSH. <strong>Note:</strong> EC2 teaches compute basics. <strong>Idea:</strong> Deploy Nginx manually first.</p></article>
+          <article class="day-card"><span class="day-number">Day 24</span><h3>AWS S3</h3><p><strong>Task:</strong> Create a bucket and upload files. <strong>Note:</strong> Object storage supports artifacts, logs, and backups. <strong>Idea:</strong> Host a static page.</p></article>
+          <article class="day-card"><span class="day-number">Day 25</span><h3>VPC networking</h3><p><strong>Task:</strong> Learn subnets, route tables, internet gateways, NAT. <strong>Note:</strong> VPC design affects security and reachability. <strong>Idea:</strong> Build a VPC diagram.</p></article>
+          <article class="day-card"><span class="day-number">Day 26</span><h3>Load balancing</h3><p><strong>Task:</strong> Understand ALB, listeners, target groups, health checks. <strong>Note:</strong> Healthy targets receive traffic. <strong>Idea:</strong> Explain target group health checks.</p></article>
+          <article class="day-card"><span class="day-number">Day 27</span><h3>Elastic Beanstalk</h3><p><strong>Task:</strong> Study how Beanstalk deploys an app. <strong>Note:</strong> Managed platforms still need DevOps understanding. <strong>Idea:</strong> Document a WAR deployment flow.</p></article>
+          <article class="day-card"><span class="day-number">Day 28</span><h3>CloudWatch</h3><p><strong>Task:</strong> Explore metrics, logs, alarms, dashboards. <strong>Note:</strong> Monitoring starts before incidents. <strong>Idea:</strong> Create a basic alarm plan.</p></article>
+          <article class="day-card"><span class="day-number">Day 29</span><h3>Cloud cost control</h3><p><strong>Task:</strong> Learn budgets, tags, rightsizing, cleanup. <strong>Note:</strong> Cost is an engineering signal. <strong>Idea:</strong> Write a cleanup checklist.</p></article>
+          <article class="day-card"><span class="day-number">Day 30</span><h3>Cloud mini project</h3><p><strong>Task:</strong> Deploy a small app to AWS with monitoring. <strong>Note:</strong> Tie compute, networking, logs, and cost together. <strong>Idea:</strong> Publish architecture notes.</p></article>
+
+          <article class="day-card"><span class="day-number">Day 31</span><h3>Docker basics</h3><p><strong>Task:</strong> Run containers with docker run, ps, logs, exec. <strong>Note:</strong> Containers package runtime dependencies. <strong>Idea:</strong> Containerise a simple app.</p></article>
+          <article class="day-card"><span class="day-number">Day 32</span><h3>Dockerfile</h3><p><strong>Task:</strong> Write a Dockerfile. <strong>Note:</strong> Small images build faster and reduce risk. <strong>Idea:</strong> Compare image sizes.</p></article>
+          <article class="day-card"><span class="day-number">Day 33</span><h3>Docker images</h3><p><strong>Task:</strong> Build, tag, inspect, and push an image. <strong>Note:</strong> Tags connect code to deployments. <strong>Idea:</strong> Use commit SHA as an image tag.</p></article>
+          <article class="day-card"><span class="day-number">Day 34</span><h3>Docker volumes</h3><p><strong>Task:</strong> Mount data into a container. <strong>Note:</strong> Containers are disposable; data is not. <strong>Idea:</strong> Run a database with a volume.</p></article>
+          <article class="day-card"><span class="day-number">Day 35</span><h3>Docker networks</h3><p><strong>Task:</strong> Connect two containers on a network. <strong>Note:</strong> Services need predictable communication. <strong>Idea:</strong> Link app and database containers.</p></article>
+          <article class="day-card"><span class="day-number">Day 36</span><h3>Docker Compose</h3><p><strong>Task:</strong> Build a compose file for app and database. <strong>Note:</strong> Compose is useful for local stacks. <strong>Idea:</strong> Add a README with start commands.</p></article>
+          <article class="day-card"><span class="day-number">Day 37</span><h3>Container registries</h3><p><strong>Task:</strong> Push to Docker Hub, GHCR, or ECR. <strong>Note:</strong> Registries are artifact stores. <strong>Idea:</strong> Document image naming rules.</p></article>
+          <article class="day-card"><span class="day-number">Day 38</span><h3>Image scanning</h3><p><strong>Task:</strong> Scan an image with Trivy. <strong>Note:</strong> Vulnerability scans belong in pipelines. <strong>Idea:</strong> Fix one vulnerable base image.</p></article>
+          <article class="day-card"><span class="day-number">Day 39</span><h3>Container logs</h3><p><strong>Task:</strong> Read logs and pass environment variables. <strong>Note:</strong> Apps should log to stdout and stderr. <strong>Idea:</strong> Add structured logs to a demo.</p></article>
+          <article class="day-card"><span class="day-number">Day 40</span><h3>Container mini project</h3><p><strong>Task:</strong> Build, scan, and push an app image. <strong>Note:</strong> This becomes the base for CI/CD. <strong>Idea:</strong> Add a diagram to GitHub.</p></article>
+
+          <article class="day-card"><span class="day-number">Day 41</span><h3>CI/CD concepts</h3><p><strong>Task:</strong> Learn CI, CD, artifacts, gates, environments. <strong>Note:</strong> Pipelines create repeatable delivery. <strong>Idea:</strong> Sketch a pipeline flow.</p></article>
+          <article class="day-card"><span class="day-number">Day 42</span><h3>GitHub Actions</h3><p><strong>Task:</strong> Create a workflow that runs tests. <strong>Note:</strong> CI should start on pull requests. <strong>Idea:</strong> Add a status badge.</p></article>
+          <article class="day-card"><span class="day-number">Day 43</span><h3>Actions build workflow</h3><p><strong>Task:</strong> Build and upload an artifact. <strong>Note:</strong> Artifacts prove what the pipeline created. <strong>Idea:</strong> Save test reports.</p></article>
+          <article class="day-card"><span class="day-number">Day 44</span><h3>Jenkins basics</h3><p><strong>Task:</strong> Understand jobs, agents, plugins, credentials. <strong>Note:</strong> Jenkins is flexible but needs care. <strong>Idea:</strong> Compare Jenkins and Actions.</p></article>
+          <article class="day-card"><span class="day-number">Day 45</span><h3>Jenkinsfile</h3><p><strong>Task:</strong> Write a declarative Jenkinsfile. <strong>Note:</strong> Pipeline as code is reviewable. <strong>Idea:</strong> Add build, test, and archive stages.</p></article>
+          <article class="day-card"><span class="day-number">Day 46</span><h3>Pipeline credentials</h3><p><strong>Task:</strong> Use secrets safely in CI. <strong>Note:</strong> Secrets should not be printed in logs. <strong>Idea:</strong> Write secret-handling rules.</p></article>
+          <article class="day-card"><span class="day-number">Day 47</span><h3>Quality gates</h3><p><strong>Task:</strong> Add linting and code quality checks. <strong>Note:</strong> Fast feedback improves developer flow. <strong>Idea:</strong> Add SonarQube or lint checks.</p></article>
+          <article class="day-card"><span class="day-number">Day 48</span><h3>Deployment stages</h3><p><strong>Task:</strong> Add staging and production stages. <strong>Note:</strong> Environments separate risk. <strong>Idea:</strong> Add manual approval before production.</p></article>
+          <article class="day-card"><span class="day-number">Day 49</span><h3>Pipeline notifications</h3><p><strong>Task:</strong> Notify success or failure. <strong>Note:</strong> Notifications should be useful, not noisy. <strong>Idea:</strong> Send a Slack or email summary.</p></article>
+          <article class="day-card"><span class="day-number">Day 50</span><h3>CI/CD mini project</h3><p><strong>Task:</strong> Build a full test, image, scan, deploy pipeline. <strong>Note:</strong> This is core portfolio material. <strong>Idea:</strong> Record a short demo.</p></article>
+
+          <article class="day-card"><span class="day-number">Day 51</span><h3>Terraform basics</h3><p><strong>Task:</strong> Learn providers, resources, variables, outputs. <strong>Note:</strong> IaC makes infrastructure repeatable. <strong>Idea:</strong> Create an EC2 module.</p></article>
+          <article class="day-card"><span class="day-number">Day 52</span><h3>Terraform state</h3><p><strong>Task:</strong> Learn local and remote state. <strong>Note:</strong> State must be protected. <strong>Idea:</strong> Document S3 and DynamoDB locking.</p></article>
+          <article class="day-card"><span class="day-number">Day 53</span><h3>Terraform modules</h3><p><strong>Task:</strong> Build a reusable VPC or S3 module. <strong>Note:</strong> Modules standardise good patterns. <strong>Idea:</strong> Add examples and variables.</p></article>
+          <article class="day-card"><span class="day-number">Day 54</span><h3>Terraform plan in CI</h3><p><strong>Task:</strong> Run terraform fmt, validate, plan in CI. <strong>Note:</strong> Review plans before apply. <strong>Idea:</strong> Add plan output to pull requests.</p></article>
+          <article class="day-card"><span class="day-number">Day 55</span><h3>OpenTofu and IaC choices</h3><p><strong>Task:</strong> Compare Terraform, OpenTofu, CloudFormation, Bicep, Pulumi. <strong>Note:</strong> Tool choice follows team context. <strong>Idea:</strong> Write a comparison table.</p></article>
+          <article class="day-card"><span class="day-number">Day 56</span><h3>Ansible basics</h3><p><strong>Task:</strong> Write an inventory and playbook. <strong>Note:</strong> Ansible is useful for configuration and orchestration. <strong>Idea:</strong> Install Nginx with Ansible.</p></article>
+          <article class="day-card"><span class="day-number">Day 57</span><h3>Ansible roles</h3><p><strong>Task:</strong> Split a playbook into a role. <strong>Note:</strong> Roles make automation reusable. <strong>Idea:</strong> Create a webserver role.</p></article>
+          <article class="day-card"><span class="day-number">Day 58</span><h3>Packer</h3><p><strong>Task:</strong> Learn immutable image building. <strong>Note:</strong> Golden images reduce configuration drift. <strong>Idea:</strong> Build an AMI concept plan.</p></article>
+          <article class="day-card"><span class="day-number">Day 59</span><h3>Vault and secrets</h3><p><strong>Task:</strong> Learn secret storage and rotation concepts. <strong>Note:</strong> Secrets need lifecycle management. <strong>Idea:</strong> Design a secrets flow.</p></article>
+          <article class="day-card"><span class="day-number">Day 60</span><h3>IaC mini project</h3><p><strong>Task:</strong> Provision infrastructure and configure it automatically. <strong>Note:</strong> Terraform plus Ansible is a strong combo. <strong>Idea:</strong> Publish architecture and code.</p></article>
+
+          <article class="day-card"><span class="day-number">Day 61</span><h3>Kubernetes basics</h3><p><strong>Task:</strong> Learn clusters, nodes, pods, control plane. <strong>Note:</strong> Kubernetes schedules containers. <strong>Idea:</strong> Create a glossary.</p></article>
+          <article class="day-card"><span class="day-number">Day 62</span><h3>kubectl</h3><p><strong>Task:</strong> Practise get, describe, logs, exec, apply. <strong>Note:</strong> kubectl is your daily cluster interface. <strong>Idea:</strong> Make a kubectl cheat sheet.</p></article>
+          <article class="day-card"><span class="day-number">Day 63</span><h3>Deployments</h3><p><strong>Task:</strong> Deploy an app with replicas. <strong>Note:</strong> Deployments manage rollout and rollback. <strong>Idea:</strong> Demonstrate a rollback.</p></article>
+          <article class="day-card"><span class="day-number">Day 64</span><h3>Services</h3><p><strong>Task:</strong> Expose pods with ClusterIP and NodePort. <strong>Note:</strong> Services give stable networking. <strong>Idea:</strong> Explain service discovery.</p></article>
+          <article class="day-card"><span class="day-number">Day 65</span><h3>Ingress</h3><p><strong>Task:</strong> Route HTTP traffic to an app. <strong>Note:</strong> Ingress handles external access. <strong>Idea:</strong> Add TLS notes.</p></article>
+          <article class="day-card"><span class="day-number">Day 66</span><h3>ConfigMaps and Secrets</h3><p><strong>Task:</strong> Inject config into pods. <strong>Note:</strong> Separate configuration from images. <strong>Idea:</strong> Compare env vars and mounted files.</p></article>
+          <article class="day-card"><span class="day-number">Day 67</span><h3>Probes</h3><p><strong>Task:</strong> Add readiness and liveness probes. <strong>Note:</strong> Health checks protect traffic. <strong>Idea:</strong> Break a probe and observe behaviour.</p></article>
+          <article class="day-card"><span class="day-number">Day 68</span><h3>Requests and limits</h3><p><strong>Task:</strong> Set CPU and memory requests and limits. <strong>Note:</strong> Scheduling needs resource signals. <strong>Idea:</strong> Explain OOMKilled.</p></article>
+          <article class="day-card"><span class="day-number">Day 69</span><h3>Namespaces and RBAC</h3><p><strong>Task:</strong> Create namespaces, roles, role bindings. <strong>Note:</strong> Access control matters in clusters. <strong>Idea:</strong> Build a least-privilege example.</p></article>
+          <article class="day-card"><span class="day-number">Day 70</span><h3>Storage</h3><p><strong>Task:</strong> Learn PV, PVC, StorageClass. <strong>Note:</strong> Stateful workloads need careful design. <strong>Idea:</strong> Deploy a database for learning.</p></article>
+          <article class="day-card"><span class="day-number">Day 71</span><h3>Helm</h3><p><strong>Task:</strong> Install and customise a Helm chart. <strong>Note:</strong> Helm packages Kubernetes apps. <strong>Idea:</strong> Create your own simple chart.</p></article>
+          <article class="day-card"><span class="day-number">Day 72</span><h3>Kustomize</h3><p><strong>Task:</strong> Create dev and prod overlays. <strong>Note:</strong> Overlays manage environment differences. <strong>Idea:</strong> Compare Helm and Kustomize.</p></article>
+          <article class="day-card"><span class="day-number">Day 73</span><h3>Autoscaling</h3><p><strong>Task:</strong> Learn HPA and cluster autoscaling. <strong>Note:</strong> Scaling follows metrics. <strong>Idea:</strong> Load test a demo app.</p></article>
+          <article class="day-card"><span class="day-number">Day 74</span><h3>Kubernetes troubleshooting</h3><p><strong>Task:</strong> Debug ImagePullBackOff and CrashLoopBackOff. <strong>Note:</strong> Events are your friend. <strong>Idea:</strong> Build a troubleshooting guide.</p></article>
+          <article class="day-card"><span class="day-number">Day 75</span><h3>Kubernetes mini project</h3><p><strong>Task:</strong> Deploy an app with ingress, probes, config, and Helm. <strong>Note:</strong> Production readiness is layered. <strong>Idea:</strong> Add diagrams and rollout notes.</p></article>
+
+          <article class="day-card"><span class="day-number">Day 76</span><h3>GitOps basics</h3><p><strong>Task:</strong> Learn desired state and pull-based deployment. <strong>Note:</strong> Git becomes the source of truth. <strong>Idea:</strong> Draw a GitOps flow.</p></article>
+          <article class="day-card"><span class="day-number">Day 77</span><h3>Argo CD</h3><p><strong>Task:</strong> Study applications, sync, health, drift. <strong>Note:</strong> Argo CD makes deployment state visible. <strong>Idea:</strong> Sync a sample app.</p></article>
+          <article class="day-card"><span class="day-number">Day 78</span><h3>Flux</h3><p><strong>Task:</strong> Compare Flux with Argo CD. <strong>Note:</strong> Both support GitOps patterns. <strong>Idea:</strong> Write a comparison note.</p></article>
+          <article class="day-card"><span class="day-number">Day 79</span><h3>Secret management in GitOps</h3><p><strong>Task:</strong> Learn Sealed Secrets, External Secrets, SOPS. <strong>Note:</strong> Plain secrets should not live in Git. <strong>Idea:</strong> Design a secure secret workflow.</p></article>
+          <article class="day-card"><span class="day-number">Day 80</span><h3>DevSecOps basics</h3><p><strong>Task:</strong> Map security checks into CI/CD. <strong>Note:</strong> Security should be early and actionable. <strong>Idea:</strong> Add a security stage to a pipeline.</p></article>
+          <article class="day-card"><span class="day-number">Day 81</span><h3>SAST and dependency scanning</h3><p><strong>Task:</strong> Try CodeQL, Snyk, Dependabot, or OWASP Dependency-Check. <strong>Note:</strong> Prioritise exploitable risk. <strong>Idea:</strong> Fix one dependency alert.</p></article>
+          <article class="day-card"><span class="day-number">Day 82</span><h3>Container and IaC scanning</h3><p><strong>Task:</strong> Try Trivy, Checkov, tfsec, or Terrascan. <strong>Note:</strong> Scan code before deployment. <strong>Idea:</strong> Publish scan results in CI.</p></article>
+          <article class="day-card"><span class="day-number">Day 83</span><h3>Policy as code</h3><p><strong>Task:</strong> Learn OPA, Gatekeeper, or Kyverno. <strong>Note:</strong> Policies create repeatable guardrails. <strong>Idea:</strong> Block privileged pods.</p></article>
+          <article class="day-card"><span class="day-number">Day 84</span><h3>Supply chain security</h3><p><strong>Task:</strong> Learn SBOMs, signing, provenance, SLSA. <strong>Note:</strong> Trust the build path. <strong>Idea:</strong> Generate an SBOM for an image.</p></article>
+          <article class="day-card"><span class="day-number">Day 85</span><h3>GitOps security mini project</h3><p><strong>Task:</strong> Deploy an app through GitOps with scans and policy checks. <strong>Note:</strong> Secure delivery should still be usable. <strong>Idea:</strong> Create a portfolio case study.</p></article>
+
+          <article class="day-card"><span class="day-number">Day 86</span><h3>Monitoring basics</h3><p><strong>Task:</strong> Learn metrics, logs, traces, dashboards, alerts. <strong>Note:</strong> Observability explains behaviour. <strong>Idea:</strong> Define key signals for an app.</p></article>
+          <article class="day-card"><span class="day-number">Day 87</span><h3>Prometheus</h3><p><strong>Task:</strong> Learn scraping, metrics, PromQL, alerts. <strong>Note:</strong> Metrics should answer operational questions. <strong>Idea:</strong> Create a simple PromQL note.</p></article>
+          <article class="day-card"><span class="day-number">Day 88</span><h3>Grafana</h3><p><strong>Task:</strong> Build a dashboard. <strong>Note:</strong> Dashboards should show service health clearly. <strong>Idea:</strong> Create a golden signals dashboard.</p></article>
+          <article class="day-card"><span class="day-number">Day 89</span><h3>Logging stack</h3><p><strong>Task:</strong> Learn Loki, ELK, or OpenSearch. <strong>Note:</strong> Logs help explain incidents. <strong>Idea:</strong> Centralise app logs.</p></article>
+          <article class="day-card"><span class="day-number">Day 90</span><h3>Tracing</h3><p><strong>Task:</strong> Learn OpenTelemetry and distributed traces. <strong>Note:</strong> Traces show request journeys. <strong>Idea:</strong> Trace a slow request path.</p></article>
+          <article class="day-card"><span class="day-number">Day 91</span><h3>SRE basics</h3><p><strong>Task:</strong> Learn SLIs, SLOs, SLAs, error budgets. <strong>Note:</strong> Reliability needs targets. <strong>Idea:</strong> Define one SLO for a demo API.</p></article>
+          <article class="day-card"><span class="day-number">Day 92</span><h3>Incident response</h3><p><strong>Task:</strong> Write a runbook. <strong>Note:</strong> Incidents need calm, repeatable steps. <strong>Idea:</strong> Create an alert-to-runbook example.</p></article>
+          <article class="day-card"><span class="day-number">Day 93</span><h3>Post-incident reviews</h3><p><strong>Task:</strong> Write a blameless review template. <strong>Note:</strong> Learning matters more than blame. <strong>Idea:</strong> Simulate an incident and review it.</p></article>
+          <article class="day-card"><span class="day-number">Day 94</span><h3>Database operations</h3><p><strong>Task:</strong> Learn migrations, backups, restore testing, replication. <strong>Note:</strong> Data changes require extra care. <strong>Idea:</strong> Add Flyway or Liquibase to a demo.</p></article>
+          <article class="day-card"><span class="day-number">Day 95</span><h3>Observability mini project</h3><p><strong>Task:</strong> Monitor a deployed app with metrics, logs, alerts, and a runbook. <strong>Note:</strong> Visibility completes delivery. <strong>Idea:</strong> Publish a dashboard screenshot.</p></article>
+
+          <article class="day-card"><span class="day-number">Day 96</span><h3>Portfolio project 1</h3><p><strong>Task:</strong> Build a CI/CD pipeline for a containerised app. <strong>Note:</strong> Show the path from commit to deployment. <strong>Idea:</strong> Include a pipeline diagram.</p></article>
+          <article class="day-card"><span class="day-number">Day 97</span><h3>Portfolio project 2</h3><p><strong>Task:</strong> Provision cloud infrastructure with Terraform. <strong>Note:</strong> Make your README clear and professional. <strong>Idea:</strong> Include cost and security notes.</p></article>
+          <article class="day-card"><span class="day-number">Day 98</span><h3>Portfolio project 3</h3><p><strong>Task:</strong> Deploy a Kubernetes app with Helm and GitOps. <strong>Note:</strong> Show rollout, rollback, and health checks. <strong>Idea:</strong> Add Argo CD screenshots.</p></article>
+          <article class="day-card"><span class="day-number">Day 99</span><h3>Interview preparation</h3><p><strong>Task:</strong> Practise explaining your projects. <strong>Note:</strong> Employers want reasoning, not memorised commands. <strong>Idea:</strong> Write STAR stories for incidents and automation.</p></article>
+          <article class="day-card"><span class="day-number">Day 100</span><h3>Publish and improve</h3><p><strong>Task:</strong> Publish your projects, blog notes, and learning summary. <strong>Note:</strong> DevOps learning continues through practice. <strong>Idea:</strong> Share your 100-day journey on LinkedIn.</p></article>
+        </div>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="index.html#top">Back to home</a>
+    </footer>
+  </body>
+</html>
