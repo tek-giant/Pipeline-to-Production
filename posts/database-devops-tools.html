@@ -1,0 +1,88 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Database DevOps Tools | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A practical DevOps article by Ebenezer Tetteh on database migrations, schema versioning, backup verification, monitoring, and database release safety."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="post.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">P2P</span>
+        <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main class="post-shell">
+      <p class="section-kicker">DevOps</p>
+      <h1>Making the most of your database with DevOps tools</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+      <img class="post-hero-image" src="../assets/database-devops-tools.png" alt="Database DevOps dashboard with schema migrations, backups, and monitoring" />
+
+      <p class="post-lead">
+        Databases are often the hardest part of delivery because data has memory. Application code can be rolled back
+        quickly, but a careless schema change or data migration can affect customers, reporting, and recovery. Database
+        DevOps brings discipline to this risk.
+      </p>
+
+      <h2>Version database changes</h2>
+      <p>
+        Database schema changes should live in version control alongside application code. Tools such as Flyway and
+        Liquibase help teams apply migrations in order, track what has already run, and make database change history
+        visible. This reduces manual SQL changes and makes releases easier to audit.
+      </p>
+
+      <h2>Test migrations before production</h2>
+      <p>
+        A migration should run in development and staging before production. The pipeline should check that migrations
+        apply cleanly, application tests still pass, and the new schema works with the deployed version. For sensitive
+        systems, teams should also test rollback or forward-fix plans.
+      </p>
+
+      <h2>Use safe deployment patterns</h2>
+      <p>
+        Database changes should support zero-downtime delivery where possible. A common pattern is expand and contract:
+        first add new columns or tables in a backward-compatible way, deploy application code that uses them, then remove
+        old structures later after they are no longer needed.
+      </p>
+
+      <h2>Automate backups and prove restore works</h2>
+      <p>
+        Backups are only useful if restore works. Database DevOps should include backup schedules, retention rules,
+        encryption, access control, and restore testing. A team should know its recovery time objective and recovery point
+        objective before a real incident.
+      </p>
+
+      <h2>Monitor database health</h2>
+      <p>
+        Database observability should cover latency, connection usage, replication lag, slow queries, disk pressure,
+        locks, deadlocks, backup status, and error rates. The aim is to spot customer-impacting issues before they become
+        outages.
+      </p>
+
+      <h2>What this proves</h2>
+      <p>
+        Database DevOps shows that a DevOps engineer understands stateful systems. Strong database delivery is careful,
+        traceable, tested, monitored, and recoverable.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://documentation.red-gate.com/fd/database-devops-184127594.html" target="_blank" rel="noopener">Redgate: Database DevOps</a></li>
+        <li><a href="https://documentation.red-gate.com/fd/flyway-documentation-138346877.html" target="_blank" rel="noopener">Flyway Documentation</a></li>
+        <li><a href="https://docs.liquibase.com/" target="_blank" rel="noopener">Liquibase Documentation</a></li>
+        <li><a href="https://docs.aws.amazon.com/prescriptive-guidance/latest/backup-recovery/welcome.html" target="_blank" rel="noopener">AWS Prescriptive Guidance: Backup and recovery</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

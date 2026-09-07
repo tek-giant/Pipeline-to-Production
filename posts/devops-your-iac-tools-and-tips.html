@@ -1,0 +1,105 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>DevOps Your IaC: Tools and Tips | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A practical DevOps article by Ebenezer Tetteh on infrastructure as code tools, workflows, testing, security, and maintainable cloud automation."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="post.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">P2P</span>
+        <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main class="post-shell">
+      <p class="section-kicker">DevOps</p>
+      <h1>DevOps your IaC: tools and tips for a cheery journey</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+      <img class="post-hero-image" src="../assets/devops-iac-tools.png" alt="Infrastructure as code pipeline from code to cloud resources" />
+
+      <p class="post-lead">
+        Infrastructure as code turns cloud infrastructure into something teams can review, test, repeat, and improve.
+        Instead of clicking through consoles and hoping environments match, teams define infrastructure in files and
+        manage those files with the same discipline as application code.
+      </p>
+
+      <p>
+        The biggest benefit of IaC is not just speed. It is confidence. When infrastructure is described in code, changes
+        can go through pull requests, automated checks, security reviews, policy validation, and controlled deployment.
+        This makes cloud work easier to understand and less dependent on tribal knowledge.
+      </p>
+
+      <h2>Choose the right IaC tool</h2>
+      <p>
+        Terraform is widely used because it works across many cloud providers and has a large module ecosystem. OpenTofu
+        follows a similar workflow. CloudFormation is useful for teams deeply committed to AWS. Bicep is strong for Azure.
+        Pulumi lets teams define infrastructure using general-purpose programming languages. The right choice depends on
+        the environment, team skills, governance needs, and existing platform direction.
+      </p>
+
+      <h2>Keep modules small and boring</h2>
+      <p>
+        A good IaC module should solve a repeated problem without hiding too much. For example, a network module, storage
+        module, or Kubernetes cluster module can standardise naming, tags, encryption, backups, logging, and access
+        controls. Avoid modules that try to support every possible scenario. Simple modules are easier to test, review,
+        and debug.
+      </p>
+
+      <h2>Use pull requests as the control point</h2>
+      <p>
+        Infrastructure changes should not be applied from an engineer's laptop without review. A healthy workflow runs
+        format checks, validation, security scanning, and a plan in CI. Reviewers should be able to see what resources
+        will be created, changed, or destroyed before anything touches production.
+      </p>
+
+      <pre><code>pull request
+  -> format
+  -> validate
+  -> security scan
+  -> policy check
+  -> plan
+  -> approval
+  -> apply</code></pre>
+
+      <h2>Protect state like production data</h2>
+      <p>
+        IaC state can contain sensitive information and controls how tools understand existing infrastructure. Store it
+        remotely, encrypt it, lock it during changes, and restrict who can access it. A careless state file can become a
+        security and reliability problem very quickly.
+      </p>
+
+      <h2>Make policy visible early</h2>
+      <p>
+        Security and compliance checks should happen before deployment, not after. Tools such as Checkov, tfsec,
+        Terrascan, Open Policy Agent, and cloud-native policy engines can detect risky patterns such as public storage,
+        missing encryption, overly broad permissions, and untagged resources.
+      </p>
+
+      <h2>What this proves</h2>
+      <p>
+        Strong IaC practice shows that a DevOps engineer can combine automation with governance. The aim is not to create
+        clever scripts. The aim is to make infrastructure consistent, reviewable, secure, and recoverable.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://developer.hashicorp.com/terraform/language" target="_blank" rel="noopener">Terraform Language Documentation</a></li>
+        <li><a href="https://opentofu.org/docs/" target="_blank" rel="noopener">OpenTofu Documentation</a></li>
+        <li><a href="https://docs.aws.amazon.com/AWSCloudFormation/latest/UserGuide/Welcome.html" target="_blank" rel="noopener">AWS CloudFormation User Guide</a></li>
+        <li><a href="https://www.openpolicyagent.org/docs/latest/" target="_blank" rel="noopener">Open Policy Agent Documentation</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

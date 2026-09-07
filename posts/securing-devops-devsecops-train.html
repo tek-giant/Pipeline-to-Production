@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Securing DevOps: Jump on the DevSecOps Train | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A practical DevSecOps article by Ebenezer Tetteh on shifting security into CI/CD, cloud, containers, secrets, and release governance."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="post.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">P2P</span>
+        <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main class="post-shell">
+      <p class="section-kicker">DevSecOps</p>
+      <h1>Securing DevOps: jump on the DevSecOps train</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+      <img class="post-hero-image" src="../assets/securing-devops-train.png" alt="Secure DevOps pipeline with scanning, policy checks, and protected deployment" />
+
+      <p class="post-lead">
+        DevSecOps means security is built into the delivery process instead of being treated as a final inspection. The
+        goal is not to slow engineers down. The goal is to find important risks early, fix them faster, and protect
+        production without turning every release into a crisis.
+      </p>
+
+      <h2>Start with practical controls</h2>
+      <p>
+        The first layer is simple: protect branches, require peer review, scan for secrets, check dependencies, scan
+        container images, and keep deployment credentials out of source code. These controls catch common issues before
+        they reach production.
+      </p>
+
+      <h2>Make security checks risk-based</h2>
+      <p>
+        Not every scan belongs on every commit. Fast checks should run on pull requests. Deeper scans can run before
+        release, nightly, or when sensitive areas change. A risk-based pipeline keeps feedback useful and prevents
+        developers from seeing security as background noise.
+      </p>
+
+      <h2>Secure the software supply chain</h2>
+      <p>
+        Modern delivery depends on packages, images, build systems, deployment tokens, and third-party services. A
+        DevSecOps pipeline should produce traceable artifacts, use trusted build environments, pin dependencies where
+        sensible, generate software bills of materials where required, and restrict who can deploy.
+      </p>
+
+      <h2>Use policy as code</h2>
+      <p>
+        Policy as code lets teams express rules in a repeatable way. For example, infrastructure changes can be blocked
+        if storage is public, encryption is missing, or IAM permissions are too broad. The benefit is consistency:
+        everyone sees the same rule before the change is applied.
+      </p>
+
+      <h2>What this proves</h2>
+      <p>
+        DevSecOps proves that a DevOps engineer understands delivery risk. Good security is not a separate lane. It is
+        part of how code, infrastructure, and operational changes move safely into production.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://owasp.org/www-project-devsecops-guideline/" target="_blank" rel="noopener">OWASP DevSecOps Guideline</a></li>
+        <li><a href="https://slsa.dev/" target="_blank" rel="noopener">SLSA: Supply-chain Levels for Software Artifacts</a></li>
+        <li><a href="https://docs.github.com/en/code-security" target="_blank" rel="noopener">GitHub Code Security Documentation</a></li>
+        <li><a href="https://www.openpolicyagent.org/docs/latest/" target="_blank" rel="noopener">Open Policy Agent Documentation</a></li>
+      </ul>
+    </main>
+  </body>
+</html>

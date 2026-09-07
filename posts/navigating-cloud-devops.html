@@ -1,0 +1,87 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Navigating Cloud DevOps | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A practical DevOps article by Ebenezer Tetteh on cloud DevOps, automation, cost control, reliability, security, and cloud-native delivery."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="post.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">P2P</span>
+        <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main class="post-shell">
+      <p class="section-kicker">AWS</p>
+      <h1>Navigating cloud DevOps: let's get cloudy</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+      <img class="post-hero-image" src="../assets/cloud-devops.png" alt="Cloud DevOps platform with pipelines, containers, and monitoring dashboards" />
+
+      <p class="post-lead">
+        Cloud DevOps is about using cloud services with discipline: automated delivery, secure foundations, sensible cost
+        controls, observability, and repeatable operations. The cloud gives teams speed, but DevOps gives that speed
+        structure.
+      </p>
+
+      <p>
+        A good cloud DevOps approach starts with standard environments. Development, staging, and production should be
+        created through code, not hand-built differently each time. Networking, IAM, logging, secrets, container hosting,
+        databases, and monitoring should follow patterns that developers can reuse safely.
+      </p>
+
+      <h2>Design around cloud foundations</h2>
+      <p>
+        Before focusing on deployment tools, teams should establish cloud basics: account structure, least-privilege
+        access, network segmentation, central logging, encryption, backup rules, tagging, and budget alerts. These
+        controls prevent the cloud environment from becoming an expensive collection of mystery resources.
+      </p>
+
+      <h2>Automate delivery paths</h2>
+      <p>
+        Cloud platforms support many deployment models: virtual machines, containers, Kubernetes, serverless functions,
+        managed app platforms, and static hosting. The best choice depends on the workload. Whatever the target, the
+        delivery path should be automated and traceable from source control to production.
+      </p>
+
+      <h2>Manage cost as an engineering signal</h2>
+      <p>
+        Cost is not only a finance concern. Poor scaling rules, oversized instances, forgotten test environments, and
+        untagged resources are engineering problems. DevOps teams should use tagging, budgets, scheduled shutdowns for
+        non-production systems, rightsizing reviews, and dashboards that connect cloud spend to services and teams.
+      </p>
+
+      <h2>Build observability from the start</h2>
+      <p>
+        Logs, metrics, traces, and alerts should be included in the deployment design. A service is not production-ready
+        just because it runs. Teams need to understand request errors, latency, resource saturation, dependency failures,
+        deployment versions, and customer-impacting behaviour.
+      </p>
+
+      <h2>What this proves</h2>
+      <p>
+        Cloud DevOps proves that an engineer can operate beyond tool setup. It shows the ability to combine automation,
+        security, reliability, and cost awareness in a way that makes cloud systems sustainable.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://docs.aws.amazon.com/wellarchitected/latest/framework/welcome.html" target="_blank" rel="noopener">AWS Well-Architected Framework</a></li>
+        <li><a href="https://docs.aws.amazon.com/whitepapers/latest/introduction-devops-aws/introduction-devops-aws.html" target="_blank" rel="noopener">AWS: Introduction to DevOps on AWS</a></li>
+        <li><a href="https://kubernetes.io/docs/concepts/overview/" target="_blank" rel="noopener">Kubernetes Documentation: Overview</a></li>
+        <li><a href="https://opentelemetry.io/docs/" target="_blank" rel="noopener">OpenTelemetry Documentation</a></li>
+      </ul>
+    </main>
+  </body>
+</html>
