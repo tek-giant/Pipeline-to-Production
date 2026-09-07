@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 1: Understanding DevOps | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 1 of DevOps in 100 Days by Ebenezer Tetteh: a detailed beginner-friendly breakdown of what DevOps is, why it matters, and how to start thinking like a DevOps engineer."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero">
+        <div>
+          <p class="eyebrow">Day 1 of 100</p>
+          <h1>Understanding DevOps: the foundation before the tools</h1>
+          <p>
+            DevOps starts with a simple but powerful idea: software delivery works better when development, operations,
+            security, and business teams work together around shared ownership, automation, feedback, and reliability.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#day-task">Start the task</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel" aria-label="Day 1 learning summary">
+          <span>Today's focus</span>
+          <strong>DevOps mindset</strong>
+          <p>Culture, collaboration, automation, measurement, sharing, and continuous improvement.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Tip</span>
+            <h2>Do not start with tools first</h2>
+            <p>
+              Tools such as Docker, Jenkins, Kubernetes, Terraform, GitHub Actions, AWS, Ansible, and Prometheus are
+              important, but they are not the definition of DevOps. They support DevOps. The real foundation is how teams
+              organise work, share responsibility, automate repeatable tasks, and learn from production.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">Task</span>
+            <h2>Explain DevOps in one sentence</h2>
+            <p>
+              A strong simple definition is: DevOps is a culture and set of engineering practices that helps teams build,
+              test, release, monitor, and improve software faster, safer, and more reliably.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">The real meaning</p>
+          <h2>What DevOps actually solves</h2>
+          <p>
+            Before DevOps, many teams worked in separate lanes. Developers wrote code, testers tested it, operations
+            deployed it, and security reviewed it late in the process. This often created delays, confusion, repeated
+            handovers, and blame when production issues happened.
+          </p>
+          <p>
+            DevOps changes that pattern. It encourages teams to work together earlier, automate more of the delivery
+            process, make changes smaller, measure production health, and improve after every release or incident.
+          </p>
+
+          <div class="flow-strip" aria-label="DevOps delivery flow">
+            <span>Plan</span>
+            <span>Code</span>
+            <span>Build</span>
+            <span>Test</span>
+            <span>Release</span>
+            <span>Deploy</span>
+            <span>Monitor</span>
+            <span>Improve</span>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Core pillars</p>
+          <h2>The five ideas to remember</h2>
+          <div class="pillar-grid">
+            <article><strong>Culture</strong><p>Teams move from blame and handovers to shared ownership and learning.</p></article>
+            <article><strong>Automation</strong><p>Manual build, test, deployment, and infrastructure tasks become repeatable.</p></article>
+            <article><strong>Measurement</strong><p>Teams track delivery speed, reliability, errors, incidents, and recovery.</p></article>
+            <article><strong>Sharing</strong><p>Knowledge, documentation, dashboards, and runbooks become team assets.</p></article>
+            <article><strong>Improvement</strong><p>Each incident, release, and review becomes a chance to make the system better.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="day-task">
+          <p class="section-kicker">Day 1 practical task</p>
+          <h2>Create your DevOps foundation note</h2>
+          <p>
+            Today's task is to create a short note called <strong>day-1-devops-foundation.md</strong>. This note should
+            explain DevOps in your own words and capture the main ideas you want to remember.
+          </p>
+
+          <pre><code># Day 1 - DevOps Foundation
+
+## What is DevOps?
+DevOps is a culture and set of practices that helps teams deliver software faster, safer, and more reliably.
+
+## Why it matters
+- It improves collaboration
+- It reduces manual work
+- It makes deployments repeatable
+- It improves monitoring and feedback
+- It helps teams recover faster
+
+## Tools I will meet later
+Linux, Git, Bash, Docker, Jenkins, GitHub Actions, Terraform, Ansible, Kubernetes, Helm, Argo CD, Prometheus, Grafana, AWS</code></pre>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Beginner mistake</p>
+          <h2>Do not confuse DevOps with one job title</h2>
+          <p>
+            DevOps is not only a job title, and it is not only one person's responsibility. A DevOps engineer often helps
+            build pipelines, automate infrastructure, improve deployments, monitor systems, and support reliability, but
+            DevOps as a practice belongs to the whole delivery team.
+          </p>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Reflection</p>
+          <h2>Questions to answer before Day 2</h2>
+          <div class="question-list">
+            <p>What problem does DevOps solve for software teams?</p>
+            <p>Why is collaboration just as important as automation?</p>
+            <p>What manual process would you automate first in a real team?</p>
+            <p>How can monitoring and feedback improve future releases?</p>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio idea</p>
+          <h2>Turn Day 1 into public evidence</h2>
+          <p>
+            Create a GitHub repository for the 100-day journey. Add a clean README, create a folder for daily notes, and
+            commit your Day 1 foundation note. This gives your learning structure and starts building visible evidence of
+            consistency.
+          </p>
+          <div class="command-card">
+            <code>mkdir 100-days-of-devops</code>
+            <code>cd 100-days-of-devops</code>
+            <code>git init</code>
+            <code>mkdir notes projects diagrams</code>
+            <code>git add . && git commit -m "Add Day 1 DevOps foundation notes"</code>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
