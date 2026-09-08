@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 2: Setting up a DevOps workstation | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 2 of DevOps in 100 Days by Ebenezer Tetteh: a practical guide to setting up a reliable DevOps workstation with Git, terminal tools, Docker, cloud CLI, SSH, documentation, and safe secrets habits."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero workstation-hero">
+        <div>
+          <p class="eyebrow">Day 2 of 100</p>
+          <h1>Setting up a DevOps workstation that is ready for real work</h1>
+          <p>
+            A DevOps workstation should make everyday engineering faster, safer, and more repeatable. Before pipelines,
+            containers, cloud platforms, and Kubernetes, the local environment must be clean, documented, and easy to
+            rebuild.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#setup-checklist">Build the setup</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel" aria-label="Day 2 learning summary">
+          <span>Today's focus</span>
+          <strong>Workstation readiness</strong>
+          <p>Editor, terminal, Git, SSH, Docker, cloud CLI, documentation, and secure working habits.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="setup-grid">
+          <article class="setup-card">
+            <span class="setup-label">Why it matters</span>
+            <h2>Your workstation is the first delivery environment</h2>
+            <p>
+              The tools used locally shape how smoothly code is written, tested, scanned, packaged, pushed, and
+              deployed. A messy setup creates repeated friction. A reliable setup gives every future DevOps task a
+              stable base.
+            </p>
+          </article>
+
+          <article class="setup-card">
+            <span class="setup-label">Professional habit</span>
+            <h2>Make the setup repeatable</h2>
+            <p>
+              A good engineer does not only install tools. They document versions, commands, folder structure, and
+              setup decisions so the environment can be recreated on another laptop or explained to a team.
+            </p>
+          </article>
+
+          <article class="setup-card">
+            <span class="setup-label">Security mindset</span>
+            <h2>Protect access from day one</h2>
+            <p>
+              DevOps work often touches repositories, servers, cloud accounts, credentials, and production-like
+              systems. Use safe authentication, avoid committing secrets, and keep sensitive values out of notes and
+              screenshots.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="setup-checklist">
+          <p class="section-kicker">Core setup</p>
+          <h2>The workstation toolkit</h2>
+          <p>
+            The goal is not to install every tool in the DevOps world on Day 2. The goal is to create a dependable base
+            that can support Linux practice, Git workflows, scripting, containers, cloud work, CI/CD labs, and future
+            Kubernetes projects.
+          </p>
+
+          <div class="tool-stack" aria-label="DevOps workstation tool categories">
+            <article class="tool-item">
+              <span>01</span>
+              <strong>Editor</strong>
+              <p>Use VS Code with extensions for YAML, Docker, Markdown, Git, Terraform, and Kubernetes.</p>
+            </article>
+            <article class="tool-item">
+              <span>02</span>
+              <strong>Terminal</strong>
+              <p>Use Windows Terminal, PowerShell, Git Bash, or WSL so command-line work feels natural.</p>
+            </article>
+            <article class="tool-item">
+              <span>03</span>
+              <strong>Git</strong>
+              <p>Configure name, email, default branch, credential helper, and common aliases.</p>
+            </article>
+            <article class="tool-item">
+              <span>04</span>
+              <strong>SSH</strong>
+              <p>Create SSH keys for secure GitHub and server access without exposing passwords.</p>
+            </article>
+            <article class="tool-item">
+              <span>05</span>
+              <strong>Docker</strong>
+              <p>Install Docker Desktop or a container runtime to prepare for image and container labs.</p>
+            </article>
+            <article class="tool-item">
+              <span>06</span>
+              <strong>Cloud CLI</strong>
+              <p>Install AWS CLI and learn how profiles, regions, output formats, and credentials work.</p>
+            </article>
+            <article class="tool-item">
+              <span>07</span>
+              <strong>Package manager</strong>
+              <p>Use winget, Chocolatey, Homebrew, apt, or another package manager to simplify installs.</p>
+            </article>
+            <article class="tool-item">
+              <span>08</span>
+              <strong>Documentation</strong>
+              <p>Use Markdown notes so every command, error, fix, and decision becomes reusable knowledge.</p>
+            </article>
+            <article class="tool-item">
+              <span>09</span>
+              <strong>Secrets hygiene</strong>
+              <p>Use environment variables, `.gitignore`, and a password manager. Never commit credentials.</p>
+            </article>
+            <article class="tool-item">
+              <span>10</span>
+              <strong>Browser setup</strong>
+              <p>Keep quick access to GitHub, AWS docs, Kubernetes docs, Docker docs, and Jenkins docs.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Recommended structure</p>
+          <h2>Create one clean DevOps workspace folder</h2>
+          <p>
+            Put learning notes, scripts, small projects, architecture diagrams, and lab files in a clear folder
+            structure. This makes the work easier to find, easier to push to GitHub, and easier to show in a portfolio.
+          </p>
+
+          <div class="terminal-steps" aria-label="Suggested folder structure">
+            <div class="terminal-title">
+              <span></span>
+              <strong>workspace structure</strong>
+            </div>
+            <pre><code>100-days-of-devops/
+  notes/
+    day-01-devops-foundation.md
+    day-02-workstation-setup.md
+  scripts/
+  projects/
+  diagrams/
+  commands/
+  README.md</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Hands-on task</p>
+          <h2>Build the Day 2 folder and commit it</h2>
+          <p>
+            The practical task is to create the folder, initialise Git, add a Day 2 note, and commit the structure. This
+            turns the lesson into real evidence that can be shown publicly.
+          </p>
+
+          <div class="command-card command-card-large">
+            <code>mkdir 100-days-of-devops</code>
+            <code>cd 100-days-of-devops</code>
+            <code>git init</code>
+            <code>mkdir notes scripts projects diagrams commands</code>
+            <code>New-Item notes/day-02-workstation-setup.md</code>
+            <code>git status</code>
+            <code>git add .</code>
+            <code>git commit -m "Add Day 2 workstation setup notes"</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">What to document</p>
+          <h2>Write the note like an engineer</h2>
+          <div class="checklist-grid">
+            <p class="check-item">List every installed tool and the reason it is needed.</p>
+            <p class="check-item">Record version checks such as `git --version`, `docker --version`, and `aws --version`.</p>
+            <p class="check-item">Write the folder structure and explain what each folder is for.</p>
+            <p class="check-item">Add Git configuration commands for name, email, default branch, and status checks.</p>
+            <p class="check-item">Explain where secrets should live and where they should never live.</p>
+            <p class="check-item">Capture any setup issue and the exact command or setting that fixed it.</p>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Verification</p>
+          <h2>Prove the workstation is ready</h2>
+          <p>
+            A setup is only useful when it can be verified. Run quick checks before moving on to Day 3 so future Linux,
+            Git, automation, container, and cloud exercises do not fail because of missing local tools.
+          </p>
+
+          <div class="flow-strip verification-strip" aria-label="Day 2 readiness checks">
+            <span>git</span>
+            <span>terminal</span>
+            <span>editor</span>
+            <span>ssh</span>
+            <span>docker</span>
+            <span>aws cli</span>
+            <span>notes</span>
+            <span>commit</span>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Security habits</p>
+          <h2>Start clean before touching cloud accounts</h2>
+          <div class="pillar-grid workstation-pillars">
+            <article>
+              <strong>Never commit secrets</strong>
+              <p>Use `.gitignore` for local files, avoid pasting credentials into Markdown, and review changes before commits.</p>
+            </article>
+            <article>
+              <strong>Use SSH properly</strong>
+              <p>Prefer SSH keys for GitHub and server access, and protect private keys like production credentials.</p>
+            </article>
+            <article>
+              <strong>Separate profiles</strong>
+              <p>Use named cloud profiles so personal labs, demos, and work accounts do not get mixed together.</p>
+            </article>
+            <article>
+              <strong>Keep tools updated</strong>
+              <p>Update the editor, Git, Docker, and CLIs regularly so security fixes and compatibility improvements are applied.</p>
+            </article>
+            <article>
+              <strong>Check before sharing</strong>
+              <p>Before posting screenshots or repositories, check for access keys, account IDs, private URLs, and tokens.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio evidence</p>
+          <h2>What readers should see after Day 2</h2>
+          <p>
+            By the end of Day 2, a reader should see a clean GitHub repository, a useful README, a Day 2 setup note,
+            sensible folder names, and a small commit history. This proves organisation, documentation discipline, and
+            readiness for hands-on DevOps work.
+          </p>
+          <div class="question-list">
+            <p>Can another person understand the setup from the README?</p>
+            <p>Are installed tools matched to real DevOps use cases?</p>
+            <p>Are secrets and credentials kept out of the repository?</p>
+            <p>Can the workstation support the next Linux and Git lessons?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
