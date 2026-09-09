@@ -1,0 +1,278 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 3: Understanding the Linux file system | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 3 of DevOps in 100 Days by Ebenezer Tetteh: a hands-on Linux file system lesson covering key directories, navigation commands, logs, configuration files, and DevOps troubleshooting habits."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero linux-hero">
+        <div>
+          <p class="eyebrow">Day 3 of 100</p>
+          <h1>Understanding the Linux file system like a DevOps engineer</h1>
+          <p>
+            Linux is where many DevOps tasks become real: servers, containers, CI/CD runners, Kubernetes nodes,
+            automation scripts, logs, service files, and configuration directories. The faster a person can navigate
+            Linux, the faster they can troubleshoot production-style problems.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#linux-lab">Start the Linux lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel" aria-label="Day 3 learning summary">
+          <span>Today's focus</span>
+          <strong>Linux navigation</strong>
+          <p>Paths, directories, commands, logs, config files, permissions, and troubleshooting clues.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="linux-path-map" aria-label="Linux file system visual map">
+          <div class="root-node">/</div>
+          <div class="path-node"><strong>/home</strong><span>User workspaces</span></div>
+          <div class="path-node"><strong>/etc</strong><span>System configuration</span></div>
+          <div class="path-node"><strong>/var</strong><span>Logs and changing data</span></div>
+          <div class="path-node"><strong>/tmp</strong><span>Temporary files</span></div>
+          <div class="path-node"><strong>/usr</strong><span>Apps and libraries</span></div>
+          <div class="path-node"><strong>/opt</strong><span>Optional software</span></div>
+        </div>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Mindset</span>
+            <h2>The file system is a map of the machine</h2>
+            <p>
+              DevOps engineers use Linux paths to understand where applications live, where configuration is stored,
+              where logs are written, and where temporary or generated files may affect performance. Knowing the map
+              reduces guesswork during troubleshooting.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">Outcome</span>
+            <h2>Move from guessing to knowing where to look</h2>
+            <p>
+              When a service fails, a strong first response is not panic. It is knowing which directory to inspect,
+              which command to run, which log to read, and which file might explain the behaviour.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Core directories</p>
+          <h2>The Linux paths every DevOps beginner should know</h2>
+          <p>
+            These directories appear again and again in cloud servers, Docker containers, CI/CD workers, and Kubernetes
+            nodes. Learn what they usually contain, then practise moving through them from the terminal.
+          </p>
+
+          <div class="directory-grid">
+            <article class="directory-card">
+              <code>/home</code>
+              <strong>User files and workspaces</strong>
+              <p>Common place for user projects, scripts, SSH configuration, and personal working directories.</p>
+            </article>
+            <article class="directory-card">
+              <code>/etc</code>
+              <strong>System configuration</strong>
+              <p>Often contains service settings, package configuration, environment files, and system defaults.</p>
+            </article>
+            <article class="directory-card">
+              <code>/var</code>
+              <strong>Logs and changing data</strong>
+              <p>Important for `/var/log`, application logs, caches, queues, and files that change while systems run.</p>
+            </article>
+            <article class="directory-card">
+              <code>/tmp</code>
+              <strong>Temporary files</strong>
+              <p>Used by applications and processes for short-lived files. It can matter when disk space runs low.</p>
+            </article>
+            <article class="directory-card">
+              <code>/usr</code>
+              <strong>Installed programs and libraries</strong>
+              <p>Contains many user commands, shared files, libraries, and application resources.</p>
+            </article>
+            <article class="directory-card">
+              <code>/opt</code>
+              <strong>Optional third-party software</strong>
+              <p>A common location for manually installed tools, agents, scanners, and vendor packages.</p>
+            </article>
+            <article class="directory-card">
+              <code>/root</code>
+              <strong>Root user's home directory</strong>
+              <p>Separate from `/home`; useful to recognise when working with administrator-level access.</p>
+            </article>
+            <article class="directory-card">
+              <code>/bin</code>
+              <strong>Essential commands</strong>
+              <p>Contains core binaries needed for basic system operations and command-line work.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="linux-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Practise moving through Linux from the terminal</h2>
+          <p>
+            The aim is to become comfortable with the basic movement commands before touching advanced automation.
+            Every DevOps workflow becomes easier when navigation, listing, reading, copying, moving, and removing files
+            feel natural.
+          </p>
+
+          <div class="terminal-steps linux-terminal" aria-label="Linux navigation command lab">
+            <div class="terminal-title">
+              <span></span>
+              <strong>day-3-linux-navigation</strong>
+            </div>
+            <pre><code>pwd
+ls
+ls -la
+cd /
+ls
+cd /etc
+pwd
+cd /var/log
+ls
+cd ~
+mkdir day-3-linux-lab
+cd day-3-linux-lab
+touch notes.txt
+echo "Linux file system practice" &gt; notes.txt
+cat notes.txt</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Command guide</p>
+          <h2>The commands to practise today</h2>
+          <div class="command-grid">
+            <article><code>pwd</code><p>Show the current working directory.</p></article>
+            <article><code>ls</code><p>List files and folders in the current directory.</p></article>
+            <article><code>ls -la</code><p>List everything, including hidden files, with details.</p></article>
+            <article><code>cd</code><p>Move between directories.</p></article>
+            <article><code>mkdir</code><p>Create a new directory.</p></article>
+            <article><code>touch</code><p>Create an empty file or update a timestamp.</p></article>
+            <article><code>cat</code><p>Print a file's content to the terminal.</p></article>
+            <article><code>cp</code><p>Copy files or directories.</p></article>
+            <article><code>mv</code><p>Move or rename files and folders.</p></article>
+            <article><code>rm</code><p>Remove files carefully. Check the path before running it.</p></article>
+            <article><code>less</code><p>Read long files page by page.</p></article>
+            <article><code>tree</code><p>View a directory structure as a tree when installed.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Real DevOps use</p>
+          <h2>Where this knowledge appears in actual work</h2>
+          <div class="setup-grid">
+            <article class="setup-card linux-use-card">
+              <span class="setup-label">Troubleshooting</span>
+              <h2>Find logs quickly</h2>
+              <p>
+                When an application fails, logs often explain the failure. Linux practice helps readers know to inspect
+                places such as `/var/log`, service logs, container logs, and application-specific log directories.
+              </p>
+            </article>
+            <article class="setup-card linux-use-card">
+              <span class="setup-label">Configuration</span>
+              <h2>Understand service settings</h2>
+              <p>
+                Many services depend on configuration stored under `/etc` or application folders. DevOps engineers need
+                to read settings without accidentally damaging production systems.
+              </p>
+            </article>
+            <article class="setup-card linux-use-card">
+              <span class="setup-label">Automation</span>
+              <h2>Write better scripts</h2>
+              <p>
+                Scripts become safer when paths are clear, directories are checked before use, and commands are run from
+                predictable locations.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Safe habits</p>
+          <h2>Navigation mistakes to avoid</h2>
+          <div class="checklist-grid">
+            <p class="check-item">Do not run remove commands until the current path is confirmed with `pwd`.</p>
+            <p class="check-item">Do not edit system configuration files without making a backup or understanding the service impact.</p>
+            <p class="check-item">Do not assume every Linux system has the same tools installed by default.</p>
+            <p class="check-item">Do not store credentials in plain text notes inside a project folder.</p>
+            <p class="check-item">Do not ignore hidden files; many important settings begin with a dot.</p>
+            <p class="check-item">Do not confuse the root directory `/` with the root user's home directory `/root`.</p>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mini project</p>
+          <h2>Create a Linux file system cheat sheet</h2>
+          <p>
+            The Day 3 portfolio task is to create a Markdown cheat sheet that explains important directories and basic
+            commands. This gives readers something practical to publish in GitHub and refer back to later.
+          </p>
+
+          <div class="command-card command-card-large">
+            <code>mkdir -p notes/linux</code>
+            <code>touch notes/linux/day-03-linux-file-system.md</code>
+            <code>echo "# Day 3 - Linux File System" &gt; notes/linux/day-03-linux-file-system.md</code>
+            <code>git add notes/linux/day-03-linux-file-system.md</code>
+            <code>git commit -m "Add Day 3 Linux file system notes"</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to do after Day 3</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 3 Linux readiness checks">
+            <span>navigate</span>
+            <span>list</span>
+            <span>create</span>
+            <span>read</span>
+            <span>copy</span>
+            <span>move</span>
+            <span>inspect</span>
+            <span>commit</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>Which directory would you check first for system logs?</p>
+            <p>What is the difference between `/`, `/root`, and `/home`?</p>
+            <p>Why should `pwd` become a habit before file operations?</p>
+            <p>How does Linux navigation help with containers and cloud servers?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
