@@ -1,0 +1,284 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 4: Linux users, groups, and permissions | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 4 of DevOps in 100 Days by Ebenezer Tetteh: a hands-on guide to Linux users, groups, chmod, chown, sudo, file permissions, and DevOps permission troubleshooting."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero permissions-hero">
+        <div>
+          <p class="eyebrow">Day 4 of 100</p>
+          <h1>Linux users, groups, and permissions for real DevOps work</h1>
+          <p>
+            Permission problems appear everywhere: deployment scripts that will not execute, services that cannot write
+            logs, containers that cannot read mounted files, and SSH keys rejected because they are too open. Day 4
+            teaches the access-control habits that make Linux troubleshooting much sharper.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#permission-lab">Start the permission lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel" aria-label="Day 4 learning summary">
+          <span>Today's focus</span>
+          <strong>Access control</strong>
+          <p>Users, groups, ownership, read/write/execute bits, `chmod`, `chown`, `sudo`, and safer troubleshooting.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="permission-decoder" aria-label="Linux permission string decoder">
+          <div class="permission-string">-rwxr-xr--</div>
+          <div class="permission-piece">
+            <span>-</span>
+            <strong>type</strong>
+            <p>File or directory marker</p>
+          </div>
+          <div class="permission-piece">
+            <span>rwx</span>
+            <strong>owner</strong>
+            <p>Read, write, execute</p>
+          </div>
+          <div class="permission-piece">
+            <span>r-x</span>
+            <strong>group</strong>
+            <p>Read and execute</p>
+          </div>
+          <div class="permission-piece">
+            <span>r--</span>
+            <strong>others</strong>
+            <p>Read only</p>
+          </div>
+        </div>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Concept</span>
+            <h2>Linux does not only ask what the file is</h2>
+            <p>
+              Linux also asks who is trying to use it. The current user, group membership, file owner, group owner, and
+              permission bits decide whether an action is allowed or denied.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">DevOps value</span>
+            <h2>Permission errors often look like deployment failures</h2>
+            <p>
+              A build may pass, but the deployment may still fail because a script cannot execute, a service cannot
+              write to a directory, or a runtime user cannot read the files it needs.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Permission model</p>
+          <h2>The three access levels</h2>
+          <p>
+            Linux file permissions are usually read as three groups: owner, group, and others. Each group can have read,
+            write, and execute permissions. This simple model explains a large number of real server and CI/CD issues.
+          </p>
+
+          <div class="access-grid">
+            <article class="access-card">
+              <span>u</span>
+              <strong>Owner</strong>
+              <p>The user account that owns the file or directory.</p>
+            </article>
+            <article class="access-card">
+              <span>g</span>
+              <strong>Group</strong>
+              <p>The group assigned to the file or directory.</p>
+            </article>
+            <article class="access-card">
+              <span>o</span>
+              <strong>Others</strong>
+              <p>Every other user who is not the owner and not in the assigned group.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Bits and numbers</p>
+          <h2>How `r`, `w`, `x`, 755, and 644 connect</h2>
+          <p>
+            Symbolic permissions are easier to read at first, but numeric permissions are common in documentation,
+            scripts, Dockerfiles, CI jobs, and production fixes. The numbers come from adding permission values.
+          </p>
+
+          <div class="permission-math">
+            <article><code>r = 4</code><p>Read file contents or list directory contents.</p></article>
+            <article><code>w = 2</code><p>Modify a file or change directory contents.</p></article>
+            <article><code>x = 1</code><p>Execute a file or enter a directory.</p></article>
+            <article><code>7 = rwx</code><p>4 + 2 + 1 gives full access.</p></article>
+            <article><code>5 = r-x</code><p>4 + 1 allows read and execute.</p></article>
+            <article><code>4 = r--</code><p>Read only.</p></article>
+          </div>
+
+          <div class="mode-strip" aria-label="Common Linux permission modes">
+            <span><strong>755</strong><small>scripts and directories</small></span>
+            <span><strong>644</strong><small>regular readable files</small></span>
+            <span><strong>600</strong><small>private files</small></span>
+            <span><strong>700</strong><small>private directories</small></span>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="permission-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Practise permissions safely in a test folder</h2>
+          <p>
+            The safest way to learn permissions is to create a test file and change its access rules deliberately. This
+            makes `chmod`, `ls -l`, and execution permission easier to understand.
+          </p>
+
+          <div class="terminal-steps permission-terminal" aria-label="Linux permissions command lab">
+            <div class="terminal-title">
+              <span></span>
+              <strong>day-4-linux-permissions</strong>
+            </div>
+            <pre><code>mkdir day-4-permissions-lab
+cd day-4-permissions-lab
+touch deploy.sh
+ls -l deploy.sh
+echo "echo Deploy script running" &gt; deploy.sh
+./deploy.sh
+chmod +x deploy.sh
+ls -l deploy.sh
+./deploy.sh
+chmod 644 deploy.sh
+ls -l deploy.sh
+chmod 755 deploy.sh
+ls -l deploy.sh</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Command guide</p>
+          <h2>The commands to practise today</h2>
+          <div class="command-grid permissions-command-grid">
+            <article><code>whoami</code><p>Show the current logged-in user.</p></article>
+            <article><code>id</code><p>Show the user's ID, group ID, and group memberships.</p></article>
+            <article><code>groups</code><p>List groups for the current user.</p></article>
+            <article><code>ls -l</code><p>Show ownership and permissions for files and folders.</p></article>
+            <article><code>chmod</code><p>Change permission bits using symbolic or numeric mode.</p></article>
+            <article><code>chown</code><p>Change file or directory owner.</p></article>
+            <article><code>chgrp</code><p>Change file or directory group.</p></article>
+            <article><code>sudo</code><p>Run a command with elevated privileges when allowed.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Real DevOps failures</p>
+          <h2>Where permission knowledge saves time</h2>
+          <div class="setup-grid">
+            <article class="setup-card permission-use-card">
+              <span class="setup-label">Deployment</span>
+              <h2>Script cannot execute</h2>
+              <p>
+                A pipeline downloads or generates a script, but the execute bit is missing. The fix may be as simple as
+                checking `ls -l` and applying `chmod +x script.sh`.
+              </p>
+            </article>
+            <article class="setup-card permission-use-card">
+              <span class="setup-label">Services</span>
+              <h2>Application cannot write logs</h2>
+              <p>
+                A service may run as a dedicated user and fail because that user does not own the log directory or
+                cannot write to it.
+              </p>
+            </article>
+            <article class="setup-card permission-use-card">
+              <span class="setup-label">Containers</span>
+              <h2>Mounted files are blocked</h2>
+              <p>
+                Containers can fail when host-mounted files have ownership or permissions that do not match the user
+                running inside the container.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Safe habits</p>
+          <h2>Rules that prevent messy fixes</h2>
+          <div class="checklist-grid">
+            <p class="check-item">Check the current user with `whoami` before changing permissions.</p>
+            <p class="check-item">Inspect ownership and mode with `ls -l` before using `chmod` or `chown`.</p>
+            <p class="check-item">Avoid using `chmod 777` as a quick fix. It often creates unnecessary risk.</p>
+            <p class="check-item">Use the minimum permission needed for the file, script, directory, or service.</p>
+            <p class="check-item">Protect private keys with restrictive permissions such as `chmod 600`.</p>
+            <p class="check-item">Document permission changes so the reason is clear during future troubleshooting.</p>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mini project</p>
+          <h2>Create a Linux permissions cheat sheet</h2>
+          <p>
+            The Day 4 portfolio task is to create a Markdown note that explains ownership, groups, permission bits,
+            numeric modes, and common fixes. This becomes useful evidence of practical Linux understanding.
+          </p>
+
+          <div class="command-card command-card-large">
+            <code>mkdir -p notes/linux</code>
+            <code>touch notes/linux/day-04-linux-permissions.md</code>
+            <code>echo "# Day 4 - Linux Permissions" &gt; notes/linux/day-04-linux-permissions.md</code>
+            <code>git add notes/linux/day-04-linux-permissions.md</code>
+            <code>git commit -m "Add Day 4 Linux permissions notes"</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to do after Day 4</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 4 Linux permissions readiness checks">
+            <span>whoami</span>
+            <span>id</span>
+            <span>ls -l</span>
+            <span>chmod</span>
+            <span>chown</span>
+            <span>groups</span>
+            <span>sudo</span>
+            <span>commit</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>Why might a script fail even when the file exists?</p>
+            <p>What is the difference between owner, group, and others?</p>
+            <p>Why is `chmod 777` usually a bad production fix?</p>
+            <p>When would `chmod 600` be useful for DevOps work?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
