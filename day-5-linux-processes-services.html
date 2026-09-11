@@ -1,0 +1,321 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 5: Linux processes and services | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 5 of DevOps in 100 Days by Ebenezer Tetteh: a practical Linux processes and services lesson covering ps, top, kill, systemctl, journalctl, ports, service health, and troubleshooting."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero processes-hero">
+        <div>
+          <p class="eyebrow">Day 5 of 100</p>
+          <h1>Linux processes and services: understanding what is running</h1>
+          <p>
+            Deploying an application is only the beginning. A DevOps engineer also needs to know what is running, which
+            process owns a port, why a service stopped, how to restart it safely, and where the logs explain the real
+            problem.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#service-lab">Start the service lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel" aria-label="Day 5 learning summary">
+          <span>Today's focus</span>
+          <strong>Runtime awareness</strong>
+          <p>Processes, PIDs, daemons, services, `systemctl`, `journalctl`, ports, CPU, memory, and safe restarts.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="process-dashboard" aria-label="Linux runtime status dashboard">
+          <article>
+            <span class="status-line status-running"></span>
+            <strong>nginx.service</strong>
+            <p>active running</p>
+            <code>PID 1428</code>
+          </article>
+          <article>
+            <span class="status-line status-warning"></span>
+            <strong>app-worker</strong>
+            <p>high memory</p>
+            <code>PID 2281</code>
+          </article>
+          <article>
+            <span class="status-line status-stopped"></span>
+            <strong>api.service</strong>
+            <p>failed restart</p>
+            <code>journalctl</code>
+          </article>
+          <article>
+            <span class="status-line status-running"></span>
+            <strong>port 80</strong>
+            <p>listening</p>
+            <code>ss -tulnp</code>
+          </article>
+        </div>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Concept</span>
+            <h2>A process is a running program</h2>
+            <p>
+              When a program starts, Linux creates a process and assigns it a process ID, known as a PID. Web servers,
+              databases, background workers, agents, and scripts all run as processes while they are active.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">Concept</span>
+            <h2>A service is a managed background application</h2>
+            <p>
+              A service is usually a long-running process controlled by the operating system. On many modern Linux
+              systems, `systemd` manages services through commands such as `systemctl status`, `start`, `stop`, and
+              `restart`.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Runtime model</p>
+          <h2>How Linux keeps applications alive</h2>
+          <p>
+            A production application often depends on more than one running part. There may be a web server, app
+            process, queue worker, database, container runtime, logging agent, and monitoring agent. Day 5 is about
+            learning how to inspect those moving parts.
+          </p>
+
+          <div class="service-flow" aria-label="Linux service troubleshooting flow">
+            <span>process starts</span>
+            <span>PID assigned</span>
+            <span>service managed</span>
+            <span>port opens</span>
+            <span>logs written</span>
+            <span>health checked</span>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Key language</p>
+          <h2>The terms to understand first</h2>
+          <div class="process-grid">
+            <article>
+              <code>Process</code>
+              <strong>A running instance of a program</strong>
+              <p>Examples include `nginx`, `java`, `python`, `docker`, `sshd`, or a deployment script.</p>
+            </article>
+            <article>
+              <code>PID</code>
+              <strong>Process ID</strong>
+              <p>A unique number Linux uses to track and control a running process.</p>
+            </article>
+            <article>
+              <code>Daemon</code>
+              <strong>A background process</strong>
+              <p>Usually runs continuously without direct user interaction.</p>
+            </article>
+            <article>
+              <code>Service</code>
+              <strong>A managed application</strong>
+              <p>Started, stopped, restarted, enabled, and monitored through the service manager.</p>
+            </article>
+            <article>
+              <code>systemd</code>
+              <strong>Service manager</strong>
+              <p>Controls many Linux services and records service behaviour through the journal.</p>
+            </article>
+            <article>
+              <code>Port</code>
+              <strong>Network listening point</strong>
+              <p>A running process may listen on a port such as 80, 443, 8080, or 3306.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="service-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Inspect processes, services, and logs</h2>
+          <p>
+            The lab below gives readers a real troubleshooting pattern: inspect running processes, check system
+            resources, review a service, restart it when appropriate, check listening ports, and read logs for evidence.
+          </p>
+
+          <div class="terminal-steps process-terminal" aria-label="Linux processes and services command lab">
+            <div class="terminal-title">
+              <span></span>
+              <strong>day-5-processes-services</strong>
+            </div>
+            <pre><code>ps aux
+top
+pgrep nginx
+systemctl status nginx
+sudo systemctl start nginx
+sudo systemctl restart nginx
+sudo systemctl enable nginx
+ss -tulnp
+journalctl -u nginx --since "10 minutes ago"
+journalctl -u nginx -n 50</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Command guide</p>
+          <h2>The commands to practise today</h2>
+          <div class="command-grid process-command-grid">
+            <article><code>ps aux</code><p>Show running processes with users, CPU, memory, and command details.</p></article>
+            <article><code>top</code><p>Watch live CPU, memory, and process activity.</p></article>
+            <article><code>htop</code><p>Use a friendlier interactive process viewer when installed.</p></article>
+            <article><code>pgrep</code><p>Find process IDs by name.</p></article>
+            <article><code>kill</code><p>Send a signal to a process. Use carefully.</p></article>
+            <article><code>systemctl status</code><p>Check whether a service is active, failed, enabled, or stopped.</p></article>
+            <article><code>journalctl</code><p>Read service and system logs from the systemd journal.</p></article>
+            <article><code>ss -tulnp</code><p>Show listening ports and the processes using them.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting map</p>
+          <h2>Use this order when a service is failing</h2>
+          <div class="incident-ladder">
+            <article>
+              <span>01</span>
+              <strong>Check service state</strong>
+              <p>Run `systemctl status service-name` to see whether the service is active, failed, or stopped.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <strong>Read recent logs</strong>
+              <p>Use `journalctl -u service-name -n 50` to see the latest error messages.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <strong>Check the port</strong>
+              <p>Run `ss -tulnp` to confirm whether the expected port is listening.</p>
+            </article>
+            <article>
+              <span>04</span>
+              <strong>Inspect resources</strong>
+              <p>Use `top` or `htop` to spot CPU, memory, or runaway process problems.</p>
+            </article>
+            <article>
+              <span>05</span>
+              <strong>Restart with care</strong>
+              <p>Restart only when it is safe, then check status and logs again to confirm recovery.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Real DevOps scenarios</p>
+          <h2>Where process knowledge matters</h2>
+          <div class="setup-grid">
+            <article class="setup-card process-use-card">
+              <span class="setup-label">Deployment</span>
+              <h2>The deploy succeeded, but the app is down</h2>
+              <p>
+                A pipeline can copy files successfully while the service still fails to start. `systemctl status` and
+                `journalctl` show whether the application actually became healthy.
+              </p>
+            </article>
+            <article class="setup-card process-use-card">
+              <span class="setup-label">Performance</span>
+              <h2>One process is consuming the server</h2>
+              <p>
+                High CPU or memory can slow the whole machine. `top`, `htop`, and `ps aux` help identify the process
+                responsible before making changes.
+              </p>
+            </article>
+            <article class="setup-card process-use-card">
+              <span class="setup-label">Networking</span>
+              <h2>The expected port is not listening</h2>
+              <p>
+                If port 80, 443, or 8080 is closed, users may see downtime even when files are present. `ss -tulnp`
+                connects ports back to processes.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Safe habits</p>
+          <h2>Operate services with discipline</h2>
+          <div class="checklist-grid">
+            <p class="check-item">Check status and logs before restarting a service.</p>
+            <p class="check-item">Avoid using `kill -9` unless normal shutdown signals fail and the impact is understood.</p>
+            <p class="check-item">Confirm the service is listening on the expected port after a restart.</p>
+            <p class="check-item">Use `enable` only when the service should start automatically after reboot.</p>
+            <p class="check-item">Record the command used, the error seen, and the recovery result.</p>
+            <p class="check-item">Treat repeated restarts as a symptom, not the final fix.</p>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mini project</p>
+          <h2>Create a process and service troubleshooting note</h2>
+          <p>
+            The Day 5 portfolio task is to document the commands, explain what each one reveals, and create a simple
+            troubleshooting checklist that can be reused later for cloud servers, containers, and CI/CD runners.
+          </p>
+
+          <div class="command-card command-card-large">
+            <code>mkdir -p notes/linux</code>
+            <code>touch notes/linux/day-05-processes-services.md</code>
+            <code>echo "# Day 5 - Linux Processes and Services" &gt; notes/linux/day-05-processes-services.md</code>
+            <code>git add notes/linux/day-05-processes-services.md</code>
+            <code>git commit -m "Add Day 5 Linux processes and services notes"</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to do after Day 5</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 5 Linux processes and services readiness checks">
+            <span>ps</span>
+            <span>top</span>
+            <span>pid</span>
+            <span>systemctl</span>
+            <span>journalctl</span>
+            <span>ports</span>
+            <span>restart</span>
+            <span>commit</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>How do you check whether a service is active or failed?</p>
+            <p>Which command shows the process using a listening port?</p>
+            <p>Why should logs be checked before restarting a service?</p>
+            <p>What is the difference between a process, daemon, and service?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
