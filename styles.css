@@ -1695,6 +1695,224 @@ code {
   min-height: 250px;
 }
 
+.networking-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(8, 28, 45, 0.98), rgba(15, 118, 110, 0.86)),
+    #081c2d;
+}
+
+.networking-hero::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(90deg, rgba(255, 255, 255, 0.06) 1px, transparent 1px),
+    linear-gradient(180deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+  background-size: 52px 52px;
+  opacity: 0.44;
+  pointer-events: none;
+}
+
+.networking-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.network-route-map,
+.network-check-flow {
+  display: grid;
+  gap: 14px;
+  margin-bottom: 34px;
+}
+
+.network-route-map {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.network-check-flow {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  margin-top: 24px;
+}
+
+.network-route-map article,
+.network-check-flow article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.18);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 14px 34px rgba(20, 32, 28, 0.08);
+  animation: fadeSlideIn 700ms ease both;
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.network-route-map article::after,
+.network-check-flow article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #2563eb, var(--accent), var(--gold));
+  content: "";
+  transform: scaleX(0.2);
+  transform-origin: left;
+  animation: packetTrace 3.4s ease-in-out infinite;
+}
+
+.network-route-map article:hover,
+.network-check-flow article:hover {
+  border-color: rgba(37, 99, 235, 0.32);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.network-route-map span,
+.network-check-flow span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 14px;
+  place-items: center;
+  border-radius: 8px;
+  background: #10211d;
+  color: #dff3ee;
+  font-weight: 900;
+}
+
+.network-route-map strong,
+.network-check-flow strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.network-route-map p,
+.network-check-flow p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.network-concept-grid {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.network-concept-grid article,
+.network-command-grid article {
+  border-color: rgba(37, 99, 235, 0.16);
+}
+
+.network-concept-grid article {
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.network-concept-grid article:hover {
+  border-color: rgba(37, 99, 235, 0.32);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.network-concept-grid code {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: rgba(37, 99, 235, 0.1);
+  padding: 7px 10px;
+  color: #1d4ed8;
+  font-weight: 900;
+}
+
+.network-concept-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.05rem;
+}
+
+.network-concept-grid p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.port-board {
+  display: grid;
+  grid-template-columns: repeat(8, minmax(0, 1fr));
+  gap: 10px;
+  margin-top: 24px;
+}
+
+.port-board span {
+  display: grid;
+  min-height: 104px;
+  place-items: center;
+  border: 1px solid rgba(15, 118, 110, 0.18);
+  border-radius: 8px;
+  background: #10211d;
+  color: #dff3ee;
+  text-align: center;
+  animation: portPulse 2.9s ease-in-out infinite;
+}
+
+.port-board span:nth-child(2n) {
+  animation-delay: 160ms;
+}
+
+.port-board span:nth-child(3n) {
+  animation-delay: 320ms;
+}
+
+.port-board strong {
+  font-family: "SFMono-Regular", Consolas, "Liberation Mono", monospace;
+  font-size: 1.65rem;
+}
+
+.port-board small {
+  color: #bfe3dc;
+  font-weight: 800;
+}
+
+.network-terminal {
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+.network-use-card {
+  min-height: 250px;
+}
+
+@keyframes packetTrace {
+  0%,
+  100% {
+    transform: scaleX(0.2);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes portPulse {
+  0%,
+  100% {
+    border-color: rgba(15, 118, 110, 0.18);
+    transform: translateY(0);
+  }
+  50% {
+    border-color: rgba(37, 99, 235, 0.5);
+    transform: translateY(-3px);
+  }
+}
+
 @keyframes serviceScan {
   0%,
   100% {
@@ -1834,7 +2052,11 @@ code {
   .process-dashboard,
   .service-flow,
   .process-grid,
-  .incident-ladder {
+  .incident-ladder,
+  .network-route-map,
+  .network-check-flow,
+  .network-concept-grid,
+  .port-board {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -1885,6 +2107,10 @@ code {
   .service-flow,
   .process-grid,
   .incident-ladder,
+  .network-route-map,
+  .network-check-flow,
+  .network-concept-grid,
+  .port-board,
   .flow-strip {
     grid-template-columns: 1fr;
   }

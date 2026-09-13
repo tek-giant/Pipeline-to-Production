@@ -1,0 +1,264 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 6: Networking basics for DevOps | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 6 of DevOps in 100 Days by Ebenezer Tetteh: a practical networking lesson covering IP addresses, DNS, ports, TCP, UDP, HTTP, HTTPS, TLS, routing, firewalls, load balancers, and connectivity troubleshooting."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero networking-hero">
+        <div>
+          <p class="eyebrow">Day 6 of 100</p>
+          <h1>Networking basics: how systems actually reach each other</h1>
+          <p>
+            Many DevOps problems are communication problems. The application may be running, but DNS may fail, a port
+            may be closed, a firewall may block traffic, TLS may be misconfigured, or a load balancer may have no
+            healthy targets. Day 6 gives readers a practical way to reason about network flow.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#network-lab">Start the network lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel" aria-label="Day 6 learning summary">
+          <span>Today's focus</span>
+          <strong>Connectivity thinking</strong>
+          <p>IP, DNS, ports, TCP, UDP, HTTP, HTTPS, TLS, routing, firewalls, load balancers, and reachability checks.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="network-route-map" aria-label="Browser to application network flow">
+          <article><span>01</span><strong>Browser</strong><p>User enters a URL.</p></article>
+          <article><span>02</span><strong>DNS</strong><p>Name resolves to an IP address.</p></article>
+          <article><span>03</span><strong>TCP TLS</strong><p>Connection and encryption are established.</p></article>
+          <article><span>04</span><strong>Load balancer</strong><p>Traffic is sent to a healthy backend.</p></article>
+          <article><span>05</span><strong>Service</strong><p>The application receives the request.</p></article>
+        </div>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Mindset</span>
+            <h2>Networking explains reachability</h2>
+            <p>
+              A service can be healthy locally but unreachable to users. DevOps engineers need to check the path from
+              source to destination: name resolution, route, firewall, port, protocol, load balancer, and backend health.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">Outcome</span>
+            <h2>Move from guessing to structured checks</h2>
+            <p>
+              Instead of saying "the app is down", a stronger engineer asks: can the client resolve the name, reach the
+              host, connect to the port, complete TLS, and receive a healthy response?
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Core concepts</p>
+          <h2>The network terms every DevOps beginner should know</h2>
+          <p>
+            These concepts appear in cloud platforms, Kubernetes Services, ingress controllers, CI/CD runners, firewalls,
+            databases, APIs, load balancers, and production incident calls.
+          </p>
+
+          <div class="network-concept-grid">
+            <article><code>IP address</code><strong>Machine address</strong><p>Identifies a host or interface on a network.</p></article>
+            <article><code>DNS</code><strong>Name resolution</strong><p>Turns names like `api.example.com` into IP addresses.</p></article>
+            <article><code>Port</code><strong>Service doorway</strong><p>Allows applications to listen for specific types of traffic.</p></article>
+            <article><code>TCP</code><strong>Reliable connection</strong><p>Used by SSH, HTTP, HTTPS, and many databases.</p></article>
+            <article><code>UDP</code><strong>Connectionless traffic</strong><p>Often used for DNS, streaming, and low-latency traffic.</p></article>
+            <article><code>HTTP</code><strong>Web protocol</strong><p>Moves web requests and responses between clients and servers.</p></article>
+            <article><code>HTTPS</code><strong>Secure web protocol</strong><p>HTTP protected with TLS encryption.</p></article>
+            <article><code>TLS</code><strong>Encryption layer</strong><p>Protects traffic and helps verify server identity.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Ports to remember</p>
+          <h2>Common ports used in DevOps work</h2>
+          <p>
+            Ports help identify what kind of service should be listening. When troubleshooting, they quickly narrow the
+            investigation.
+          </p>
+
+          <div class="port-board" aria-label="Common networking ports">
+            <span><strong>22</strong><small>SSH</small></span>
+            <span><strong>53</strong><small>DNS</small></span>
+            <span><strong>80</strong><small>HTTP</small></span>
+            <span><strong>443</strong><small>HTTPS</small></span>
+            <span><strong>3306</strong><small>MySQL</small></span>
+            <span><strong>5432</strong><small>PostgreSQL</small></span>
+            <span><strong>6379</strong><small>Redis</small></span>
+            <span><strong>8080</strong><small>App traffic</small></span>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="network-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Practise DNS, routes, ports, and HTTP checks</h2>
+          <p>
+            The aim is to build a repeatable troubleshooting flow. Start from the local machine, then test DNS,
+            connection, port reachability, and HTTP response.
+          </p>
+
+          <div class="terminal-steps network-terminal" aria-label="Networking command lab">
+            <div class="terminal-title">
+              <span></span>
+              <strong>day-6-networking-basics</strong>
+            </div>
+            <pre><code>ip addr
+ip route
+nslookup google.com
+dig google.com
+ping google.com
+curl -I https://google.com
+ss -tulnp
+nc -vz google.com 443
+traceroute google.com</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting flow</p>
+          <h2>Use this order when something is unreachable</h2>
+          <div class="network-check-flow">
+            <article><span>01</span><strong>Resolve</strong><p>Does DNS return the expected address?</p></article>
+            <article><span>02</span><strong>Route</strong><p>Can traffic leave the source and reach the destination network?</p></article>
+            <article><span>03</span><strong>Allow</strong><p>Do firewalls, security groups, or NACLs allow the traffic?</p></article>
+            <article><span>04</span><strong>Listen</strong><p>Is the target process listening on the expected port?</p></article>
+            <article><span>05</span><strong>Respond</strong><p>Does the service return a healthy application response?</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Real DevOps scenarios</p>
+          <h2>Where networking knowledge saves time</h2>
+          <div class="setup-grid">
+            <article class="setup-card network-use-card">
+              <span class="setup-label">Cloud access</span>
+              <h2>EC2 is healthy but unreachable</h2>
+              <p>
+                The instance may be running, but a route table, public IP, Security Group, NACL, subnet, or SSH service
+                issue can still block access.
+              </p>
+            </article>
+            <article class="setup-card network-use-card">
+              <span class="setup-label">Kubernetes</span>
+              <h2>Pod runs but traffic fails</h2>
+              <p>
+                A Pod may be healthy while the Service selector, target port, ingress rule, readiness probe, or backend
+                endpoint is wrong.
+              </p>
+            </article>
+            <article class="setup-card network-use-card">
+              <span class="setup-label">Databases</span>
+              <h2>Application cannot connect</h2>
+              <p>
+                Database failures often come from DNS, credentials, firewall rules, subnet routes, TLS settings, or the
+                database not listening on the expected port.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Command guide</p>
+          <h2>The commands to practise today</h2>
+          <div class="command-grid network-command-grid">
+            <article><code>ping</code><p>Tests basic reachability, when ICMP is allowed.</p></article>
+            <article><code>curl</code><p>Tests HTTP and HTTPS responses from APIs and web services.</p></article>
+            <article><code>nc -vz</code><p>Checks whether a TCP port is reachable.</p></article>
+            <article><code>ss -tulnp</code><p>Shows listening ports and related processes.</p></article>
+            <article><code>nslookup</code><p>Checks DNS resolution for a domain name.</p></article>
+            <article><code>dig</code><p>Gives deeper DNS query information.</p></article>
+            <article><code>traceroute</code><p>Shows the route packets take toward a destination.</p></article>
+            <article><code>ip route</code><p>Shows how the machine chooses network paths.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Safe habits</p>
+          <h2>Do not troubleshoot networking randomly</h2>
+          <div class="checklist-grid">
+            <p class="check-item">Test from the same source that is failing, not only from your laptop.</p>
+            <p class="check-item">Check DNS before blaming the application.</p>
+            <p class="check-item">Confirm the target service is listening before changing firewall rules.</p>
+            <p class="check-item">Check cloud Security Groups, NACLs, and routes together.</p>
+            <p class="check-item">Use HTTPS checks to confirm TLS and application response.</p>
+            <p class="check-item">Write down the exact command, result, and next decision.</p>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mini project</p>
+          <h2>Create a network troubleshooting checklist</h2>
+          <p>
+            The Day 6 portfolio task is to create a Markdown checklist that explains the path from browser to backend
+            and includes practical commands for DNS, routes, ports, HTTP, and connectivity checks.
+          </p>
+
+          <div class="command-card command-card-large">
+            <code>mkdir -p notes/networking</code>
+            <code>touch notes/networking/day-06-networking-basics.md</code>
+            <code>echo "# Day 6 - Networking Basics" &gt; notes/networking/day-06-networking-basics.md</code>
+            <code>git add notes/networking/day-06-networking-basics.md</code>
+            <code>git commit -m "Add Day 6 networking basics notes"</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to do after Day 6</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 6 networking readiness checks">
+            <span>IP</span>
+            <span>DNS</span>
+            <span>route</span>
+            <span>port</span>
+            <span>TCP</span>
+            <span>TLS</span>
+            <span>HTTP</span>
+            <span>logs</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>What happens between typing a URL and receiving a web page?</p>
+            <p>How do you prove whether DNS is working?</p>
+            <p>Which command confirms whether a service is listening on a port?</p>
+            <p>What would you check first if an app cannot reach a database?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
