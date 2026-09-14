@@ -1,0 +1,279 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 7: Network troubleshooting tools | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 7 of DevOps in 100 Days by Ebenezer Tetteh: a practical guide to network troubleshooting tools including ping, curl, nslookup, dig, ss, nc, traceroute, telnet, and evidence-based debugging."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero tools-hero">
+        <div>
+          <p class="eyebrow">Day 7 of 100</p>
+          <h1>Network troubleshooting tools: prove where the failure is</h1>
+          <p>
+            A strong DevOps engineer does not stop at saying "the application is not working". They collect evidence.
+            Day 7 focuses on the tools that help prove whether the issue is DNS, routing, firewall rules, listening
+            ports, TLS, HTTP response, load balancer health, or the application itself.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#tool-lab">Start the tool lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel" aria-label="Day 7 learning summary">
+          <span>Today's focus</span>
+          <strong>Evidence-based debugging</strong>
+          <p>`ping`, `curl`, `nslookup`, `dig`, `ss`, `nc`, `traceroute`, `telnet`, status codes, and command output.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="tool-diagnostic-board" aria-label="Network troubleshooting evidence board">
+          <article>
+            <span>DNS</span>
+            <strong>Does the name resolve?</strong>
+            <p>`nslookup` and `dig` confirm whether the domain points to an address.</p>
+          </article>
+          <article>
+            <span>PORT</span>
+            <strong>Can the port be reached?</strong>
+            <p>`nc`, `telnet`, and `ss` help prove whether a service is listening or reachable.</p>
+          </article>
+          <article>
+            <span>HTTP</span>
+            <strong>What does the app return?</strong>
+            <p>`curl` reveals headers, status codes, redirects, TLS behaviour, and API responses.</p>
+          </article>
+          <article>
+            <span>PATH</span>
+            <strong>Where does traffic travel?</strong>
+            <p>`traceroute` helps show the route between source and destination.</p>
+          </article>
+        </div>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Mindset</span>
+            <h2>Troubleshooting starts with narrowing the fault</h2>
+            <p>
+              Network tools help separate assumptions from facts. A failed request might be caused by DNS, an incorrect
+              port, a closed firewall rule, an unhealthy backend, a TLS problem, or an application error. Each tool
+              removes one layer of uncertainty.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">Outcome</span>
+            <h2>Say what is proven, not just what feels broken</h2>
+            <p>
+              A stronger answer is: DNS resolves correctly, port 443 is reachable, TLS completes, but the API returns
+              500. That tells the team to move past network reachability and investigate application logs.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting toolkit</p>
+          <h2>The tools every DevOps beginner should practise</h2>
+          <p>
+            These tools appear constantly when debugging Linux servers, EC2 access, load balancers, Kubernetes Services,
+            ingress errors, database reachability, CI/CD runner issues, and API failures.
+          </p>
+
+          <div class="network-tool-grid">
+            <article><code>ping</code><strong>Basic reachability</strong><p>Checks whether a host responds to ICMP when allowed.</p></article>
+            <article><code>curl</code><strong>HTTP evidence</strong><p>Tests endpoints, headers, status codes, redirects, and TLS.</p></article>
+            <article><code>nslookup</code><strong>DNS check</strong><p>Confirms whether a name resolves to an address.</p></article>
+            <article><code>dig</code><strong>Detailed DNS</strong><p>Shows DNS records, response sections, TTLs, and resolver behaviour.</p></article>
+            <article><code>ss</code><strong>Listening ports</strong><p>Shows local sockets, listening ports, and related processes.</p></article>
+            <article><code>nc</code><strong>Port testing</strong><p>Checks whether a TCP port is reachable from a source machine.</p></article>
+            <article><code>traceroute</code><strong>Network path</strong><p>Shows hops traffic takes toward a destination.</p></article>
+            <article><code>telnet</code><strong>TCP reachability</strong><p>Older but still useful for quick port connectivity tests.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="tool-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Run the tools in a sensible order</h2>
+          <p>
+            The order matters. Start with name resolution, then reachability, then port testing, then HTTP response.
+            This turns troubleshooting into a repeatable method rather than random command running.
+          </p>
+
+          <div class="terminal-steps tools-terminal" aria-label="Network troubleshooting tools command lab">
+            <div class="terminal-title">
+              <span></span>
+              <strong>day-7-network-troubleshooting-tools</strong>
+            </div>
+            <pre><code>nslookup google.com
+dig google.com
+ping google.com
+nc -vz google.com 443
+curl -I https://google.com
+curl -v https://google.com
+ss -tulnp
+traceroute google.com</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Evidence ladder</p>
+          <h2>Match each symptom to the right command</h2>
+          <div class="evidence-ladder">
+            <article>
+              <span>01</span>
+              <strong>Domain does not work</strong>
+              <p>Use `nslookup` or `dig` to confirm DNS resolution.</p>
+            </article>
+            <article>
+              <span>02</span>
+              <strong>Host may be unreachable</strong>
+              <p>Use `ping` when ICMP is allowed, then check routes and firewall rules.</p>
+            </article>
+            <article>
+              <span>03</span>
+              <strong>Port may be blocked</strong>
+              <p>Use `nc -vz host port` from the failing source.</p>
+            </article>
+            <article>
+              <span>04</span>
+              <strong>Service may not be listening</strong>
+              <p>Use `ss -tulnp` on the server to see listening ports.</p>
+            </article>
+            <article>
+              <span>05</span>
+              <strong>Application may be failing</strong>
+              <p>Use `curl -I` or `curl -v` to inspect status codes, headers, and TLS details.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Real DevOps scenarios</p>
+          <h2>How these tools help in production-style problems</h2>
+          <div class="setup-grid">
+            <article class="setup-card tools-use-card">
+              <span class="setup-label">Ingress</span>
+              <h2>Users see 502 errors</h2>
+              <p>
+                Use `curl -I` to confirm the HTTP status, then check ingress rules, service endpoints, and backend logs.
+                A 502 often means the gateway reached something unhealthy or misconfigured.
+              </p>
+            </article>
+            <article class="setup-card tools-use-card">
+              <span class="setup-label">Database</span>
+              <h2>The app cannot connect</h2>
+              <p>
+                Use DNS tools for the hostname, `nc` for the database port, and cloud firewall checks for Security
+                Groups, NACLs, and routes.
+              </p>
+            </article>
+            <article class="setup-card tools-use-card">
+              <span class="setup-label">Server access</span>
+              <h2>SSH is timing out</h2>
+              <p>
+                Check DNS or IP, confirm port 22 reachability, inspect Security Groups, verify routes, and confirm the
+                SSH service is running on the server.
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Command patterns</p>
+          <h2>Useful examples to remember</h2>
+          <div class="command-grid network-command-grid">
+            <article><code>curl -I URL</code><p>Show response headers and status code without downloading the full body.</p></article>
+            <article><code>curl -v URL</code><p>Show connection, TLS, request, and response details.</p></article>
+            <article><code>nc -vz host 443</code><p>Test if a TCP port is reachable.</p></article>
+            <article><code>ss -tulnp</code><p>Find local listening ports and the process using each port.</p></article>
+            <article><code>dig domain A</code><p>Query A records for a domain.</p></article>
+            <article><code>dig domain CNAME</code><p>Check aliases that may point to load balancers.</p></article>
+            <article><code>traceroute host</code><p>View the route packets take across the network.</p></article>
+            <article><code>ping host</code><p>Check basic reachability, when ICMP is not blocked.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Safe habits</p>
+          <h2>Good troubleshooting is calm and repeatable</h2>
+          <div class="checklist-grid">
+            <p class="check-item">Run tests from the same source that is experiencing the problem.</p>
+            <p class="check-item">Record the exact command and output before changing anything.</p>
+            <p class="check-item">Do not assume ping failure means the server is down; ICMP may be blocked.</p>
+            <p class="check-item">Check DNS and port reachability before blaming the application.</p>
+            <p class="check-item">Use HTTP status codes to separate network issues from application issues.</p>
+            <p class="check-item">Compare failing and working environments to spot drift or missing rules.</p>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mini project</p>
+          <h2>Create a network troubleshooting command sheet</h2>
+          <p>
+            The Day 7 portfolio task is to create a Markdown command sheet that groups each tool by the question it
+            answers. This becomes a useful runbook for future cloud, Kubernetes, and CI/CD troubleshooting.
+          </p>
+
+          <div class="command-card command-card-large">
+            <code>mkdir -p notes/networking</code>
+            <code>touch notes/networking/day-07-network-tools.md</code>
+            <code>echo "# Day 7 - Network Troubleshooting Tools" &gt; notes/networking/day-07-network-tools.md</code>
+            <code>git add notes/networking/day-07-network-tools.md</code>
+            <code>git commit -m "Add Day 7 network troubleshooting tools notes"</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to do after Day 7</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 7 network tools readiness checks">
+            <span>dns</span>
+            <span>ping</span>
+            <span>curl</span>
+            <span>port</span>
+            <span>listen</span>
+            <span>route</span>
+            <span>status</span>
+            <span>evidence</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>Which command proves whether DNS resolution is working?</p>
+            <p>Which command checks whether port 443 is reachable?</p>
+            <p>How does `curl -I` help separate app issues from network issues?</p>
+            <p>Why should troubleshooting be done from the failing source?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
