@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 8: SSH secure Linux access | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 8 of DevOps in 100 Days by Ebenezer Tetteh: a practical SSH guide covering keys, secure access, config files, permissions, scp, rsync, troubleshooting, and production-safe habits."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero ssh-hero">
+        <div>
+          <p class="eyebrow">Day 8 of 100</p>
+          <h1>SSH: secure access to Linux servers like a DevOps engineer</h1>
+          <p>
+            SSH is the secure doorway into Linux servers. In real DevOps work, it is used for administration,
+            troubleshooting, copying files, checking logs, running controlled commands, and accessing cloud instances
+            without relying on passwords.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#ssh-lab">Start the SSH lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel ssh-access-panel" aria-label="Day 8 learning summary">
+          <span>Today's focus</span>
+          <strong>Key-based secure access</strong>
+          <p>Keys, permissions, `ssh`, `scp`, `rsync`, `~/.ssh/config`, troubleshooting, and safe production habits.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="ssh-flow-board" aria-label="SSH connection flow">
+          <article>
+            <span>1</span>
+            <strong>Client</strong>
+            <p>Your laptop or workstation starts the encrypted SSH session.</p>
+          </article>
+          <article>
+            <span>2</span>
+            <strong>Private key</strong>
+            <p>Your private key proves your identity and should never be shared.</p>
+          </article>
+          <article>
+            <span>3</span>
+            <strong>Network path</strong>
+            <p>Traffic normally reaches the server through TCP port 22.</p>
+          </article>
+          <article>
+            <span>4</span>
+            <strong>Server</strong>
+            <p>The server checks your public key in `authorized_keys` before allowing access.</p>
+          </article>
+        </div>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why it matters</span>
+            <h2>SSH is a daily production skill</h2>
+            <p>
+              Even when teams use automation, CI/CD, monitoring, and Infrastructure as Code, engineers still need to
+              understand secure access. When a server is unreachable, a deployment fails, logs need checking, or a
+              cloud instance needs validation, SSH knowledge helps you investigate safely.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">Real world</span>
+            <h2>SSH is not just "logging in"</h2>
+            <p>
+              A good DevOps engineer knows how to create keys, protect private keys, connect with the correct user,
+              copy files, use jump hosts, debug permission errors, and avoid risky habits such as password logins or
+              shared keys.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Core concepts</p>
+          <h2>The SSH pieces you need to understand</h2>
+          <div class="ssh-concept-grid">
+            <article><strong>SSH client</strong><p>The tool on your machine that starts the secure connection.</p></article>
+            <article><strong>SSH server</strong><p>The remote service, usually `sshd`, that accepts secure access.</p></article>
+            <article><strong>Public key</strong><p>The key you can place on a server to identify allowed users.</p></article>
+            <article><strong>Private key</strong><p>The secret key you protect carefully on your own machine.</p></article>
+            <article><strong>Known hosts</strong><p>A local record that helps detect if a server identity changes.</p></article>
+            <article><strong>Authorized keys</strong><p>The server-side file that lists public keys allowed to connect.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="ssh-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Create a secure SSH key and connect to a server</h2>
+          <p>
+            This lab shows the practical flow. Replace the email, username, and server address with your own values
+            when practising.
+          </p>
+
+          <div class="terminal-card ssh-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># 1. Create a modern SSH key
+ssh-keygen -t ed25519 -C "your-email@example.com"
+
+# 2. Check the key files
+ls -la ~/.ssh
+
+# 3. Copy the public key to the server
+ssh-copy-id ubuntu@your-server-ip
+
+# 4. Connect to the server
+ssh ubuntu@your-server-ip
+
+# 5. Confirm who and where you are
+whoami
+hostname
+pwd</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">File permissions</p>
+          <h2>SSH is strict about permissions for a reason</h2>
+          <p>
+            SSH may reject a key if the files are too open. This protects private keys from being readable by other
+            users on the machine.
+          </p>
+          <div class="command-grid ssh-command-grid">
+            <article><code>chmod 700 ~/.ssh</code><p>Only the owner can access the SSH directory.</p></article>
+            <article><code>chmod 600 ~/.ssh/id_ed25519</code><p>Only the owner can read and write the private key.</p></article>
+            <article><code>chmod 644 ~/.ssh/id_ed25519.pub</code><p>The public key can be readable because it is not secret.</p></article>
+            <article><code>chmod 600 ~/.ssh/authorized_keys</code><p>Protect the server-side list of approved public keys.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Better workflow</p>
+          <h2>Use an SSH config file to make access cleaner</h2>
+          <p>
+            Instead of typing long SSH commands every time, you can define friendly host names in `~/.ssh/config`.
+            This is especially useful when managing multiple cloud servers.
+          </p>
+
+          <div class="terminal-card ssh-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># ~/.ssh/config
+Host app-server
+  HostName 203.0.113.10
+  User ubuntu
+  IdentityFile ~/.ssh/id_ed25519
+  Port 22
+
+# Connect with the short name
+ssh app-server</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">DevOps use cases</p>
+          <h2>Where SSH appears in real delivery work</h2>
+          <div class="ssh-use-grid">
+            <article><strong>Cloud access</strong><p>Connect to EC2 or Linux VMs to verify services, logs, ports, and configuration.</p></article>
+            <article><strong>Deployment checks</strong><p>Confirm a release by checking service status and application logs after deployment.</p></article>
+            <article><strong>File transfer</strong><p>Use `scp` or `rsync` to copy controlled files between machines.</p></article>
+            <article><strong>Incident response</strong><p>Access a server during an outage to gather evidence before making changes.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Command patterns</p>
+          <h2>Useful SSH commands to practise</h2>
+          <div class="command-grid ssh-command-grid">
+            <article><code>ssh user@host</code><p>Connect to a remote Linux server.</p></article>
+            <article><code>ssh -i key.pem user@host</code><p>Connect with a specific private key file.</p></article>
+            <article><code>ssh -v user@host</code><p>Show verbose connection details for troubleshooting.</p></article>
+            <article><code>scp file user@host:/tmp/</code><p>Copy a file to a remote server.</p></article>
+            <article><code>rsync -avz src/ user@host:/app/</code><p>Synchronise files efficiently over SSH.</p></article>
+            <article><code>systemctl status ssh</code><p>Check the SSH service on a Linux server.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting</p>
+          <h2>How to investigate common SSH failures</h2>
+          <div class="ssh-debug-list">
+            <article><span>Permission denied</span><p>Check the username, private key, public key placement, and file permissions.</p></article>
+            <article><span>Connection timed out</span><p>Check the server IP, firewall rules, security group, route table, VPN, and port 22 access.</p></article>
+            <article><span>Host key warning</span><p>Investigate why the server identity changed before removing entries from `known_hosts`.</p></article>
+            <article><span>Too many authentication failures</span><p>Specify the correct key with `-i` or use an SSH config entry.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Security habits</p>
+          <h2>How to use SSH safely</h2>
+          <div class="checklist-grid">
+            <p class="check-item">Use key-based authentication instead of passwords where possible.</p>
+            <p class="check-item">Never share private keys or commit them to GitHub.</p>
+            <p class="check-item">Use separate keys for different environments when appropriate.</p>
+            <p class="check-item">Restrict SSH access with firewall rules, security groups, or VPN access.</p>
+            <p class="check-item">Rotate keys when people leave a team or access is no longer needed.</p>
+            <p class="check-item">Use least privilege: avoid logging in as root for normal work.</p>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mini project</p>
+          <h2>Create an SSH access guide for your portfolio</h2>
+          <p>
+            The Day 8 portfolio task is to create a short Markdown guide showing how to generate a key, connect to a
+            server, fix permissions, copy files, and troubleshoot common errors.
+          </p>
+
+          <div class="command-card command-card-large">
+            <code>mkdir -p notes/linux</code>
+            <code>touch notes/linux/day-08-ssh-secure-access.md</code>
+            <code>echo "# Day 8 - SSH Secure Linux Access" &gt; notes/linux/day-08-ssh-secure-access.md</code>
+            <code>git add notes/linux/day-08-ssh-secure-access.md</code>
+            <code>git commit -m "Add Day 8 SSH secure access notes"</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to do after Day 8</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 8 SSH readiness checks">
+            <span>keys</span>
+            <span>connect</span>
+            <span>config</span>
+            <span>chmod</span>
+            <span>scp</span>
+            <span>rsync</span>
+            <span>debug</span>
+            <span>secure</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>Why is a private key different from a public key?</p>
+            <p>Which permissions should protect an SSH private key?</p>
+            <p>How would you troubleshoot `Permission denied publickey`?</p>
+            <p>Why should production SSH access be restricted and audited?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>

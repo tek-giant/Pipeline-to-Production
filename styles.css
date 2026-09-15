@@ -2042,6 +2042,191 @@ code {
   min-height: 250px;
 }
 
+.ssh-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(8, 20, 17, 0.98), rgba(29, 72, 70, 0.92)),
+    #081411;
+}
+
+.ssh-hero::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(90deg, transparent 0 16%, rgba(125, 211, 252, 0.14) 16% 17%, transparent 17% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 54px);
+  opacity: 0.62;
+  pointer-events: none;
+  animation: sshSignal 7s ease-in-out infinite;
+}
+
+.ssh-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.ssh-access-panel {
+  border-color: rgba(125, 211, 252, 0.28);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+}
+
+.ssh-flow-board,
+.ssh-concept-grid,
+.ssh-use-grid,
+.ssh-debug-list {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.ssh-flow-board {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.ssh-concept-grid,
+.ssh-use-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.ssh-debug-list {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.ssh-flow-board article,
+.ssh-concept-grid article,
+.ssh-use-grid article,
+.ssh-debug-list article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.ssh-flow-board article::after,
+.ssh-debug-list article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #14b8a6, #38bdf8, var(--gold));
+  content: "";
+  transform: scaleX(0.18);
+  transform-origin: left;
+  animation: sshKeySweep 3.8s ease-in-out infinite;
+}
+
+.ssh-flow-board article:hover,
+.ssh-concept-grid article:hover,
+.ssh-use-grid article:hover,
+.ssh-debug-list article:hover {
+  border-color: rgba(56, 189, 248, 0.38);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.ssh-flow-board span {
+  display: grid;
+  width: 42px;
+  height: 42px;
+  margin-bottom: 14px;
+  place-items: center;
+  border-radius: 8px;
+  background: #10211d;
+  color: #dff3ee;
+  font-weight: 900;
+}
+
+.ssh-flow-board strong,
+.ssh-concept-grid strong,
+.ssh-use-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.06rem;
+}
+
+.ssh-flow-board p,
+.ssh-concept-grid p,
+.ssh-use-grid p,
+.ssh-debug-list p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.ssh-terminal {
+  position: relative;
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+.ssh-terminal::after {
+  position: absolute;
+  right: 18px;
+  bottom: 14px;
+  width: 10px;
+  height: 18px;
+  border-radius: 2px;
+  background: #7dd3fc;
+  content: "";
+  opacity: 0.8;
+  animation: sshCursor 1s steps(2, start) infinite;
+}
+
+.ssh-command-grid article {
+  border-color: rgba(20, 184, 166, 0.16);
+}
+
+.ssh-debug-list span {
+  display: inline-flex;
+  margin-bottom: 10px;
+  border-radius: 8px;
+  background: rgba(20, 184, 166, 0.12);
+  padding: 7px 10px;
+  color: #0f766e;
+  font-weight: 900;
+}
+
+@keyframes sshSignal {
+  0%,
+  100% {
+    transform: translateX(-18px);
+    opacity: 0.52;
+  }
+  50% {
+    transform: translateX(18px);
+    opacity: 0.74;
+  }
+}
+
+@keyframes sshKeySweep {
+  0%,
+  100% {
+    transform: scaleX(0.18);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes sshCursor {
+  0%,
+  45% {
+    opacity: 0.8;
+  }
+  46%,
+  100% {
+    opacity: 0;
+  }
+}
+
 @keyframes evidenceSweep {
   0%,
   100% {
@@ -2220,7 +2405,11 @@ code {
   .port-board,
   .tool-diagnostic-board,
   .network-tool-grid,
-  .evidence-ladder {
+  .evidence-ladder,
+  .ssh-flow-board,
+  .ssh-concept-grid,
+  .ssh-use-grid,
+  .ssh-debug-list {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2278,6 +2467,10 @@ code {
   .tool-diagnostic-board,
   .network-tool-grid,
   .evidence-ladder,
+  .ssh-flow-board,
+  .ssh-concept-grid,
+  .ssh-use-grid,
+  .ssh-debug-list,
   .flow-strip {
     grid-template-columns: 1fr;
   }
