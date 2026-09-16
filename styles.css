@@ -2227,6 +2227,183 @@ code {
   }
 }
 
+.logs-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(11, 18, 32, 0.98), rgba(35, 66, 63, 0.94)),
+    #0b1220;
+}
+
+.logs-hero::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    repeating-linear-gradient(180deg, rgba(125, 211, 252, 0.12) 0 2px, transparent 2px 28px),
+    linear-gradient(90deg, transparent, rgba(20, 184, 166, 0.16), transparent);
+  opacity: 0.45;
+  pointer-events: none;
+  animation: logScroll 8s linear infinite;
+}
+
+.logs-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.log-console-panel {
+  border-color: rgba(20, 184, 166, 0.28);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.25);
+}
+
+.log-timeline,
+.log-source-grid,
+.log-message-board,
+.log-investigation-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.log-timeline {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.log-source-grid,
+.log-investigation-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.log-message-board {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.log-timeline article,
+.log-source-grid article,
+.log-message-board article,
+.log-investigation-grid article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.log-timeline article::after,
+.log-message-board article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #38bdf8, #14b8a6, var(--gold));
+  content: "";
+  transform: scaleX(0.16);
+  transform-origin: left;
+  animation: logSignal 3.6s ease-in-out infinite;
+}
+
+.log-timeline article:hover,
+.log-source-grid article:hover,
+.log-message-board article:hover,
+.log-investigation-grid article:hover {
+  border-color: rgba(14, 165, 233, 0.34);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.log-timeline span,
+.log-investigation-grid span {
+  display: grid;
+  width: 44px;
+  height: 44px;
+  margin-bottom: 14px;
+  place-items: center;
+  border-radius: 8px;
+  background: #111827;
+  color: #dff3ee;
+  font-weight: 900;
+}
+
+.log-timeline strong,
+.log-source-grid strong,
+.log-message-board strong,
+.log-investigation-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.06rem;
+}
+
+.log-timeline p,
+.log-source-grid p,
+.log-message-board p,
+.log-investigation-grid p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.log-terminal {
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+.log-terminal code {
+  color: #d7fbe8;
+}
+
+.log-command-grid article {
+  border-color: rgba(14, 165, 233, 0.16);
+}
+
+.log-badge {
+  display: inline-flex;
+  margin-bottom: 12px;
+  border-radius: 8px;
+  padding: 7px 10px;
+  font-weight: 900;
+  letter-spacing: 0;
+}
+
+.log-badge.error {
+  background: rgba(220, 38, 38, 0.1);
+  color: #b91c1c;
+}
+
+.log-badge.warn {
+  background: rgba(197, 143, 42, 0.16);
+  color: #8a5a0a;
+}
+
+.log-badge.info {
+  background: rgba(14, 165, 233, 0.12);
+  color: #0369a1;
+}
+
+@keyframes logScroll {
+  from {
+    background-position: 0 0, 0 0;
+  }
+  to {
+    background-position: 0 84px, 90px 0;
+  }
+}
+
+@keyframes logSignal {
+  0%,
+  100% {
+    transform: scaleX(0.16);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
 @keyframes evidenceSweep {
   0%,
   100% {
@@ -2409,7 +2586,11 @@ code {
   .ssh-flow-board,
   .ssh-concept-grid,
   .ssh-use-grid,
-  .ssh-debug-list {
+  .ssh-debug-list,
+  .log-timeline,
+  .log-source-grid,
+  .log-message-board,
+  .log-investigation-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2471,6 +2652,10 @@ code {
   .ssh-concept-grid,
   .ssh-use-grid,
   .ssh-debug-list,
+  .log-timeline,
+  .log-source-grid,
+  .log-message-board,
+  .log-investigation-grid,
   .flow-strip {
     grid-template-columns: 1fr;
   }

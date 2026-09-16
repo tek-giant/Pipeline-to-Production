@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 9: Logs and investigation | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 9 of DevOps in 100 Days by Ebenezer Tetteh: a practical guide to Linux, Docker, Kubernetes, and service logs for evidence-based troubleshooting."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero logs-hero">
+        <div>
+          <p class="eyebrow">Day 9 of 100</p>
+          <h1>Logs: follow the evidence before changing anything</h1>
+          <p>
+            Logs are the written record of what a system experienced. They help DevOps engineers move from guessing to
+            evidence by showing when a failure started, which component complained, what changed, and whether the issue
+            sits in the application, server, container, network, database, or dependency path.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#log-lab">Start the log lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel log-console-panel" aria-label="Day 9 learning summary">
+          <span>Today's focus</span>
+          <strong>Evidence-based log investigation</strong>
+          <p>`tail`, `grep`, `journalctl`, `docker logs`, `kubectl logs`, timestamps, patterns, and incident notes.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="log-timeline" aria-label="Log investigation flow">
+          <article>
+            <span>01</span>
+            <strong>Alert</strong>
+            <p>A user reports an error, monitoring fires, or a deployment behaves unexpectedly.</p>
+          </article>
+          <article>
+            <span>02</span>
+            <strong>Timestamp</strong>
+            <p>Find the exact time window. Good log work starts with a time boundary.</p>
+          </article>
+          <article>
+            <span>03</span>
+            <strong>Pattern</strong>
+            <p>Search for repeated errors, affected endpoints, status codes, pods, or hosts.</p>
+          </article>
+          <article>
+            <span>04</span>
+            <strong>Cause</strong>
+            <p>Use the evidence to decide whether the fault is app, infrastructure, config, or dependency related.</p>
+          </article>
+        </div>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why it matters</span>
+            <h2>Logs stop troubleshooting from becoming guesswork</h2>
+            <p>
+              A deployment might say successful while users still see errors. A server might be online while the
+              application fails to connect to a database. Logs show the gap between "it is running" and "it is working".
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">DevOps mindset</span>
+            <h2>Collect evidence before applying fixes</h2>
+            <p>
+              In production, random fixes can make an incident worse. A calm engineer checks logs, confirms the scope,
+              captures useful output, and then chooses the safest next action.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Log sources</p>
+          <h2>Where to look first</h2>
+          <div class="log-source-grid">
+            <article><strong>Application logs</strong><p>Exceptions, failed requests, database errors, queue failures, and business logic problems.</p></article>
+            <article><strong>System logs</strong><p>Linux service failures, authentication events, kernel messages, resource pressure, and daemon errors.</p></article>
+            <article><strong>Container logs</strong><p>Application output from Docker containers and Kubernetes pods.</p></article>
+            <article><strong>Web server logs</strong><p>Nginx or Apache access logs, upstream failures, 4xx and 5xx responses, and request paths.</p></article>
+            <article><strong>Cloud logs</strong><p>Load balancer logs, CloudWatch logs, audit trails, platform events, and managed service errors.</p></article>
+            <article><strong>Pipeline logs</strong><p>Build failures, test output, deployment errors, credentials issues, and artifact publishing problems.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="log-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Investigate a Linux service using logs</h2>
+          <p>
+            This lab gives a realistic sequence. The aim is not to memorise commands only, but to build the habit of
+            narrowing the problem with evidence.
+          </p>
+
+          <div class="terminal-card log-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># 1. Check whether the service is running
+systemctl status nginx
+
+# 2. Read recent logs for the service
+journalctl -u nginx --since "30 minutes ago"
+
+# 3. Follow logs in real time
+journalctl -u nginx -f
+
+# 4. Search for errors in a file
+grep -i "error" /var/log/nginx/error.log
+
+# 5. View the latest lines
+tail -n 100 /var/log/nginx/error.log</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Command toolkit</p>
+          <h2>Commands every DevOps engineer should practise</h2>
+          <div class="command-grid log-command-grid">
+            <article><code>tail -f app.log</code><p>Follow a log file as new lines are written.</p></article>
+            <article><code>tail -n 200 app.log</code><p>Read the most recent 200 lines without opening the whole file.</p></article>
+            <article><code>grep -i "error" app.log</code><p>Search for errors without worrying about letter case.</p></article>
+            <article><code>grep -C 3 "timeout" app.log</code><p>Show three lines before and after each match for context.</p></article>
+            <article><code>journalctl -xe</code><p>View recent system logs with extra explanation.</p></article>
+            <article><code>journalctl -u service</code><p>Read logs for one Linux service.</p></article>
+            <article><code>docker logs container</code><p>Inspect stdout and stderr from a container.</p></article>
+            <article><code>kubectl logs pod</code><p>Read logs from a Kubernetes pod.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Real examples</p>
+          <h2>What different log messages can tell you</h2>
+          <div class="log-message-board">
+            <article>
+              <span class="log-badge error">ERROR</span>
+              <strong>Database connection refused</strong>
+              <p>Check database endpoint, security group, network path, credentials, service status, and recent config changes.</p>
+            </article>
+            <article>
+              <span class="log-badge warn">WARN</span>
+              <strong>Request timeout after 30 seconds</strong>
+              <p>Check upstream latency, dependency health, resource saturation, retry behaviour, and load balancer timeout settings.</p>
+            </article>
+            <article>
+              <span class="log-badge info">INFO</span>
+              <strong>Deployment version changed</strong>
+              <p>Correlate the timestamp with the first user-facing error to see whether the release introduced the issue.</p>
+            </article>
+            <article>
+              <span class="log-badge error">ERROR</span>
+              <strong>Permission denied</strong>
+              <p>Check Linux permissions, IAM permissions, Kubernetes service accounts, secrets, mounted volumes, and file ownership.</p>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Container and Kubernetes logs</p>
+          <h2>How logs help when workloads run in containers</h2>
+          <p>
+            In container platforms, logs should usually go to stdout and stderr so Docker, Kubernetes, and logging
+            platforms can collect them. This makes troubleshooting easier across many replicas.
+          </p>
+          <div class="terminal-card log-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># Docker examples
+docker ps
+docker logs --tail 100 web-app
+docker logs -f web-app
+
+# Kubernetes examples
+kubectl get pods
+kubectl logs web-app-7d9f8c6f4b-abc12
+kubectl logs deployment/web-app --tail=100
+kubectl logs web-app-7d9f8c6f4b-abc12 --previous</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Investigation method</p>
+          <h2>A repeatable way to read logs during an incident</h2>
+          <div class="log-investigation-grid">
+            <article><span>1</span><strong>Define the time window</strong><p>Start with when the alert fired, when the deployment happened, or when users first reported the issue.</p></article>
+            <article><span>2</span><strong>Check the affected component</strong><p>Look at the app, service, pod, container, server, or load balancer closest to the symptom.</p></article>
+            <article><span>3</span><strong>Search for repeated patterns</strong><p>Look for error codes, stack traces, failed dependencies, timeouts, permission errors, and repeated request paths.</p></article>
+            <article><span>4</span><strong>Correlate with change</strong><p>Compare the first error with deployments, config changes, scaling events, infrastructure updates, or dependency outages.</p></article>
+            <article><span>5</span><strong>Record evidence</strong><p>Copy the key log lines, timestamps, service names, versions, and commands used before making changes.</p></article>
+            <article><span>6</span><strong>Act safely</strong><p>Rollback, restart, scale, fix config, or escalate based on evidence, impact, and risk.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Good logging habits</p>
+          <h2>Logs should help people solve problems</h2>
+          <div class="checklist-grid">
+            <p class="check-item">Include timestamps and service names so events can be correlated.</p>
+            <p class="check-item">Use clear log levels such as INFO, WARN, ERROR, and DEBUG.</p>
+            <p class="check-item">Do not log passwords, tokens, private keys, or sensitive personal data.</p>
+            <p class="check-item">Add request IDs or correlation IDs for tracing user journeys.</p>
+            <p class="check-item">Keep errors actionable by logging what failed and enough context to investigate.</p>
+            <p class="check-item">Centralise logs when systems have multiple servers, containers, or services.</p>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mini project</p>
+          <h2>Create a log investigation checklist</h2>
+          <p>
+            The Day 9 portfolio task is to create a Markdown checklist that explains how to investigate logs during a
+            production issue. This becomes the beginning of an incident response runbook.
+          </p>
+
+          <div class="command-card command-card-large">
+            <code>mkdir -p notes/linux</code>
+            <code>touch notes/linux/day-09-log-investigation.md</code>
+            <code>echo "# Day 9 - Log Investigation Checklist" &gt; notes/linux/day-09-log-investigation.md</code>
+            <code>git add notes/linux/day-09-log-investigation.md</code>
+            <code>git commit -m "Add Day 9 log investigation checklist"</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to do after Day 9</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 9 log readiness checks">
+            <span>tail</span>
+            <span>grep</span>
+            <span>journalctl</span>
+            <span>docker</span>
+            <span>kubectl</span>
+            <span>timestamp</span>
+            <span>pattern</span>
+            <span>evidence</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>Which command follows a log file in real time?</p>
+            <p>How can `grep -C 3` help during troubleshooting?</p>
+            <p>Why should you define the time window before reading logs?</p>
+            <p>What log evidence would you collect before rolling back a deployment?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
