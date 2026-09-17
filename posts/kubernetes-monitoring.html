@@ -1,0 +1,337 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Monitoring with Kubernetes | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="A practical DevOps article by Ebenezer Tetteh on monitoring Kubernetes workloads with metrics, logs, traces, Prometheus, Grafana, alerts, SLOs, and incident response."
+    />
+    <link rel="stylesheet" href="../styles.css" />
+    <link rel="stylesheet" href="post.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="../index.html">
+        <span class="brand-mark">P2P</span>
+        <span><strong>Pipeline to Production</strong><small>by Ebenezer Tetteh</small></span>
+      </a>
+      <nav class="nav-links" aria-label="Article navigation">
+        <a href="../index.html#articles">Articles</a>
+        <a href="../index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main class="post-shell monitoring-post">
+      <p class="section-kicker">Kubernetes</p>
+      <h1>Monitoring with Kubernetes: from cluster signals to useful action</h1>
+      <p class="post-meta">By Ebenezer Tetteh · Pipeline to Production</p>
+      <img
+        class="post-hero-image"
+        src="../assets/incident-response.png"
+        alt="Kubernetes observability dashboard with alerts, metrics, and incident response signals"
+      />
+
+      <p class="post-lead">
+        Monitoring Kubernetes is not just about installing dashboards. It is about understanding whether applications are
+        healthy, whether the platform has enough capacity, whether deployments are safe, and whether engineers can act
+        quickly when something starts to fail.
+      </p>
+
+      <div class="monitoring-signal-strip" aria-label="Kubernetes monitoring signal areas">
+        <span>Metrics</span>
+        <span>Logs</span>
+        <span>Traces</span>
+        <span>Events</span>
+        <span>Alerts</span>
+      </div>
+
+      <p>
+        Kubernetes gives teams a powerful way to run containers, but it also introduces more moving parts: pods,
+        deployments, services, nodes, ingress controllers, persistent volumes, autoscalers, schedulers, and cloud
+        integrations. Without monitoring, it becomes difficult to know whether a problem is caused by the application,
+        resource pressure, networking, storage, scheduling, a bad release, or the cluster itself.
+      </p>
+
+      <p>
+        A good Kubernetes monitoring setup should answer simple operational questions quickly: Is the service available?
+        Are pods restarting? Are requests getting slower? Is the cluster running out of CPU or memory? Did the latest
+        deployment increase errors? Are alerts clear enough for someone to take action?
+      </p>
+
+      <h2>What Kubernetes monitoring should cover</h2>
+      <p>
+        The Kubernetes documentation describes observability as collecting and analysing metrics, logs, and traces to
+        understand the health and internal state of the cluster. In practical DevOps work, I would extend that into a
+        monitoring model that covers workloads, platform components, user-facing symptoms, and incident response.
+      </p>
+
+      <div class="monitoring-grid">
+        <article>
+          <strong>Workload health</strong>
+          <p>Pod readiness, restarts, deployment rollouts, container resource usage, error rates, and request latency.</p>
+        </article>
+        <article>
+          <strong>Cluster health</strong>
+          <p>Node conditions, CPU, memory, disk pressure, network availability, kubelet status, and control plane signals.</p>
+        </article>
+        <article>
+          <strong>Traffic health</strong>
+          <p>Ingress status codes, upstream errors, request volume, TLS issues, service reachability, and load balancer behaviour.</p>
+        </article>
+        <article>
+          <strong>Release health</strong>
+          <p>Deployment events, rollout status, failed probes, image pull errors, config changes, and rollback signals.</p>
+        </article>
+      </div>
+
+      <h2>The practical monitoring stack</h2>
+      <p>
+        A common Kubernetes monitoring design uses Prometheus for metrics collection, Grafana for dashboards, Alertmanager
+        or a managed alerting tool for notifications, and a logging stack such as Loki, Elasticsearch, OpenSearch, or a
+        cloud provider log service. Traces can be added with OpenTelemetry, Jaeger, Grafana Tempo, or a managed APM tool.
+      </p>
+
+      <div class="monitoring-flow" aria-label="Kubernetes monitoring data flow">
+        <span>Pods</span>
+        <span>Exporters</span>
+        <span>Prometheus</span>
+        <span>Grafana</span>
+        <span>Alerts</span>
+        <span>Runbooks</span>
+      </div>
+
+      <p>
+        Prometheus works well with Kubernetes because it stores metrics as time series data with labels. Labels are useful
+        because Kubernetes already thinks in labels: namespace, deployment, pod, container, node, service, and environment.
+        That makes it easier to group and filter metrics during troubleshooting.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Layer</th>
+            <th>What to monitor</th>
+            <th>Why it matters</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Pod</td>
+            <td>Restarts, status, CPU, memory, logs, readiness, liveness</td>
+            <td>Shows whether an application instance is stable and able to serve traffic</td>
+          </tr>
+          <tr>
+            <td>Deployment</td>
+            <td>Available replicas, rollout status, unavailable replicas, events</td>
+            <td>Shows whether releases are progressing safely</td>
+          </tr>
+          <tr>
+            <td>Node</td>
+            <td>CPU, memory, disk, network, pressure conditions, kubelet health</td>
+            <td>Shows whether the platform has enough capacity</td>
+          </tr>
+          <tr>
+            <td>Ingress</td>
+            <td>Request rate, latency, status codes, upstream errors, TLS</td>
+            <td>Shows how users and external systems experience the service</td>
+          </tr>
+          <tr>
+            <td>Application</td>
+            <td>Business errors, dependency latency, queue depth, saturation, custom metrics</td>
+            <td>Shows whether the workload is meeting user and business expectations</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Start with the basic commands</h2>
+      <p>
+        Before dashboards, a DevOps engineer should know the command-line checks. Dashboards are excellent for visibility,
+        but commands help when you need immediate evidence during a deployment or incident.
+      </p>
+
+      <pre><code># Check node resource usage
+kubectl top nodes
+
+# Check pod resource usage in a namespace
+kubectl top pods -n production
+
+# View pod status, restarts, node placement, and age
+kubectl get pods -n production -o wide
+
+# Inspect a deployment rollout
+kubectl rollout status deployment/web-api -n production
+
+# Read recent pod logs
+kubectl logs deployment/web-api -n production --tail=100
+
+# Check Kubernetes events for scheduling, probe, image, or volume problems
+kubectl get events -n production --sort-by=.lastTimestamp</code></pre>
+
+      <h2>Use probes as monitoring signals</h2>
+      <p>
+        Kubernetes probes are not the whole monitoring system, but they are important health signals. A readiness probe
+        tells Kubernetes whether a pod should receive traffic. A liveness probe tells Kubernetes whether a container
+        should be restarted. A startup probe helps slow-starting applications avoid being killed too early.
+      </p>
+
+      <p>
+        Poor probe design can create noise. For example, a liveness probe that fails during a short dependency timeout
+        can restart a healthy application unnecessarily. A readiness probe that does not check a real dependency can send
+        traffic to pods that are technically running but not ready to serve users.
+      </p>
+
+      <pre><code>readinessProbe:
+  httpGet:
+    path: /ready
+    port: 8080
+  initialDelaySeconds: 10
+  periodSeconds: 10
+
+livenessProbe:
+  httpGet:
+    path: /health
+    port: 8080
+  initialDelaySeconds: 30
+  periodSeconds: 20</code></pre>
+
+      <h2>Design dashboards around decisions</h2>
+      <p>
+        A useful dashboard should help someone decide what to do. I would avoid dashboards that only show every available
+        metric. Instead, I would build views around service health, release confidence, capacity, and incident response.
+      </p>
+
+      <div class="dashboard-card-grid">
+        <article>
+          <strong>Service health dashboard</strong>
+          <p>Request rate, error rate, latency percentiles, pod readiness, restarts, and dependency health.</p>
+        </article>
+        <article>
+          <strong>Release dashboard</strong>
+          <p>Current version, deployment time, rollout status, error change, latency change, and rollback indicators.</p>
+        </article>
+        <article>
+          <strong>Cluster capacity dashboard</strong>
+          <p>Node CPU, memory, disk pressure, allocatable capacity, pending pods, and autoscaler behaviour.</p>
+        </article>
+      </div>
+
+      <h2>Alert on symptoms, not every metric</h2>
+      <p>
+        The fastest way to make monitoring useless is to alert on everything. Good alerts should represent user impact,
+        real operational risk, or action that someone can take. If an alert does not require action, it should usually be
+        a dashboard signal or a log query, not a page.
+      </p>
+
+      <table>
+        <thead>
+          <tr>
+            <th>Weak alert</th>
+            <th>Better alert</th>
+            <th>Reason</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>CPU above 80%</td>
+            <td>CPU saturation causing latency or throttling for 10 minutes</td>
+            <td>High CPU alone may be normal during traffic spikes</td>
+          </tr>
+          <tr>
+            <td>One pod restarted</td>
+            <td>Repeated restarts reducing available replicas below target</td>
+            <td>One restart may be harmless; loss of availability is more important</td>
+          </tr>
+          <tr>
+            <td>Ingress has one 500 error</td>
+            <td>5xx rate above threshold for a sustained period</td>
+            <td>Alert on patterns that affect users</td>
+          </tr>
+        </tbody>
+      </table>
+
+      <h2>Connect monitoring to SLOs</h2>
+      <p>
+        Monitoring becomes more powerful when it is connected to service level objectives. An SLO gives the team a target,
+        such as 99.9% successful requests over 30 days or 95% of requests below 300ms. Instead of arguing about whether a
+        chart looks bad, the team can compare real behaviour against the reliability target.
+      </p>
+
+      <pre><code># Example PromQL-style questions
+rate(http_requests_total{status=~"5.."}[5m])
+
+histogram_quantile(
+  0.95,
+  rate(http_request_duration_seconds_bucket[5m])
+)
+
+sum(rate(container_cpu_usage_seconds_total{namespace="production"}[5m])) by (pod)</code></pre>
+
+      <h2>Include logs and traces</h2>
+      <p>
+        Metrics tell you that something changed. Logs often explain what happened. Traces show how a request moved across
+        services and where time was spent. Kubernetes monitoring should not treat these as separate worlds. During an
+        incident, engineers should be able to move from an alert to a dashboard, from the dashboard to relevant logs, and
+        from logs to a trace or request ID where available.
+      </p>
+
+      <p>
+        The Kubernetes documentation notes that cluster-level logging needs storage and lifecycle outside individual
+        nodes, pods, and containers. That matters because pods are temporary. If a pod is evicted or a node dies, the
+        team still needs access to the evidence.
+      </p>
+
+      <h2>What I would build for a production team</h2>
+      <p>
+        For a production Kubernetes environment, I would create a minimum monitoring foundation before relying on the
+        platform for critical workloads.
+      </p>
+
+      <ul>
+        <li>Metrics Server for basic CPU and memory visibility used by `kubectl top` and autoscaling workflows</li>
+        <li>Prometheus-compatible metrics collection for workloads, nodes, Kubernetes objects, and ingress controllers</li>
+        <li>Grafana dashboards focused on service health, cluster capacity, release health, and incident response</li>
+        <li>Centralised logs with retention, search, labels, request IDs, and access controls</li>
+        <li>Alerting rules linked to runbooks, ownership, severity, and escalation routes</li>
+        <li>OpenTelemetry or another tracing approach for distributed services where request paths cross multiple components</li>
+      </ul>
+
+      <h2>Common mistakes to avoid</h2>
+      <div class="monitoring-warning-list">
+        <article><strong>Only monitoring nodes</strong><p>Healthy nodes do not always mean healthy applications. Workload and user-facing signals matter.</p></article>
+        <article><strong>No alert ownership</strong><p>If nobody owns the alert, it becomes noise. Every important alert should have a team and a runbook.</p></article>
+        <article><strong>Too many dashboards</strong><p>More dashboards do not automatically mean better visibility. Build dashboards around decisions.</p></article>
+        <article><strong>No retention plan</strong><p>Metrics and logs need sensible retention, cost control, and access policies.</p></article>
+      </div>
+
+      <h2>My practical conclusion</h2>
+      <p>
+        Monitoring with Kubernetes should make production easier to understand. The goal is not to collect every possible
+        metric. The goal is to help teams detect problems early, understand impact, troubleshoot quickly, recover safely,
+        and improve the platform after incidents.
+      </p>
+
+      <p>
+        A strong Kubernetes monitoring setup gives engineers confidence. They know what is running, what changed, what is
+        unhealthy, who is affected, and what action to take next. That is the difference between dashboards that look
+        impressive and monitoring that genuinely supports production.
+      </p>
+
+      <h2>References</h2>
+      <ul class="references-list">
+        <li><a href="https://kubernetes.io/docs/concepts/cluster-administration/observability/" target="_blank" rel="noopener">Kubernetes documentation: Observability</a></li>
+        <li><a href="https://kubernetes.io/docs/tasks/debug/debug-cluster/resource-usage-monitoring/" target="_blank" rel="noopener">Kubernetes documentation: Tools for Monitoring Resources</a></li>
+        <li><a href="https://kubernetes.io/docs/concepts/cluster-administration/logging/" target="_blank" rel="noopener">Kubernetes documentation: Logging Architecture</a></li>
+        <li><a href="https://prometheus.io/docs/introduction/overview/" target="_blank" rel="noopener">Prometheus documentation: Overview</a></li>
+        <li><a href="https://grafana.com/docs/grafana-cloud/observe-and-act/monitor-infrastructure/kubernetes-monitoring/" target="_blank" rel="noopener">Grafana documentation: Kubernetes Monitoring</a></li>
+        <li><a href="https://opentelemetry.io/docs/platforms/kubernetes/" target="_blank" rel="noopener">OpenTelemetry documentation: Kubernetes</a></li>
+      </ul>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="../index.html#articles">Back to articles</a>
+    </footer>
+  </body>
+</html>

@@ -75,3 +75,123 @@
   color: var(--accent-dark);
   font-weight: 800;
 }
+
+.monitoring-post .post-hero-image {
+  border-color: rgba(14, 165, 233, 0.24);
+}
+
+.monitoring-signal-strip,
+.monitoring-flow {
+  display: grid;
+  gap: 10px;
+  margin: 24px 0 30px;
+}
+
+.monitoring-signal-strip {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+}
+
+.monitoring-flow {
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+}
+
+.monitoring-signal-strip span,
+.monitoring-flow span {
+  position: relative;
+  display: grid;
+  min-height: 72px;
+  place-items: center;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  color: var(--accent-dark);
+  font-weight: 900;
+  text-align: center;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+}
+
+.monitoring-signal-strip span::after,
+.monitoring-flow span::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #38bdf8, var(--accent), var(--gold));
+  content: "";
+  transform: scaleX(0.22);
+  transform-origin: left;
+  animation: monitoringPulse 3.4s ease-in-out infinite;
+}
+
+.monitoring-grid,
+.dashboard-card-grid,
+.monitoring-warning-list {
+  display: grid;
+  gap: 14px;
+  margin: 22px 0;
+}
+
+.monitoring-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.dashboard-card-grid,
+.monitoring-warning-list {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.monitoring-grid article,
+.dashboard-card-grid article,
+.monitoring-warning-list article {
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 18px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.monitoring-grid article:hover,
+.dashboard-card-grid article:hover,
+.monitoring-warning-list article:hover {
+  transform: translateY(-4px);
+  border-color: rgba(14, 165, 233, 0.34);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+}
+
+.monitoring-grid strong,
+.dashboard-card-grid strong,
+.monitoring-warning-list strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+}
+
+.monitoring-grid p,
+.dashboard-card-grid p,
+.monitoring-warning-list p {
+  margin: 0;
+  color: var(--muted);
+}
+
+@keyframes monitoringPulse {
+  0%,
+  100% {
+    transform: scaleX(0.22);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
+@media (max-width: 820px) {
+  .monitoring-signal-strip,
+  .monitoring-flow,
+  .monitoring-grid,
+  .dashboard-card-grid,
+  .monitoring-warning-list {
+    grid-template-columns: 1fr;
+  }
+}
