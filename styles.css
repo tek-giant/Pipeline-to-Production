@@ -2531,6 +2531,156 @@ code {
   }
 }
 
+.webserver-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(14, 32, 27, 0.98), rgba(42, 77, 62, 0.92)),
+    #0e201b;
+}
+
+.webserver-hero::before {
+  position: absolute;
+  inset: 0;
+  content: "";
+  background:
+    linear-gradient(90deg, transparent 0 18%, rgba(197, 143, 42, 0.16) 18% 19%, transparent 19% 100%),
+    repeating-linear-gradient(180deg, rgba(255, 255, 255, 0.045) 0 1px, transparent 1px 48px);
+  opacity: 0.55;
+  pointer-events: none;
+  animation: webServerScan 7s ease-in-out infinite;
+}
+
+.webserver-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.webserver-panel {
+  border-color: rgba(197, 143, 42, 0.32);
+  box-shadow: 0 24px 70px rgba(0, 0, 0, 0.24);
+}
+
+.webserver-flow,
+.webserver-architecture,
+.webserver-troubleshoot,
+.webserver-skill-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.webserver-flow {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.webserver-architecture,
+.webserver-troubleshoot,
+.webserver-skill-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.webserver-architecture {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.webserver-flow article,
+.webserver-architecture article,
+.webserver-troubleshoot article,
+.webserver-skill-grid article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.webserver-flow article::after,
+.webserver-troubleshoot article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, var(--gold), var(--accent), #38bdf8);
+  content: "";
+  transform: scaleX(0.2);
+  transform-origin: left;
+  animation: webServerDeploy 3.4s ease-in-out infinite;
+}
+
+.webserver-flow article:hover,
+.webserver-architecture article:hover,
+.webserver-troubleshoot article:hover,
+.webserver-skill-grid article:hover {
+  border-color: rgba(197, 143, 42, 0.38);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.webserver-flow span,
+.webserver-troubleshoot span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: #10211d;
+  padding: 7px 10px;
+  color: #dff3ee;
+  font-weight: 900;
+}
+
+.webserver-flow strong,
+.webserver-architecture strong,
+.webserver-skill-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.06rem;
+}
+
+.webserver-flow p,
+.webserver-architecture p,
+.webserver-troubleshoot p,
+.webserver-skill-grid p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.webserver-terminal {
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+.webserver-command-grid article {
+  border-color: rgba(197, 143, 42, 0.18);
+}
+
+@keyframes webServerScan {
+  0%,
+  100% {
+    transform: translateX(-16px);
+    opacity: 0.46;
+  }
+  50% {
+    transform: translateX(16px);
+    opacity: 0.7;
+  }
+}
+
+@keyframes webServerDeploy {
+  0%,
+  100% {
+    transform: scaleX(0.2);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -2590,7 +2740,11 @@ code {
   .log-timeline,
   .log-source-grid,
   .log-message-board,
-  .log-investigation-grid {
+  .log-investigation-grid,
+  .webserver-flow,
+  .webserver-architecture,
+  .webserver-troubleshoot,
+  .webserver-skill-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -2656,6 +2810,10 @@ code {
   .log-source-grid,
   .log-message-board,
   .log-investigation-grid,
+  .webserver-flow,
+  .webserver-architecture,
+  .webserver-troubleshoot,
+  .webserver-skill-grid,
   .flow-strip {
     grid-template-columns: 1fr;
   }

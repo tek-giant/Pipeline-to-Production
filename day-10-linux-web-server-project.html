@@ -1,0 +1,257 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 10: Linux web server mini project | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 10 of DevOps in 100 Days by Ebenezer Tetteh: a practical Linux mini project to deploy, test, troubleshoot, and document a simple Nginx web server."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero webserver-hero">
+        <div>
+          <p class="eyebrow">Day 10 of 100</p>
+          <h1>Linux mini project: deploy a simple web server</h1>
+          <p>
+            Day 10 brings the Linux basics together. Instead of learning commands in isolation, you will use them to
+            install a web server, publish a page, check the service, test network access, read logs, troubleshoot errors,
+            and document the whole process like a DevOps engineer.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#webserver-lab">Start the project</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel webserver-panel" aria-label="Day 10 learning summary">
+          <span>Today's focus</span>
+          <strong>Linux service deployment</strong>
+          <p>Nginx, packages, systemd, ports, firewall checks, logs, curl tests, and deployment documentation.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="webserver-flow" aria-label="Linux web server deployment flow">
+          <article><span>01</span><strong>Install</strong><p>Use the package manager to install a real web server.</p></article>
+          <article><span>02</span><strong>Run</strong><p>Start and enable the service with systemd.</p></article>
+          <article><span>03</span><strong>Serve</strong><p>Create a simple HTML page and publish it from Linux.</p></article>
+          <article><span>04</span><strong>Prove</strong><p>Use status, port, curl, and logs to prove it works.</p></article>
+        </div>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Project goal</span>
+            <h2>Build something small but real</h2>
+            <p>
+              The goal is to deploy a simple Nginx website on Linux and verify it properly. This project connects file
+              permissions, services, networking, SSH, logs, and troubleshooting into one practical workflow.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">DevOps value</span>
+            <h2>Learn the operational loop</h2>
+            <p>
+              A DevOps engineer does not stop at installing software. They confirm the service is enabled, prove the
+              port is listening, test the endpoint, check logs, document the deployment, and make the work repeatable.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Architecture</p>
+          <h2>What this mini project creates</h2>
+          <div class="webserver-architecture" aria-label="Simple Linux web server architecture">
+            <article><strong>Browser or curl</strong><p>Sends an HTTP request to the server.</p></article>
+            <article><strong>Linux host</strong><p>Runs the operating system, firewall, logs, and service manager.</p></article>
+            <article><strong>Nginx service</strong><p>Listens on port 80 and serves static content.</p></article>
+            <article><strong>HTML page</strong><p>Lives under `/var/www/html` and proves the deployment worked.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="webserver-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Deploy Nginx on Ubuntu or Debian</h2>
+          <p>
+            These commands use Ubuntu or Debian package management. On Amazon Linux, CentOS, or RHEL, the package manager
+            and service names may be slightly different, but the DevOps thinking is the same.
+          </p>
+
+          <div class="terminal-card webserver-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># 1. Update package information
+sudo apt update
+
+# 2. Install Nginx
+sudo apt install nginx -y
+
+# 3. Start the service now
+sudo systemctl start nginx
+
+# 4. Enable it after reboot
+sudo systemctl enable nginx
+
+# 5. Check the service status
+systemctl status nginx --no-pager</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Publish content</p>
+          <h2>Create your own web page</h2>
+          <p>
+            A default Nginx page proves the package works. A custom page proves you can deploy your own content and
+            control the files being served.
+          </p>
+
+          <div class="terminal-card webserver-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># Create a simple project page
+sudo tee /var/www/html/index.html &gt; /dev/null &lt;&lt;'HTML'
+&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;Day 10 Linux Web Server&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;h1&gt;Deployed by Pipeline to Production&lt;/h1&gt;
+    &lt;p&gt;This page is running from Nginx on Linux.&lt;/p&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+HTML</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Verification</p>
+          <h2>Prove the web server is working</h2>
+          <div class="command-grid webserver-command-grid">
+            <article><code>systemctl status nginx</code><p>Confirms whether the service is active or failed.</p></article>
+            <article><code>ss -tulnp | grep :80</code><p>Shows whether something is listening on HTTP port 80.</p></article>
+            <article><code>curl -I localhost</code><p>Checks headers and HTTP status from the local server.</p></article>
+            <article><code>curl http://SERVER_IP</code><p>Tests the page from another machine or your browser.</p></article>
+            <article><code>sudo journalctl -u nginx</code><p>Reads systemd logs for the Nginx service.</p></article>
+            <article><code>sudo tail -f /var/log/nginx/error.log</code><p>Follows Nginx error logs in real time.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting map</p>
+          <h2>If the page does not load, check in this order</h2>
+          <div class="webserver-troubleshoot">
+            <article><span>Service</span><p>Is Nginx active? Use `systemctl status nginx` and `journalctl -u nginx`.</p></article>
+            <article><span>Port</span><p>Is port 80 listening? Use `ss -tulnp | grep :80`.</p></article>
+            <article><span>Firewall</span><p>Is HTTP allowed? Check `ufw status`, security groups, or cloud firewall rules.</p></article>
+            <article><span>Content</span><p>Is the file in the correct path? Check `/var/www/html/index.html`.</p></article>
+            <article><span>Logs</span><p>Do the access or error logs explain the problem?</p></article>
+            <article><span>Network</span><p>Can you reach the server IP from your machine? Test with `curl` or browser access.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Firewall example</p>
+          <h2>Open HTTP traffic safely</h2>
+          <p>
+            If the service works locally but not from your browser, the issue may be a firewall or cloud security rule.
+            On Ubuntu with UFW, you can allow HTTP like this:
+          </p>
+
+          <div class="terminal-card webserver-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>sudo ufw status
+sudo ufw allow 'Nginx HTTP'
+sudo ufw status numbered</code></pre>
+          </div>
+
+          <p>
+            In AWS, Azure, or another cloud provider, you would also check the instance security group, network security
+            group, route table, public IP, and load balancer rules.
+          </p>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Production thinking</p>
+          <h2>What this teaches beyond Nginx</h2>
+          <div class="webserver-skill-grid">
+            <article><strong>Package management</strong><p>You practise installing and updating software safely.</p></article>
+            <article><strong>Service management</strong><p>You practise starting, enabling, restarting, and checking services.</p></article>
+            <article><strong>Networking</strong><p>You prove ports, firewall rules, and HTTP access.</p></article>
+            <article><strong>Logging</strong><p>You use logs to understand service behaviour and failures.</p></article>
+            <article><strong>Documentation</strong><p>You turn manual steps into a repeatable deployment note.</p></article>
+            <article><strong>Portfolio evidence</strong><p>You create screenshots and commands that show real practical work.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mini project deliverable</p>
+          <h2>Document the deployment for GitHub</h2>
+          <p>
+            Your portfolio should show more than a final screenshot. It should show the process, the commands, the tests,
+            the troubleshooting notes, and what you learned.
+          </p>
+
+          <div class="command-card command-card-large">
+            <code>mkdir -p projects/linux-web-server</code>
+            <code>touch projects/linux-web-server/README.md</code>
+            <code>echo "# Linux Web Server Mini Project" &gt; projects/linux-web-server/README.md</code>
+            <code>git add projects/linux-web-server/README.md</code>
+            <code>git commit -m "Add Linux web server mini project notes"</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to do after Day 10</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 10 Linux mini project readiness checks">
+            <span>install</span>
+            <span>service</span>
+            <span>enable</span>
+            <span>publish</span>
+            <span>port</span>
+            <span>curl</span>
+            <span>logs</span>
+            <span>document</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>How do you confirm that Nginx is active and enabled?</p>
+            <p>Which command proves that port 80 is listening?</p>
+            <p>What would you check if the page works locally but not from your browser?</p>
+            <p>Which logs would you review when Nginx fails to start?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
