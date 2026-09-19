@@ -1,0 +1,306 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 11: Jenkins architecture | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 11 of DevOps in 100 Days by Ebenezer Tetteh: understand Jenkins controllers, agents, credentials, plugins, dynamic build workers, and pipeline troubleshooting."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero jenkins-hero">
+        <div>
+          <p class="eyebrow">Day 11 of 100</p>
+          <h1>Jenkins architecture: controller, agents, jobs, and pipelines</h1>
+          <p>
+            Day 11 explains what happens behind the Jenkinsfile. You will see how the Jenkins controller schedules work,
+            how agents run builds, how credentials and plugins support delivery, and why scalable CI/CD depends on
+            separating orchestration from execution.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#jenkins-lab">Start the Jenkins lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel jenkins-panel" aria-label="Day 11 learning summary">
+          <span>Today's focus</span>
+          <strong>Jenkins architecture</strong>
+          <p>Controller, static agents, dynamic agents, credentials, plugins, build logs, workspaces, and pipeline flow.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="jenkins-flow" aria-label="Jenkins pipeline execution flow">
+          <article><span>01</span><strong>Trigger</strong><p>A Git push, webhook, timer, or manual run starts the job.</p></article>
+          <article><span>02</span><strong>Schedule</strong><p>The controller decides which agent should run the work.</p></article>
+          <article><span>03</span><strong>Execute</strong><p>The agent checks out code, builds, tests, scans, and packages.</p></article>
+          <article><span>04</span><strong>Report</strong><p>Jenkins stores logs, artifacts, status, and notifications.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Visual architecture</p>
+          <h2>How Jenkins is arranged in a real CI/CD environment</h2>
+          <p>
+            The Jenkins controller is the coordination layer. It holds jobs, users, plugins, credentials, global
+            configuration, node definitions, and build history. The agents are the execution layer. They do the heavy
+            work: build code, run tests, create Docker images, scan packages, publish artifacts, and deploy.
+          </p>
+          <figure class="jenkins-image-frame">
+            <img
+              src="assets/jenkins-architecture-1.gif"
+              alt="Jenkins architecture showing controller, jobs, users, plugins, credentials, static agents, and dynamic cloud agents"
+            />
+            <figcaption>
+              Jenkins controller manages the platform. Agents run the workload. Dynamic agents can be created only when
+              needed and destroyed after the job finishes.
+            </figcaption>
+          </figure>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Controller</span>
+            <h2>The brain of Jenkins</h2>
+            <p>
+              The controller manages scheduling, job configuration, plugins, credentials, users, global settings, nodes,
+              build metadata, logs, and pipeline orchestration. It should coordinate work, not carry every heavy build.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">Agents</span>
+            <h2>The workers of Jenkins</h2>
+            <p>
+              Agents run the actual stages. They can be Linux servers, Windows servers, Docker containers, Kubernetes
+              pods, EC2 instances, or other cloud workers. Good agent design improves speed, reliability, and security.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Controller responsibilities</p>
+          <h2>What the Jenkins controller normally manages</h2>
+          <div class="jenkins-controller-grid" aria-label="Jenkins controller responsibilities">
+            <article><strong>Jobs</strong><p>Freestyle jobs, multibranch pipelines, folders, and build configuration.</p></article>
+            <article><strong>Users</strong><p>Authentication, authorization, roles, permissions, and audit-friendly access.</p></article>
+            <article><strong>Plugins</strong><p>Git, Docker, Kubernetes, credentials, notifications, security, and integrations.</p></article>
+            <article><strong>Nodes and clouds</strong><p>Static agents, dynamic cloud agents, labels, executors, and connection methods.</p></article>
+            <article><strong>Credentials</strong><p>Tokens, SSH keys, cloud credentials, registry passwords, and secret binding.</p></article>
+            <article><strong>Build history</strong><p>Console logs, test results, artifacts, job status, and deployment evidence.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Agent strategy</p>
+          <h2>Static agents vs dynamic agents</h2>
+          <div class="jenkins-agent-board">
+            <article>
+              <span>Static agents</span>
+              <h3>Always available</h3>
+              <p>
+                Static agents are long-running machines connected to Jenkins. They are useful for stable build
+                environments, special operating systems, heavy tools, or workloads that need predictable capacity.
+              </p>
+              <ul>
+                <li>Good for fixed Linux or Windows build nodes</li>
+                <li>Can hold pre-installed build tools</li>
+                <li>Need patching, cleanup, and capacity management</li>
+              </ul>
+            </article>
+            <article>
+              <span>Dynamic agents</span>
+              <h3>Created on demand</h3>
+              <p>
+                Dynamic agents are created when a job starts and removed when the job ends. They are common with Docker,
+                Kubernetes, AWS EC2, and EKS because they reduce waste and keep build environments clean.
+              </p>
+              <ul>
+                <li>Good for scalable CI/CD workloads</li>
+                <li>Cleaner because each build can start fresh</li>
+                <li>Need reliable templates, images, and cloud permissions</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="lesson-section" id="jenkins-lab">
+          <p class="section-kicker">Pipeline example</p>
+          <h2>A simple Jenkinsfile that uses agents properly</h2>
+          <p>
+            This example keeps the controller as the scheduler and runs the actual work on an agent. In a real setup,
+            the agent label could point to a Linux build node, Docker worker, Kubernetes pod template, or cloud agent.
+          </p>
+
+          <div class="terminal-card jenkins-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>pipeline {
+  agent { label 'linux-build-agent' }
+
+  options {
+    timestamps()
+    buildDiscarder(logRotator(numToKeepStr: '20'))
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        git branch: 'main', url: 'https://github.com/tek-giant/app.git'
+      }
+    }
+
+    stage('Test') {
+      steps {
+        sh 'npm ci'
+        sh 'npm test'
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        sh 'docker build -t app:${BUILD_NUMBER} .'
+      }
+    }
+  }
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Credentials</p>
+          <h2>How Jenkins should handle secrets</h2>
+          <p>
+            Secrets should not be written directly in Jenkinsfiles, console logs, repositories, or shell scripts. Jenkins
+            credentials allow a pipeline to use sensitive values without exposing them as plain text.
+          </p>
+
+          <div class="terminal-card jenkins-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>stage('Push Image') {
+  steps {
+    withCredentials([usernamePassword(
+      credentialsId: 'dockerhub-creds',
+      usernameVariable: 'DOCKER_USER',
+      passwordVariable: 'DOCKER_PASS'
+    )]) {
+      sh 'echo "$DOCKER_PASS" | docker login -u "$DOCKER_USER" --password-stdin'
+      sh 'docker push tekgiant/app:${BUILD_NUMBER}'
+    }
+  }
+}</code></pre>
+          </div>
+
+          <div class="command-grid jenkins-command-grid">
+            <article><code>credentialsId</code><p>References a secret stored in Jenkins, not in source code.</p></article>
+            <article><code>withCredentials</code><p>Injects the secret only around the steps that need it.</p></article>
+            <article><code>masked output</code><p>Helps prevent sensitive values from appearing in console logs.</p></article>
+            <article><code>least privilege</code><p>Each credential should only have the access required for its job.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Connections</p>
+          <h2>How agents connect to the controller</h2>
+          <div class="jenkins-connection-map">
+            <article><span>SSH</span><p>Common for Linux agents. Jenkins connects to the machine and starts the agent process.</p></article>
+            <article><span>WinRM</span><p>Useful for Windows environments where builds need Microsoft tooling.</p></article>
+            <article><span>JNLP</span><p>The agent connects back to Jenkins, often useful when inbound access to agents is restricted.</p></article>
+            <article><span>API</span><p>Cloud plugins create or remove agents through Docker, Kubernetes, AWS, or other provider APIs.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting</p>
+          <h2>When a Jenkins pipeline fails, check the architecture too</h2>
+          <div class="jenkins-troubleshoot">
+            <article><span>Controller</span><p>Is Jenkins healthy? Check disk space, queue length, plugins, restart history, and system logs.</p></article>
+            <article><span>Agent</span><p>Is the node online? Check labels, executors, workspace permissions, installed tools, and connectivity.</p></article>
+            <article><span>Credentials</span><p>Did a token expire? Check credential IDs, scopes, registry access, SSH keys, and cloud permissions.</p></article>
+            <article><span>Repository</span><p>Can Jenkins clone the source? Check branch name, webhook trigger, Git credentials, and network access.</p></article>
+            <article><span>Build tool</span><p>Are dependencies available? Check package manager errors, versions, caches, and environment variables.</p></article>
+            <article><span>Deployment target</span><p>Did the pipeline reach Kubernetes, Docker registry, AWS, or the target server correctly?</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Hands-on checks</p>
+          <h2>Commands and places to inspect</h2>
+          <div class="command-card command-card-large">
+            <code>Manage Jenkins -> Nodes</code>
+            <code>Build Executor Status</code>
+            <code>Console Output</code>
+            <code>Workspace</code>
+            <code>Credentials</code>
+            <code>Pipeline Syntax</code>
+            <code>System Log</code>
+            <code>Plugin Manager</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Production thinking</p>
+          <h2>What good Jenkins architecture gives a DevOps team</h2>
+          <div class="jenkins-benefits">
+            <article><strong>Scalability</strong><p>Agents can be added, removed, or created on demand as workload grows.</p></article>
+            <article><strong>Reliability</strong><p>Builds are less likely to overload the controller or block unrelated teams.</p></article>
+            <article><strong>Security</strong><p>Secrets, permissions, and build environments can be controlled more carefully.</p></article>
+            <article><strong>Consistency</strong><p>Teams can use standard build images, labels, tool versions, and shared libraries.</p></article>
+            <article><strong>Cost control</strong><p>Dynamic cloud agents can exist only while work is running.</p></article>
+            <article><strong>Troubleshooting</strong><p>Failures become easier to isolate: controller, agent, code, dependency, or target environment.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to explain after Day 11</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 11 Jenkins architecture readiness checks">
+            <span>trigger</span>
+            <span>controller</span>
+            <span>queue</span>
+            <span>agent</span>
+            <span>workspace</span>
+            <span>credentials</span>
+            <span>artifact</span>
+            <span>logs</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>Why should heavy builds run on agents instead of the controller?</p>
+            <p>When would you choose a static agent instead of a dynamic Kubernetes pod?</p>
+            <p>How would you troubleshoot an offline Jenkins agent?</p>
+            <p>How should Jenkins use Docker registry credentials securely?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
