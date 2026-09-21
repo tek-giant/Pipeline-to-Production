@@ -1,0 +1,295 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 12: Git basics | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 12 of DevOps in 100 Days by Ebenezer Tetteh: learn Git basics for DevOps, including init, status, add, commit, log, diff, branches, remotes, and safe delivery workflows."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero git-hero">
+        <div>
+          <p class="eyebrow">Day 12 of 100</p>
+          <h1>Git basics: the memory of DevOps delivery</h1>
+          <p>
+            Git is where DevOps work becomes traceable. Pipelines, Terraform modules, Dockerfiles, Kubernetes manifests,
+            Helm charts, scripts, runbooks, and application code all need version control so teams can review changes,
+            understand history, and recover safely.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#git-lab">Start the Git lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel git-panel" aria-label="Day 12 learning summary">
+          <span>Today's focus</span>
+          <strong>Git fundamentals</strong>
+          <p>Repository setup, staging, commits, diffs, history, branches, remotes, and DevOps delivery habits.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="git-flow" aria-label="Git delivery flow">
+          <article><span>01</span><strong>Working tree</strong><p>Files are created or changed on your machine.</p></article>
+          <article><span>02</span><strong>Staging area</strong><p>You choose exactly what should go into the next commit.</p></article>
+          <article><span>03</span><strong>Commit</strong><p>Git saves a named snapshot with a message and unique ID.</p></article>
+          <article><span>04</span><strong>Remote</strong><p>The work is pushed so others and pipelines can use it.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mental model</p>
+          <h2>What Git is really doing</h2>
+          <p>
+            Git tracks snapshots of your files. Every commit records what changed, who made the change, when it happened,
+            and the message explaining why. In DevOps, that history is critical because infrastructure and delivery
+            systems must be auditable and reversible.
+          </p>
+          <div class="git-visual-board" aria-label="Git repository visual model">
+            <article>
+              <span class="git-node working">work</span>
+              <strong>Working tree</strong>
+              <p>Edit files such as `main.tf`, `Jenkinsfile`, `deployment.yaml`, or `README.md`.</p>
+            </article>
+            <article>
+              <span class="git-node staged">stage</span>
+              <strong>Staging area</strong>
+              <p>Select the exact changes that belong together before committing.</p>
+            </article>
+            <article>
+              <span class="git-node commit">commit</span>
+              <strong>Local history</strong>
+              <p>Create a snapshot that can be reviewed, compared, tagged, or rolled back.</p>
+            </article>
+            <article>
+              <span class="git-node remote">push</span>
+              <strong>Remote repository</strong>
+              <p>Share the change with GitHub, GitLab, Azure Repos, or Bitbucket.</p>
+            </article>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why Git matters</span>
+            <h2>DevOps starts with version control</h2>
+            <p>
+              CI/CD tools normally pull from Git. Terraform changes are reviewed in Git. Kubernetes manifests are stored
+              in Git. GitOps depends on Git as the desired state. Without Git discipline, delivery becomes difficult to
+              prove, repeat, and recover.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">What to practise</span>
+            <h2>Learn the everyday commands first</h2>
+            <p>
+              Master `status`, `add`, `commit`, `log`, `diff`, `branch`, `switch`, `remote`, `push`, and `pull`. These
+              are the commands you will use constantly before moving into pull requests, CI/CD, and GitOps workflows.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="git-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Create a DevOps notes repository</h2>
+          <p>
+            This lab creates a small local repository for DevOps notes. It is intentionally simple, because the goal is
+            to understand Git's workflow before adding branches, pull requests, and automation.
+          </p>
+
+          <div class="terminal-card git-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># 1. Create a project folder
+mkdir devops-notes
+cd devops-notes
+
+# 2. Initialise Git
+git init
+
+# 3. Create your first note
+echo "# DevOps Notes" &gt; README.md
+echo "Day 12: Git basics" &gt;&gt; README.md
+
+# 4. Check what Git can see
+git status
+
+# 5. Stage and commit the file
+git add README.md
+git commit -m "Add first DevOps notes"</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Command breakdown</p>
+          <h2>The Git commands every DevOps engineer should know</h2>
+          <div class="command-grid git-command-grid">
+            <article><code>git init</code><p>Creates a new Git repository in the current folder.</p></article>
+            <article><code>git status</code><p>Shows changed, staged, untracked, and committed files.</p></article>
+            <article><code>git add</code><p>Moves selected changes into the staging area.</p></article>
+            <article><code>git commit</code><p>Saves a snapshot with a useful message.</p></article>
+            <article><code>git log</code><p>Shows commit history and helps trace decisions.</p></article>
+            <article><code>git diff</code><p>Shows exactly what changed before staging or committing.</p></article>
+            <article><code>git branch</code><p>Lists or creates branches for separate streams of work.</p></article>
+            <article><code>git switch</code><p>Moves between branches safely and clearly.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Real DevOps use</p>
+          <h2>Git is not only for application code</h2>
+          <div class="git-use-grid">
+            <article><strong>Infrastructure as Code</strong><p>Terraform, CloudFormation, Bicep, and environment variables need reviewable history.</p></article>
+            <article><strong>CI/CD pipelines</strong><p>Jenkinsfiles, GitHub Actions, GitLab CI, and Azure DevOps YAML should be versioned.</p></article>
+            <article><strong>Kubernetes</strong><p>Manifests, Helm charts, Kustomize overlays, and policies belong in Git.</p></article>
+            <article><strong>Automation</strong><p>Bash, Python, Ansible, PowerShell, and maintenance scripts need traceability.</p></article>
+            <article><strong>Documentation</strong><p>Runbooks, deployment notes, incident procedures, and READMEs improve team operations.</p></article>
+            <article><strong>GitOps</strong><p>Tools like Argo CD and Flux treat Git as the source of truth for deployment state.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Compare changes</p>
+          <h2>Use `git diff` before you commit</h2>
+          <p>
+            `git diff` helps you avoid committing accidental changes. This is especially important when editing
+            infrastructure, deployment manifests, pipeline files, or production runbooks.
+          </p>
+
+          <div class="terminal-card git-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># Show unstaged changes
+git diff
+
+# Stage a file
+git add README.md
+
+# Show staged changes before commit
+git diff --staged
+
+# Commit only when the change is clear
+git commit -m "Document Git basics workflow"</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Remote repository</p>
+          <h2>Connect local work to GitHub</h2>
+          <p>
+            A local commit is useful, but a remote repository makes the work visible to other people and available to
+            CI/CD systems. Replace the URL below with your own GitHub repository.
+          </p>
+
+          <div class="terminal-card git-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># Add a remote repository
+git remote add origin https://github.com/tek-giant/devops-notes.git
+
+# Rename the current branch to main
+git branch -M main
+
+# Push local commits to GitHub
+git push -u origin main</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Good habits</p>
+          <h2>Commit like a DevOps engineer</h2>
+          <div class="git-habit-board">
+            <article><span>Small commits</span><p>Keep commits focused so reviews and rollbacks are easier.</p></article>
+            <article><span>Clear messages</span><p>Explain the purpose, not only the file that changed.</p></article>
+            <article><span>Review diffs</span><p>Check `git diff` and `git diff --staged` before committing.</p></article>
+            <article><span>No secrets</span><p>Never commit passwords, tokens, private keys, or `.env` files.</p></article>
+            <article><span>Use branches</span><p>Separate feature work, fixes, experiments, and production changes.</p></article>
+            <article><span>Document decisions</span><p>Use README notes and commit messages to explain why a change exists.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting</p>
+          <h2>Common beginner Git problems</h2>
+          <div class="git-troubleshoot">
+            <article><span>Wrong folder</span><p>Run `pwd`, `ls`, and `git status` to confirm you are inside the right repository.</p></article>
+            <article><span>Nothing to commit</span><p>There may be no changes, or the files may already be committed.</p></article>
+            <article><span>Untracked files</span><p>Use `git add filename` when you want Git to track a new file.</p></article>
+            <article><span>Remote rejected</span><p>Pull first, check branch names, or confirm you have permission to push.</p></article>
+            <article><span>Accidental secret</span><p>Remove it quickly, rotate the secret, and learn proper secret handling.</p></article>
+            <article><span>Merge conflict</span><p>Open the file, choose the correct content, test it, then commit the resolution.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio task</p>
+          <h2>Turn Day 12 into evidence</h2>
+          <p>
+            A good beginner Git portfolio does not need to be complicated. Create a clean repository that contains notes,
+            commands, screenshots, and a short explanation of how Git supports DevOps delivery.
+          </p>
+          <div class="command-card command-card-large">
+            <code>README.md</code>
+            <code>commands/git-basics.md</code>
+            <code>screenshots/git-status.png</code>
+            <code>notes/no-secrets-in-git.md</code>
+            <code>.gitignore</code>
+            <code>commit history</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to explain after Day 12</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 12 Git basics readiness checks">
+            <span>init</span>
+            <span>status</span>
+            <span>add</span>
+            <span>commit</span>
+            <span>diff</span>
+            <span>log</span>
+            <span>remote</span>
+            <span>push</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>What is the difference between the working tree, staging area, and commit history?</p>
+            <p>Why should you run `git diff` before committing infrastructure or pipeline changes?</p>
+            <p>Why should secrets never be committed to Git?</p>
+            <p>How does Git support CI/CD, Terraform, Kubernetes, and GitOps workflows?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
