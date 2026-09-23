@@ -1,0 +1,283 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 14: Pull requests | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 14 of DevOps in 100 Days by Ebenezer Tetteh: learn pull requests as review gates for DevOps changes, including CI checks, reviewers, risk, rollback, security, and merge readiness."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero pr-hero">
+        <div>
+          <p class="eyebrow">Day 14 of 100</p>
+          <h1>Pull requests: review gates for safer DevOps delivery</h1>
+          <p>
+            A pull request is more than a request to merge code. In DevOps, it is a control point where teams review
+            infrastructure, pipelines, Kubernetes manifests, Dockerfiles, runbooks, and security-sensitive changes before
+            they reach shared branches or production workflows.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#pr-lab">Start the PR lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel pr-panel" aria-label="Day 14 learning summary">
+          <span>Today's focus</span>
+          <strong>Pull requests</strong>
+          <p>Change review, CI checks, approvals, risk notes, test evidence, rollback planning, and merge readiness.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="pr-flow" aria-label="Pull request workflow">
+          <article><span>01</span><strong>Branch</strong><p>Create a focused branch for the change.</p></article>
+          <article><span>02</span><strong>Open PR</strong><p>Explain what changed, why it changed, and how it was tested.</p></article>
+          <article><span>03</span><strong>Validate</strong><p>Let CI, security checks, reviewers, and owners inspect the change.</p></article>
+          <article><span>04</span><strong>Merge</strong><p>Merge only when the change is understood, approved, and recoverable.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Visual model</p>
+          <h2>What a pull request protects</h2>
+          <p>
+            The pull request sits between a branch and the main branch. It creates a review space where automation and
+            humans can check the change before it becomes part of the trusted delivery path.
+          </p>
+          <div class="pr-review-board" aria-label="Animated pull request review board">
+            <article><span>branch</span><strong>feature/change</strong><p>Work happens away from main.</p></article>
+            <article><span>checks</span><strong>CI + scans</strong><p>Tests, linting, builds, plans, and scans run.</p></article>
+            <article><span>review</span><strong>approval</strong><p>Team members check risk, quality, and intent.</p></article>
+            <article><span>main</span><strong>merge</strong><p>Only ready changes enter the shared branch.</p></article>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why PRs matter</span>
+            <h2>They create controlled visibility</h2>
+            <p>
+              Pull requests show exactly what is changing before the change lands. For DevOps work, this is essential
+              because a small file update can affect networking, permissions, deployments, costs, monitoring, or service
+              availability.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">DevOps value</span>
+            <h2>They turn delivery into a team sport</h2>
+            <p>
+              A good PR connects code, context, tests, risk, reviewers, approvals, and deployment evidence. It helps
+              teams avoid silent changes and makes production delivery easier to audit.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="pr-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Create a pull request for a pipeline documentation change</h2>
+          <p>
+            This lab uses Git commands to create a branch and push it. After pushing, you would open the pull request in
+            GitHub, GitLab, Azure Repos, or Bitbucket.
+          </p>
+
+          <div class="terminal-card pr-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># Start from main
+git switch main
+git pull origin main
+
+# Create a clear branch
+git switch -c docs/add-pr-checklist
+
+# Add a useful checklist
+mkdir -p docs
+cat &gt; docs/pull-request-checklist.md &lt;&lt;'EOF'
+# Pull Request Checklist
+
+- What changed?
+- Why was the change needed?
+- How was it tested?
+- What is the risk?
+- Is rollback possible?
+- Are secrets or permissions affected?
+EOF
+
+# Review, commit, and push
+git diff
+git add docs/pull-request-checklist.md
+git commit -m "Add pull request checklist"
+git push -u origin docs/add-pr-checklist</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Good PR content</p>
+          <h2>What a strong pull request should include</h2>
+          <div class="pr-check-grid">
+            <article><strong>What changed</strong><p>Summarise the exact file, infrastructure, pipeline, or service change.</p></article>
+            <article><strong>Why it changed</strong><p>Explain the problem, requirement, incident, feature, or operational need.</p></article>
+            <article><strong>How it was tested</strong><p>Include commands, screenshots, CI runs, Terraform plans, or deployment checks.</p></article>
+            <article><strong>Risk</strong><p>Call out networking, permissions, production impact, downtime, data, or cost risk.</p></article>
+            <article><strong>Rollback</strong><p>Explain how to revert, redeploy, restore config, or recover safely.</p></article>
+            <article><strong>Reviewers</strong><p>Ask the right people to review: platform, security, app owner, data, or operations.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">DevOps examples</p>
+          <h2>Pull requests are not only for application code</h2>
+          <div class="pr-use-grid">
+            <article><strong>Terraform</strong><p>Review a plan before infrastructure is created, changed, or destroyed.</p></article>
+            <article><strong>Jenkinsfile</strong><p>Check pipeline stages before a bad update breaks delivery for the team.</p></article>
+            <article><strong>GitHub Actions</strong><p>Validate workflow syntax, permissions, secrets use, and deployment gates.</p></article>
+            <article><strong>Kubernetes</strong><p>Review image tags, probes, resource limits, ingress, secrets, and namespaces.</p></article>
+            <article><strong>Dockerfile</strong><p>Check base images, exposed ports, package installs, user context, and vulnerability scans.</p></article>
+            <article><strong>Runbooks</strong><p>Improve incident steps before the team needs them under pressure.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Automation gates</p>
+          <h2>Useful checks before merge</h2>
+          <div class="pr-gate-board">
+            <article><span>lint</span><p>Check formatting, YAML, shell scripts, Dockerfiles, or Terraform style.</p></article>
+            <article><span>test</span><p>Run unit, integration, smoke, or contract tests depending on the change.</p></article>
+            <article><span>scan</span><p>Run dependency, image, secret, IaC, and container vulnerability checks.</p></article>
+            <article><span>plan</span><p>For Terraform, review what will be added, changed, or destroyed.</p></article>
+            <article><span>build</span><p>Confirm the artifact, container image, or package can be created successfully.</p></article>
+            <article><span>approve</span><p>Require human approval for risky or production-impacting changes.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Template</p>
+          <h2>A practical pull request template</h2>
+          <p>
+            A pull request template helps every change carry the same minimum information. This is useful for teams that
+            manage infrastructure, security, deployments, and production support.
+          </p>
+
+          <div class="terminal-card pr-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>## Summary
+Explain the change in 2-3 sentences.
+
+## Why
+Describe the reason for the change.
+
+## Testing
+- [ ] Unit tests passed
+- [ ] CI pipeline passed
+- [ ] Terraform plan reviewed
+- [ ] Smoke test completed
+
+## Risk
+Describe production, security, data, or networking impact.
+
+## Rollback
+Explain how to revert or recover if the change fails.
+
+## Reviewer notes
+Mention anything reviewers should focus on.</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Review mindset</p>
+          <h2>How to review a DevOps pull request</h2>
+          <div class="pr-review-grid">
+            <article><strong>Read the intent</strong><p>Does the PR explain why this change exists?</p></article>
+            <article><strong>Check the diff</strong><p>Do the changed files match the stated purpose?</p></article>
+            <article><strong>Look for blast radius</strong><p>Could this affect production, security, networking, data, or users?</p></article>
+            <article><strong>Confirm tests</strong><p>Are checks meaningful, or did the author only say it works?</p></article>
+            <article><strong>Question secrets</strong><p>Are credentials, tokens, private keys, or sensitive values exposed?</p></article>
+            <article><strong>Think rollback</strong><p>If this fails, can the team recover quickly?</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting</p>
+          <h2>Common pull request problems</h2>
+          <div class="pr-troubleshoot">
+            <article><span>Too large</span><p>Split unrelated work into smaller PRs so reviewers can understand the change.</p></article>
+            <article><span>No context</span><p>Add a clear summary, reason, test evidence, risk, and rollback note.</p></article>
+            <article><span>Checks failing</span><p>Read the CI logs, reproduce locally, fix the branch, and push again.</p></article>
+            <article><span>Review ignored</span><p>Reply to comments, update the branch, or explain why a suggestion was not used.</p></article>
+            <article><span>Conflicts</span><p>Update the branch from main, resolve conflicts, test, and push the resolution.</p></article>
+            <article><span>Secrets exposed</span><p>Remove the secret, rotate it, review history, and improve secret scanning.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio task</p>
+          <h2>Turn Day 14 into GitHub evidence</h2>
+          <p>
+            Create a repository that includes a pull request template, branch protection notes, and one example PR. This
+            gives recruiters and interviewers visible proof that you understand professional delivery habits.
+          </p>
+          <div class="command-card command-card-large">
+            <code>.github/pull_request_template.md</code>
+            <code>docs/pr-review-checklist.md</code>
+            <code>branch protection screenshot</code>
+            <code>CI checks screenshot</code>
+            <code>example pull request</code>
+            <code>README review workflow</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to explain after Day 14</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 14 pull request readiness checks">
+            <span>branch</span>
+            <span>diff</span>
+            <span>context</span>
+            <span>checks</span>
+            <span>review</span>
+            <span>risk</span>
+            <span>rollback</span>
+            <span>merge</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>Why is a pull request more than a merge request?</p>
+            <p>What should be included in a DevOps PR description?</p>
+            <p>What checks would you expect before merging a Terraform change?</p>
+            <p>How do pull requests support safer CI/CD and production change?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
