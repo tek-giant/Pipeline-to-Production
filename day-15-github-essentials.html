@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 15: GitHub essentials | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 15 of DevOps in 100 Days by Ebenezer Tetteh: learn GitHub essentials for DevOps portfolios, including README files, issues, releases, tags, Actions, secrets, security, and repository structure."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero github-hero">
+        <div>
+          <p class="eyebrow">Day 15 of 100</p>
+          <h1>GitHub essentials: make your DevOps work visible</h1>
+          <p>
+            GitHub is more than a place to upload files. For DevOps engineers, it can show how you structure projects,
+            explain systems, manage issues, run CI/CD, protect secrets, publish releases, and present real evidence of
+            delivery work.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#github-lab">Start the GitHub lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel github-panel" aria-label="Day 15 learning summary">
+          <span>Today's focus</span>
+          <strong>GitHub essentials</strong>
+          <p>README quality, issues, branches, releases, tags, Actions, secrets, security settings, and portfolio evidence.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="github-flow" aria-label="GitHub portfolio workflow">
+          <article><span>01</span><strong>Structure</strong><p>Organise files so the project is easy to understand.</p></article>
+          <article><span>02</span><strong>Document</strong><p>Write a README that explains purpose, tools, and usage.</p></article>
+          <article><span>03</span><strong>Automate</strong><p>Add CI checks, badges, workflows, and validation evidence.</p></article>
+          <article><span>04</span><strong>Showcase</strong><p>Use releases, screenshots, diagrams, and clear project notes.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio model</p>
+          <h2>What a professional DevOps repository should communicate</h2>
+          <p>
+            A good repository should quickly answer what the project does, why it exists, what tools are used, how it is
+            run, how it is tested, and what DevOps skills it proves. The goal is not only to store files, but to make the
+            thinking behind the work visible.
+          </p>
+          <div class="github-dashboard" aria-label="Animated GitHub repository dashboard">
+            <article><span>README</span><strong>Explain</strong><p>Purpose, architecture, usage, testing, and screenshots.</p></article>
+            <article><span>Actions</span><strong>Validate</strong><p>Run linting, tests, scans, and deployment checks.</p></article>
+            <article><span>Issues</span><strong>Track</strong><p>Capture tasks, bugs, improvements, and next steps.</p></article>
+            <article><span>Releases</span><strong>Publish</strong><p>Tag versions and document what changed.</p></article>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why GitHub matters</span>
+            <h2>It is part of your technical evidence</h2>
+            <p>
+              Recruiters may not run every project, but they can see structure, documentation, commit history, workflows,
+              screenshots, diagrams, and how clearly you explain DevOps decisions.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">DevOps value</span>
+            <h2>It connects collaboration and automation</h2>
+            <p>
+              GitHub supports branches, pull requests, Actions, issues, projects, releases, protected branches, secrets,
+              security scanning, and repository documentation. Those are real delivery skills.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="github-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Create a clean DevOps repository structure</h2>
+          <p>
+            This example creates a simple structure for a DevOps project. You can adapt it for Terraform, Ansible,
+            Kubernetes, Jenkins, Docker, monitoring, or a full CI/CD project.
+          </p>
+
+          <div class="terminal-card github-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>mkdir devops-github-essentials
+cd devops-github-essentials
+git init
+
+mkdir -p .github/workflows docs diagrams scripts screenshots
+touch README.md
+touch .gitignore
+touch docs/architecture.md
+touch docs/runbook.md
+touch .github/workflows/ci.yml
+
+git status
+git add .
+git commit -m "Create DevOps repository structure"</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">README quality</p>
+          <h2>What a strong README should include</h2>
+          <div class="github-readme-grid">
+            <article><strong>Project purpose</strong><p>Explain what the project does and why it exists.</p></article>
+            <article><strong>Tools used</strong><p>List technologies such as AWS, Docker, Terraform, Kubernetes, Jenkins, or Ansible.</p></article>
+            <article><strong>Architecture</strong><p>Show a diagram or describe the workflow from source code to production.</p></article>
+            <article><strong>How to run</strong><p>Give commands someone can follow to test or understand the project.</p></article>
+            <article><strong>How to validate</strong><p>Show tests, checks, pipeline runs, scans, or health endpoints.</p></article>
+            <article><strong>What you learned</strong><p>Explain trade-offs, improvements, limitations, and next steps.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Repository features</p>
+          <h2>GitHub features DevOps engineers should know</h2>
+          <div class="github-feature-grid">
+            <article><span>Issues</span><p>Track bugs, tasks, improvements, and operational follow-ups.</p></article>
+            <article><span>Pull requests</span><p>Review changes, run checks, discuss risk, and approve safely.</p></article>
+            <article><span>Actions</span><p>Run CI/CD workflows for tests, scans, builds, and deployments.</p></article>
+            <article><span>Secrets</span><p>Store sensitive workflow values without committing them to source control.</p></article>
+            <article><span>Releases</span><p>Publish versioned changes with release notes and tags.</p></article>
+            <article><span>Security</span><p>Use Dependabot, code scanning, secret scanning, and protected branches.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Example workflow</p>
+          <h2>Add a simple GitHub Actions CI workflow</h2>
+          <p>
+            A repository looks more professional when it proves that checks run automatically. This simple workflow is a
+            starting point. Replace the commands with tests that match your project.
+          </p>
+
+          <div class="terminal-card github-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>name: CI
+
+on:
+  pull_request:
+  push:
+    branches:
+      - main
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Show repository files
+        run: ls -la
+
+      - name: Validate documentation exists
+        run: test -f README.md</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Security</p>
+          <h2>GitHub security habits to practise</h2>
+          <div class="github-security-board">
+            <article><span>No secrets</span><p>Never commit passwords, tokens, private keys, `.env` files, or cloud credentials.</p></article>
+            <article><span>Branch protection</span><p>Require reviews and status checks before merging to `main`.</p></article>
+            <article><span>Least privilege</span><p>Give workflow tokens only the permissions they need.</p></article>
+            <article><span>Dependabot</span><p>Track dependency updates and reduce vulnerable packages.</p></article>
+            <article><span>Secret scanning</span><p>Detect accidental exposure early and rotate leaked values quickly.</p></article>
+            <article><span>Clear ownership</span><p>Use CODEOWNERS or reviewer rules for important areas.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Release evidence</p>
+          <h2>Use tags and releases to show progress</h2>
+          <p>
+            Tags and releases help explain project progress. They are useful for DevOps portfolios because they show that
+            you understand versioning, change notes, and release communication.
+          </p>
+
+          <div class="terminal-card github-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># Create a version tag
+git tag -a v1.0.0 -m "Initial DevOps project release"
+
+# Push the tag to GitHub
+git push origin v1.0.0
+
+# Then create a GitHub Release with:
+# - what changed
+# - screenshots
+# - known limitations
+# - next improvements</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio polish</p>
+          <h2>What makes a repository stand out</h2>
+          <div class="github-polish-grid">
+            <article><strong>Clear folder structure</strong><p>Readers should know where code, docs, scripts, and workflows live.</p></article>
+            <article><strong>Useful screenshots</strong><p>Show pipeline runs, dashboards, terminal output, architecture, or deployed pages.</p></article>
+            <article><strong>Architecture notes</strong><p>Explain how the components work together and why choices were made.</p></article>
+            <article><strong>Real commands</strong><p>Include commands for setup, validation, deployment, and cleanup.</p></article>
+            <article><strong>Operational thinking</strong><p>Add runbooks, rollback notes, monitoring checks, and troubleshooting sections.</p></article>
+            <article><strong>Future improvements</strong><p>Show that you can evaluate your own work and plan sensible next steps.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting</p>
+          <h2>Common GitHub portfolio mistakes</h2>
+          <div class="github-troubleshoot">
+            <article><span>No README</span><p>The project becomes hard to understand even if the code is good.</p></article>
+            <article><span>Random files</span><p>Unstructured uploads look less professional than a clear project layout.</p></article>
+            <article><span>No proof</span><p>Add screenshots, workflow runs, commands, diagrams, or validation evidence.</p></article>
+            <article><span>Broken links</span><p>Check image paths, relative links, and GitHub Pages URLs.</p></article>
+            <article><span>Secrets committed</span><p>Remove and rotate secrets immediately, then improve `.gitignore` and scanning.</p></article>
+            <article><span>No explanation</span><p>Explain why the project matters and which DevOps skills it demonstrates.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio task</p>
+          <h2>Turn Day 15 into visible evidence</h2>
+          <p>
+            Choose one existing GitHub repository and improve it as if a recruiter or engineering manager will read it.
+            Focus on clarity, structure, screenshots, and proof of DevOps thinking.
+          </p>
+          <div class="command-card command-card-large">
+            <code>README.md</code>
+            <code>.github/workflows/ci.yml</code>
+            <code>docs/architecture.md</code>
+            <code>docs/runbook.md</code>
+            <code>screenshots/</code>
+            <code>release v1.0.0</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to explain after Day 15</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 15 GitHub essentials readiness checks">
+            <span>README</span>
+            <span>issues</span>
+            <span>Actions</span>
+            <span>secrets</span>
+            <span>releases</span>
+            <span>security</span>
+            <span>docs</span>
+            <span>proof</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>What should a strong DevOps README include?</p>
+            <p>Why should GitHub repositories avoid committed secrets?</p>
+            <p>How do GitHub Actions improve repository quality?</p>
+            <p>How can GitHub show evidence of real DevOps ability?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
