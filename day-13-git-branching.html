@@ -1,0 +1,297 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 13: Git branching | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 13 of DevOps in 100 Days by Ebenezer Tetteh: learn Git branching for DevOps delivery, including feature branches, hotfix branches, merge workflows, conflicts, and safe collaboration."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero branch-hero">
+        <div>
+          <p class="eyebrow">Day 13 of 100</p>
+          <h1>Git branching: safety lanes for DevOps delivery</h1>
+          <p>
+            Branching lets teams make changes without disturbing the main production-ready code. For DevOps engineers,
+            branches protect Terraform, CI/CD pipelines, Kubernetes manifests, Dockerfiles, Ansible playbooks, and
+            application changes while they are being reviewed and tested.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#branch-lab">Start the branching lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel branch-panel" aria-label="Day 13 learning summary">
+          <span>Today's focus</span>
+          <strong>Git branching</strong>
+          <p>Feature branches, hotfix branches, branch naming, merges, conflicts, pull requests, and release safety.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="branch-flow" aria-label="Git branching workflow">
+          <article><span>01</span><strong>Create</strong><p>Create a branch from the latest main branch.</p></article>
+          <article><span>02</span><strong>Change</strong><p>Update code, Terraform, pipelines, manifests, or docs safely.</p></article>
+          <article><span>03</span><strong>Review</strong><p>Push the branch and open a pull request for checks.</p></article>
+          <article><span>04</span><strong>Merge</strong><p>Merge after review, tests, and approval gates pass.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Visual model</p>
+          <h2>How branches protect the main line</h2>
+          <p>
+            The main branch should represent the trusted version of the project. A feature branch gives you a separate
+            lane to make changes, test them, and request review before the work becomes part of the shared history.
+          </p>
+          <div class="branch-map" aria-label="Animated Git branch map">
+            <div class="branch-lane main-lane">
+              <span>main</span>
+              <i></i><i></i><i></i><i></i>
+            </div>
+            <div class="branch-lane feature-lane">
+              <span>feature/update-pipeline</span>
+              <i></i><i></i><i></i>
+            </div>
+            <div class="branch-lane hotfix-lane">
+              <span>hotfix/restore-ingress</span>
+              <i></i><i></i>
+            </div>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why branches matter</span>
+            <h2>They reduce delivery risk</h2>
+            <p>
+              A branch gives teams time to test, scan, validate, review, and discuss a change before it affects shared
+              environments. That matters when changing pipelines, infrastructure, security groups, Helm charts, and
+              production runbooks.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">DevOps value</span>
+            <h2>Branches make change visible</h2>
+            <p>
+              Branches create a clear path from idea to review to merge. They make it easier to connect commits, pull
+              requests, CI checks, approvals, deployment evidence, and rollback decisions.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="branch-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Create a feature branch and update a DevOps file</h2>
+          <p>
+            This lab simulates a safe pipeline update. Instead of changing `main` directly, create a branch, make the
+            change, review the diff, commit it, and push the branch for review.
+          </p>
+
+          <div class="terminal-card branch-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># Start from the latest main branch
+git switch main
+git pull origin main
+
+# Create a feature branch
+git switch -c feature/update-ci-pipeline
+
+# Make a change
+mkdir -p docs
+echo "Pipeline update notes" &gt; docs/pipeline-change.md
+
+# Review and commit
+git status
+git diff
+git add docs/pipeline-change.md
+git commit -m "Document CI pipeline update"
+
+# Push the branch
+git push -u origin feature/update-ci-pipeline</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Branch types</p>
+          <h2>Common branches in DevOps workflows</h2>
+          <div class="branch-type-grid">
+            <article><strong>feature/*</strong><p>Used for planned changes such as adding a workflow, module, script, or manifest.</p></article>
+            <article><strong>bugfix/*</strong><p>Used for correcting non-urgent defects discovered during testing or review.</p></article>
+            <article><strong>hotfix/*</strong><p>Used for urgent production fixes that need focused review and fast release.</p></article>
+            <article><strong>release/*</strong><p>Used to stabilise a group of changes before a scheduled release.</p></article>
+            <article><strong>experiment/*</strong><p>Used to test an idea without polluting the main branch history.</p></article>
+            <article><strong>docs/*</strong><p>Used for README, runbook, diagram, or operational documentation changes.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Commands</p>
+          <h2>Branching commands to practise</h2>
+          <div class="command-grid branch-command-grid">
+            <article><code>git branch</code><p>Lists local branches and shows the current branch.</p></article>
+            <article><code>git switch -c name</code><p>Creates and moves into a new branch.</p></article>
+            <article><code>git switch main</code><p>Moves back to the main branch.</p></article>
+            <article><code>git branch -d name</code><p>Deletes a local branch after it is no longer needed.</p></article>
+            <article><code>git push -u origin name</code><p>Pushes a branch and tracks it on the remote.</p></article>
+            <article><code>git merge name</code><p>Brings another branch into the current branch.</p></article>
+            <article><code>git log --oneline --graph</code><p>Shows branch history in a visual way.</p></article>
+            <article><code>git fetch --all</code><p>Updates your view of remote branches.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">DevOps examples</p>
+          <h2>What branching looks like in real work</h2>
+          <div class="branch-use-grid">
+            <article><strong>Terraform change</strong><p>Create `feature/add-private-subnet`, update modules, run `terraform plan`, then open a pull request.</p></article>
+            <article><strong>Jenkinsfile update</strong><p>Create `feature/update-build-stage`, test pipeline syntax, and wait for CI checks.</p></article>
+            <article><strong>Kubernetes manifest</strong><p>Create `feature/add-readiness-probe`, validate YAML, deploy to dev, and review health checks.</p></article>
+            <article><strong>Ansible playbook</strong><p>Create `feature/harden-ssh`, run syntax checks, test against dev inventory, then request review.</p></article>
+            <article><strong>Hotfix</strong><p>Create `hotfix/restore-nginx-ingress`, make a minimal fix, test carefully, and merge with approval.</p></article>
+            <article><strong>Documentation</strong><p>Create `docs/update-incident-runbook`, improve operational notes, and get team review.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Merge thinking</p>
+          <h2>Merge only after the branch is ready</h2>
+          <p>
+            A branch should not be merged just because the code exists. It should be merged when the change is reviewed,
+            tested, understood, and safe enough for the target branch.
+          </p>
+
+          <div class="branch-gate-board">
+            <article><span>Diff reviewed</span><p>Someone has checked what actually changed.</p></article>
+            <article><span>CI passed</span><p>Tests, linting, builds, or validation checks are green.</p></article>
+            <article><span>Risk understood</span><p>The team knows what the change could affect.</p></article>
+            <article><span>Rollback known</span><p>There is a clear way to undo or recover if needed.</p></article>
+            <article><span>No secrets</span><p>The branch does not contain credentials, keys, or private config.</p></article>
+            <article><span>Approved</span><p>The right reviewer or owner has approved the change.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Conflicts</p>
+          <h2>What a merge conflict means</h2>
+          <p>
+            A merge conflict happens when Git cannot safely combine changes because two branches edited the same part of
+            a file. This is not a disaster. It is Git asking a human to decide which version should win.
+          </p>
+
+          <div class="terminal-card branch-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code># Bring main into your branch before opening a pull request
+git switch feature/update-ci-pipeline
+git fetch origin
+git merge origin/main
+
+# If there is a conflict:
+# 1. Open the conflicted file
+# 2. Choose the correct content
+# 3. Test the result
+# 4. Add and commit the resolution
+git add .
+git commit -m "Resolve merge conflict with main"</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Branch naming</p>
+          <h2>Use names that explain the work</h2>
+          <div class="branch-name-board">
+            <article><code>feature/add-healthcheck</code><p>Clear feature work.</p></article>
+            <article><code>bugfix/fix-docker-tag</code><p>Focused correction.</p></article>
+            <article><code>hotfix/restore-prod-alb</code><p>Urgent production repair.</p></article>
+            <article><code>docs/update-runbook</code><p>Documentation-only work.</p></article>
+            <article><code>infra/add-private-subnet</code><p>Infrastructure change.</p></article>
+            <article><code>security/restrict-ssh-access</code><p>Security improvement.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting</p>
+          <h2>Common branching problems</h2>
+          <div class="branch-troubleshoot">
+            <article><span>Wrong branch</span><p>Run `git branch` or `git status` before editing files.</p></article>
+            <article><span>Branch behind main</span><p>Fetch and merge or rebase from `origin/main` before review.</p></article>
+            <article><span>Messy commits</span><p>Keep commits focused and avoid bundling unrelated work together.</p></article>
+            <article><span>Conflict panic</span><p>Open the file, choose the right lines, test, then commit the resolution.</p></article>
+            <article><span>Unpushed branch</span><p>Use `git push -u origin branch-name` so others can see it.</p></article>
+            <article><span>Old branch clutter</span><p>Delete merged branches locally and remotely when they are no longer needed.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio task</p>
+          <h2>Turn Day 13 into GitHub evidence</h2>
+          <p>
+            Create a small repository that shows branch-based delivery. Add a README section explaining the branch flow,
+            include screenshots of `git log --oneline --graph`, and show one pull request example.
+          </p>
+          <div class="command-card command-card-large">
+            <code>feature/update-readme</code>
+            <code>git log --oneline --graph --all</code>
+            <code>pull request screenshot</code>
+            <code>branch naming guide</code>
+            <code>merge conflict notes</code>
+            <code>README workflow diagram</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to explain after Day 13</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 13 Git branching readiness checks">
+            <span>main</span>
+            <span>branch</span>
+            <span>diff</span>
+            <span>commit</span>
+            <span>push</span>
+            <span>review</span>
+            <span>merge</span>
+            <span>cleanup</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>Why should teams avoid making all changes directly on `main`?</p>
+            <p>What branch name would you use for a Terraform VPC update?</p>
+            <p>What should happen before a branch is merged?</p>
+            <p>How do branches support CI/CD, GitOps, and safer production change?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>

@@ -475,6 +475,50 @@ code {
   display: none;
 }
 
+.branch-card-visual {
+  display: grid;
+  gap: 14px;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(14, 116, 144, 0.76)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 42px);
+}
+
+.branch-card-visual span {
+  position: relative;
+  display: block;
+  min-height: 28px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.14);
+  padding: 7px 12px;
+  color: #ffffff;
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.branch-card-visual span::after {
+  position: absolute;
+  top: 50%;
+  right: 14px;
+  left: 92px;
+  height: 3px;
+  border-radius: 999px;
+  background: #fbbf24;
+  content: "";
+  transform: scaleX(0.24);
+  transform-origin: left;
+  animation: branchSweep 2.9s ease-in-out infinite;
+}
+
+.branch-card-visual span:nth-child(2) {
+  margin-left: 34px;
+}
+
+.branch-card-visual span:nth-child(3) {
+  margin-left: 68px;
+}
+
 .post-card .card-topline,
 .post-card h3,
 .post-card p,
@@ -3115,6 +3159,270 @@ code {
   }
 }
 
+.branch-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.95), rgba(32, 55, 61, 0.9)),
+    radial-gradient(circle at 82% 22%, rgba(125, 211, 252, 0.22), transparent 30%),
+    var(--code);
+}
+
+.branch-hero::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(130deg, transparent 0 18%, rgba(125, 211, 252, 0.13) 18% 19%, transparent 19% 46%, rgba(240, 80, 51, 0.12) 46% 47%, transparent 47% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 56px);
+  content: "";
+  opacity: 0.64;
+  pointer-events: none;
+  animation: branchDrift 7.4s ease-in-out infinite;
+}
+
+.branch-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.branch-panel {
+  border-color: rgba(125, 211, 252, 0.34);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(240, 249, 255, 0.95)),
+    #ffffff;
+}
+
+.branch-flow,
+.branch-type-grid,
+.branch-use-grid,
+.branch-gate-board,
+.branch-name-board,
+.branch-troubleshoot {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.branch-flow {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.branch-type-grid,
+.branch-use-grid,
+.branch-gate-board,
+.branch-name-board,
+.branch-troubleshoot {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.branch-flow article,
+.branch-type-grid article,
+.branch-use-grid article,
+.branch-gate-board article,
+.branch-name-board article,
+.branch-troubleshoot article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.branch-flow article::after,
+.branch-type-grid article::after,
+.branch-gate-board article::after,
+.branch-troubleshoot article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #38bdf8, #f05033, var(--gold), var(--accent));
+  content: "";
+  transform: scaleX(0.18);
+  transform-origin: left;
+  animation: branchSweep 3.6s ease-in-out infinite;
+}
+
+.branch-flow article:hover,
+.branch-type-grid article:hover,
+.branch-use-grid article:hover,
+.branch-gate-board article:hover,
+.branch-name-board article:hover,
+.branch-troubleshoot article:hover {
+  border-color: rgba(56, 189, 248, 0.36);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.branch-flow span,
+.branch-gate-board span,
+.branch-troubleshoot span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: #10211d;
+  padding: 7px 10px;
+  color: #dff3ee;
+  font-weight: 900;
+}
+
+.branch-flow strong,
+.branch-type-grid strong,
+.branch-use-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.06rem;
+}
+
+.branch-flow p,
+.branch-type-grid p,
+.branch-use-grid p,
+.branch-gate-board p,
+.branch-name-board p,
+.branch-troubleshoot p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.branch-name-board code {
+  display: inline-block;
+  margin-bottom: 10px;
+  border-radius: 999px;
+  background: #10211d;
+  padding: 8px 10px;
+  color: #dff3ee;
+  font-weight: 800;
+}
+
+.branch-map {
+  display: grid;
+  gap: 18px;
+  margin-top: 26px;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.98), rgba(15, 118, 110, 0.86)),
+    #10211d;
+  padding: 28px;
+  box-shadow: 0 20px 48px rgba(20, 32, 28, 0.14);
+}
+
+.branch-lane {
+  position: relative;
+  display: grid;
+  grid-template-columns: 190px repeat(4, minmax(34px, 1fr));
+  gap: 16px;
+  align-items: center;
+  min-height: 58px;
+}
+
+.branch-lane::before {
+  position: absolute;
+  right: 12px;
+  left: 208px;
+  height: 4px;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.2);
+  content: "";
+}
+
+.branch-lane span {
+  position: relative;
+  z-index: 1;
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.12);
+  padding: 10px 12px;
+  color: #ffffff;
+  font-weight: 900;
+}
+
+.branch-lane i {
+  position: relative;
+  z-index: 1;
+  width: 22px;
+  height: 22px;
+  border: 4px solid #ffffff;
+  border-radius: 50%;
+  background: #0f766e;
+  box-shadow: 0 0 0 7px rgba(255, 255, 255, 0.08);
+  animation: branchNodePulse 2.8s ease-in-out infinite;
+}
+
+.branch-lane i:nth-of-type(2) {
+  animation-delay: 160ms;
+}
+
+.branch-lane i:nth-of-type(3) {
+  animation-delay: 320ms;
+}
+
+.branch-lane i:nth-of-type(4) {
+  animation-delay: 480ms;
+}
+
+.feature-lane {
+  padding-left: 46px;
+}
+
+.feature-lane i {
+  background: #f05033;
+}
+
+.hotfix-lane {
+  padding-left: 92px;
+}
+
+.hotfix-lane i {
+  background: #38bdf8;
+}
+
+.branch-terminal {
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+.branch-command-grid article {
+  border-color: rgba(56, 189, 248, 0.2);
+}
+
+@keyframes branchDrift {
+  0%,
+  100% {
+    transform: translateX(-16px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(18px);
+    opacity: 0.72;
+  }
+}
+
+@keyframes branchSweep {
+  0%,
+  100% {
+    transform: scaleX(0.18);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes branchNodePulse {
+  0%,
+  100% {
+    transform: scale(0.9);
+  }
+  50% {
+    transform: scale(1.08);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -3189,8 +3497,22 @@ code {
   .git-visual-board,
   .git-use-grid,
   .git-habit-board,
-  .git-troubleshoot {
+  .git-troubleshoot,
+  .branch-flow,
+  .branch-type-grid,
+  .branch-use-grid,
+  .branch-gate-board,
+  .branch-name-board,
+  .branch-troubleshoot {
     grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .branch-lane {
+    grid-template-columns: 160px repeat(4, minmax(30px, 1fr));
+  }
+
+  .branch-lane::before {
+    left: 178px;
   }
 
   .flow-strip {
@@ -3270,7 +3592,33 @@ code {
   .git-use-grid,
   .git-habit-board,
   .git-troubleshoot,
+  .branch-flow,
+  .branch-type-grid,
+  .branch-use-grid,
+  .branch-gate-board,
+  .branch-name-board,
+  .branch-troubleshoot,
   .flow-strip {
     grid-template-columns: 1fr;
+  }
+
+  .branch-map {
+    padding: 18px;
+  }
+
+  .branch-lane,
+  .feature-lane,
+  .hotfix-lane {
+    grid-template-columns: 1fr repeat(4, minmax(24px, 1fr));
+    padding-left: 0;
+  }
+
+  .branch-lane::before {
+    left: 12px;
+    top: 48px;
+  }
+
+  .branch-lane span {
+    grid-column: 1 / -1;
   }
 }
