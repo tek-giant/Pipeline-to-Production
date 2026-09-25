@@ -1,0 +1,308 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 16: Bash scripting | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 16 of DevOps in 100 Days by Ebenezer Tetteh: learn Bash scripting for DevOps automation, including health checks, backups, logs, exit codes, safety, and CI/CD helper scripts."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero bash-hero">
+        <div>
+          <p class="eyebrow">Day 16 of 100</p>
+          <h1>Bash scripting: turn repeated Linux work into automation</h1>
+          <p>
+            Bash scripting is where Linux commands become repeatable DevOps tools. A useful script can check services,
+            validate disk usage, inspect logs, prepare deployments, support CI/CD steps, and reduce the number of manual
+            checks engineers have to remember under pressure.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#bash-lab">Start the Bash lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel bash-panel" aria-label="Day 16 learning summary">
+          <span>Today's focus</span>
+          <strong>Bash scripting</strong>
+          <p>Health checks, backups, logs, service checks, exit codes, safety options, and CI/CD helper scripts.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="bash-flow" aria-label="Bash scripting automation flow">
+          <article><span>01</span><strong>Find repeat work</strong><p>Look for commands you run again and again.</p></article>
+          <article><span>02</span><strong>Script it</strong><p>Save the commands with clear variables and checks.</p></article>
+          <article><span>03</span><strong>Make it safe</strong><p>Add error handling, logs, permissions, and exit codes.</p></article>
+          <article><span>04</span><strong>Reuse it</strong><p>Run it locally, from cron, or inside a CI/CD pipeline.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Automation model</p>
+          <h2>What Bash scripting gives a DevOps engineer</h2>
+          <p>
+            A script should not just hide commands. It should make a task clearer, safer, faster, and easier to repeat.
+            When a script is well written, another engineer can read it, understand it, run it, and improve it.
+          </p>
+          <div class="bash-automation-board" aria-label="Animated Bash automation board">
+            <article><span>input</span><strong>values</strong><p>Service names, paths, thresholds, environments, or arguments.</p></article>
+            <article><span>logic</span><strong>checks</strong><p>Conditions decide what happens when something is healthy or broken.</p></article>
+            <article><span>action</span><strong>commands</strong><p>Run Linux commands, API checks, file operations, or deployment helpers.</p></article>
+            <article><span>output</span><strong>result</strong><p>Print useful messages and return the right exit code.</p></article>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why Bash matters</span>
+            <h2>It sits close to real operations</h2>
+            <p>
+              Bash is often used directly on Linux servers, in Docker images, inside CI/CD pipelines, and during
+              troubleshooting. Even when teams use Python, Ansible, or Terraform, Bash still appears in operational glue.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">DevOps value</span>
+            <h2>It reduces repeated manual checks</h2>
+            <p>
+              Scripts can standardise health checks, backup steps, log checks, deployment validation, and environment
+              checks so different engineers get the same result from the same process.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="bash-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Create a service health-check script</h2>
+          <p>
+            This script checks whether a service is active. It is a simple example, but the pattern is very useful for
+            Nginx, Docker, SSH, Jenkins agents, monitoring agents, and application services.
+          </p>
+
+          <div class="terminal-card bash-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+SERVICE_NAME="${1:-nginx}"
+
+echo "Checking service: ${SERVICE_NAME}"
+
+if systemctl is-active --quiet "${SERVICE_NAME}"; then
+  echo "OK: ${SERVICE_NAME} is running"
+  exit 0
+else
+  echo "ERROR: ${SERVICE_NAME} is not running"
+  systemctl status "${SERVICE_NAME}" --no-pager || true
+  exit 1
+fi</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Make it executable</p>
+          <h2>Run the script properly</h2>
+          <p>
+            Save the script as `check-service.sh`, make it executable, and pass the service name as an argument.
+          </p>
+
+          <div class="terminal-card bash-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>chmod +x check-service.sh
+
+# Check Nginx
+./check-service.sh nginx
+
+# Check Docker
+./check-service.sh docker
+
+# Check SSH
+./check-service.sh ssh</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Script anatomy</p>
+          <h2>Parts of a useful Bash script</h2>
+          <div class="bash-anatomy-grid">
+            <article><strong>Shebang</strong><p>`#!/usr/bin/env bash` tells the system which interpreter to use.</p></article>
+            <article><strong>Safety options</strong><p>`set -euo pipefail` helps catch errors and unset variables early.</p></article>
+            <article><strong>Variables</strong><p>Store values like service names, paths, thresholds, and environments.</p></article>
+            <article><strong>Conditions</strong><p>Use `if` statements to decide what should happen next.</p></article>
+            <article><strong>Messages</strong><p>Print clear output so humans and pipelines understand the result.</p></article>
+            <article><strong>Exit codes</strong><p>Return `0` for success and non-zero for failure.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">DevOps use cases</p>
+          <h2>Where Bash scripts help in real work</h2>
+          <div class="bash-use-grid">
+            <article><span>Health checks</span><p>Confirm services, endpoints, ports, containers, and processes are healthy.</p></article>
+            <article><span>Backups</span><p>Copy files, compress folders, timestamp archives, and validate backup output.</p></article>
+            <article><span>Logs</span><p>Search errors, rotate old files, collect evidence, and package incident data.</p></article>
+            <article><span>CI/CD</span><p>Validate environment variables, run smoke tests, and fail fast before deployment.</p></article>
+            <article><span>Cleanup</span><p>Remove old files, dangling images, temporary artifacts, and stale logs safely.</p></article>
+            <article><span>Troubleshooting</span><p>Collect CPU, memory, disk, network, and service information quickly.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Disk check example</p>
+          <h2>Build a script that warns about high disk usage</h2>
+          <p>
+            Disk checks are a classic Linux operations task. This script reads disk usage and exits with failure if the
+            usage is above the threshold.
+          </p>
+
+          <div class="terminal-card bash-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+THRESHOLD="${1:-80}"
+USAGE=$(df / | awk 'NR==2 {gsub("%","",$5); print $5}')
+
+echo "Disk usage: ${USAGE}%"
+echo "Threshold: ${THRESHOLD}%"
+
+if [ "${USAGE}" -ge "${THRESHOLD}" ]; then
+  echo "ERROR: Disk usage is above threshold"
+  exit 1
+fi
+
+echo "OK: Disk usage is within threshold"
+exit 0</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">CI/CD usage</p>
+          <h2>Use Bash scripts inside pipelines</h2>
+          <p>
+            CI/CD systems understand exit codes. If a Bash script exits with `1`, the pipeline can stop before a risky
+            deployment continues.
+          </p>
+
+          <div class="terminal-card bash-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>name: Validate server checks
+
+on:
+  pull_request:
+
+jobs:
+  smoke-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Run smoke check
+        run: |
+          chmod +x scripts/check-disk.sh
+          ./scripts/check-disk.sh 90</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Safety</p>
+          <h2>Good Bash habits</h2>
+          <div class="bash-safety-board">
+            <article><span>Quote variables</span><p>Use `"${VAR}"` to avoid issues with spaces and unexpected values.</p></article>
+            <article><span>Fail clearly</span><p>Use exit codes and useful error messages.</p></article>
+            <article><span>Check inputs</span><p>Validate arguments before running destructive commands.</p></article>
+            <article><span>Avoid secrets</span><p>Do not echo tokens, passwords, keys, or private values into logs.</p></article>
+            <article><span>Test safely</span><p>Run against dev environments before production.</p></article>
+            <article><span>Document usage</span><p>Add comments and README examples for other engineers.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting</p>
+          <h2>Common Bash scripting problems</h2>
+          <div class="bash-troubleshoot">
+            <article><span>Permission denied</span><p>Run `chmod +x script.sh` or execute with `bash script.sh`.</p></article>
+            <article><span>Wrong shell</span><p>Use a clear shebang and avoid Bash-only features in `sh` scripts.</p></article>
+            <article><span>Unset variable</span><p>`set -u` helps catch missing values early.</p></article>
+            <article><span>Silent failure</span><p>Check exit codes and print useful messages.</p></article>
+            <article><span>Bad paths</span><p>Use absolute paths or validate working directory assumptions.</p></article>
+            <article><span>Dangerous deletes</span><p>Validate variables before using commands like `rm` or cleanup scripts.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio task</p>
+          <h2>Turn Day 16 into GitHub evidence</h2>
+          <p>
+            Create a `scripts/` folder in a repository and add small, practical scripts with README examples. Keep them
+            simple, safe, and useful.
+          </p>
+          <div class="command-card command-card-large">
+            <code>scripts/check-service.sh</code>
+            <code>scripts/check-disk.sh</code>
+            <code>scripts/collect-logs.sh</code>
+            <code>scripts/backup-folder.sh</code>
+            <code>README usage examples</code>
+            <code>CI workflow running scripts</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to explain after Day 16</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 16 Bash scripting readiness checks">
+            <span>shebang</span>
+            <span>variables</span>
+            <span>checks</span>
+            <span>logs</span>
+            <span>exit code</span>
+            <span>CI/CD</span>
+            <span>safety</span>
+            <span>README</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>When should a repeated command become a Bash script?</p>
+            <p>Why do exit codes matter in CI/CD pipelines?</p>
+            <p>What does `set -euo pipefail` help with?</p>
+            <p>What safety checks should you add before running scripts in production?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>

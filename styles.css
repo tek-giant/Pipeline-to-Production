@@ -598,6 +598,42 @@ code {
   animation: githubStatusSweep 2.9s ease-in-out infinite;
 }
 
+.bash-card-visual {
+  display: grid;
+  gap: 10px;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(8, 47, 73, 0.82)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 38px);
+}
+
+.bash-card-visual span {
+  position: relative;
+  display: block;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  padding: 9px 12px;
+  color: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 0.76rem;
+  font-weight: 800;
+}
+
+.bash-card-visual span::after {
+  position: absolute;
+  right: 12px;
+  bottom: 8px;
+  left: 12px;
+  height: 3px;
+  border-radius: 999px;
+  background: #7dd3fc;
+  content: "";
+  transform: scaleX(0.22);
+  transform-origin: left;
+  animation: bashPromptSweep 2.9s ease-in-out infinite;
+}
+
 .post-card .card-topline,
 .post-card h3,
 .post-card p,
@@ -3870,6 +3906,184 @@ code {
   }
 }
 
+.bash-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(8, 47, 73, 0.9)),
+    radial-gradient(circle at 78% 18%, rgba(125, 211, 252, 0.22), transparent 30%),
+    var(--code);
+}
+
+.bash-hero::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(90deg, transparent 0 18%, rgba(125, 211, 252, 0.13) 18% 19%, transparent 19% 56%, rgba(255, 255, 255, 0.07) 56% 57%, transparent 57% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 46px);
+  content: "";
+  opacity: 0.62;
+  pointer-events: none;
+  animation: bashGridDrift 7.2s ease-in-out infinite;
+}
+
+.bash-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.bash-panel {
+  border-color: rgba(125, 211, 252, 0.34);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(240, 249, 255, 0.95)),
+    #ffffff;
+}
+
+.bash-flow,
+.bash-automation-board,
+.bash-anatomy-grid,
+.bash-use-grid,
+.bash-safety-board,
+.bash-troubleshoot {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.bash-flow,
+.bash-automation-board {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.bash-flow {
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.bash-anatomy-grid,
+.bash-use-grid,
+.bash-safety-board,
+.bash-troubleshoot {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.bash-flow article,
+.bash-automation-board article,
+.bash-anatomy-grid article,
+.bash-use-grid article,
+.bash-safety-board article,
+.bash-troubleshoot article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.bash-flow article::after,
+.bash-automation-board article::after,
+.bash-safety-board article::after,
+.bash-troubleshoot article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #7dd3fc, #22c55e, var(--gold), var(--accent));
+  content: "";
+  transform: scaleX(0.18);
+  transform-origin: left;
+  animation: bashPromptSweep 3.5s ease-in-out infinite;
+}
+
+.bash-flow article:hover,
+.bash-automation-board article:hover,
+.bash-anatomy-grid article:hover,
+.bash-use-grid article:hover,
+.bash-safety-board article:hover,
+.bash-troubleshoot article:hover {
+  border-color: rgba(125, 211, 252, 0.38);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.bash-flow span,
+.bash-automation-board span,
+.bash-use-grid span,
+.bash-safety-board span,
+.bash-troubleshoot span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: #10211d;
+  padding: 7px 10px;
+  color: #dff3ee;
+  font-weight: 900;
+}
+
+.bash-flow strong,
+.bash-automation-board strong,
+.bash-anatomy-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.06rem;
+}
+
+.bash-flow p,
+.bash-automation-board p,
+.bash-anatomy-grid p,
+.bash-use-grid p,
+.bash-safety-board p,
+.bash-troubleshoot p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.bash-automation-board {
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.98), rgba(3, 105, 161, 0.76)),
+    #10211d;
+  padding: 18px;
+  box-shadow: 0 20px 48px rgba(20, 32, 28, 0.14);
+}
+
+.bash-automation-board article {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.93);
+}
+
+.bash-terminal {
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+@keyframes bashGridDrift {
+  0%,
+  100% {
+    transform: translateX(-16px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(18px);
+    opacity: 0.74;
+  }
+}
+
+@keyframes bashPromptSweep {
+  0%,
+  100% {
+    transform: scaleX(0.18);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -3964,7 +4178,13 @@ code {
   .github-feature-grid,
   .github-security-board,
   .github-polish-grid,
-  .github-troubleshoot {
+  .github-troubleshoot,
+  .bash-flow,
+  .bash-automation-board,
+  .bash-anatomy-grid,
+  .bash-use-grid,
+  .bash-safety-board,
+  .bash-troubleshoot {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -4073,6 +4293,12 @@ code {
   .github-security-board,
   .github-polish-grid,
   .github-troubleshoot,
+  .bash-flow,
+  .bash-automation-board,
+  .bash-anatomy-grid,
+  .bash-use-grid,
+  .bash-safety-board,
+  .bash-troubleshoot,
   .flow-strip {
     grid-template-columns: 1fr;
   }
