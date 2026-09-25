@@ -634,6 +634,45 @@ code {
   animation: bashPromptSweep 2.9s ease-in-out infinite;
 }
 
+.loop-card-visual {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(30, 64, 175, 0.78)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 40px);
+}
+
+.loop-card-visual span {
+  position: relative;
+  display: grid;
+  min-height: 54px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 0.74rem;
+  font-weight: 800;
+  text-align: center;
+}
+
+.loop-card-visual span::after {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  left: 10px;
+  height: 3px;
+  border-radius: 999px;
+  background: #a7f3d0;
+  content: "";
+  transform: scaleX(0.22);
+  transform-origin: left;
+  animation: loopSweep 2.9s ease-in-out infinite;
+}
+
 .post-card .card-topline,
 .post-card h3,
 .post-card p,
@@ -4084,6 +4123,184 @@ code {
   }
 }
 
+.bash-loop-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(30, 64, 175, 0.88)),
+    radial-gradient(circle at 78% 18%, rgba(167, 243, 208, 0.22), transparent 30%),
+    var(--code);
+}
+
+.bash-loop-hero::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 0 19%, rgba(167, 243, 208, 0.13) 19% 20%, transparent 20% 58%, rgba(125, 211, 252, 0.12) 58% 59%, transparent 59% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 46px);
+  content: "";
+  opacity: 0.62;
+  pointer-events: none;
+  animation: loopGridDrift 7.2s ease-in-out infinite;
+}
+
+.bash-loop-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.bash-loop-panel {
+  border-color: rgba(167, 243, 208, 0.38);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(240, 253, 244, 0.95)),
+    #ffffff;
+}
+
+.loop-flow,
+.loop-visual-board,
+.loop-variable-grid,
+.loop-pattern-grid,
+.loop-safety-board,
+.loop-troubleshoot {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.loop-flow,
+.loop-visual-board {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.loop-flow {
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.loop-variable-grid,
+.loop-pattern-grid,
+.loop-safety-board,
+.loop-troubleshoot {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.loop-flow article,
+.loop-visual-board article,
+.loop-variable-grid article,
+.loop-pattern-grid article,
+.loop-safety-board article,
+.loop-troubleshoot article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.loop-flow article::after,
+.loop-visual-board article::after,
+.loop-safety-board article::after,
+.loop-troubleshoot article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #a7f3d0, #7dd3fc, var(--gold), var(--accent));
+  content: "";
+  transform: scaleX(0.18);
+  transform-origin: left;
+  animation: loopSweep 3.5s ease-in-out infinite;
+}
+
+.loop-flow article:hover,
+.loop-visual-board article:hover,
+.loop-variable-grid article:hover,
+.loop-pattern-grid article:hover,
+.loop-safety-board article:hover,
+.loop-troubleshoot article:hover {
+  border-color: rgba(167, 243, 208, 0.5);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.loop-flow span,
+.loop-visual-board span,
+.loop-pattern-grid span,
+.loop-safety-board span,
+.loop-troubleshoot span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: #10211d;
+  padding: 7px 10px;
+  color: #dff3ee;
+  font-weight: 900;
+}
+
+.loop-flow strong,
+.loop-visual-board strong,
+.loop-variable-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.06rem;
+}
+
+.loop-flow p,
+.loop-visual-board p,
+.loop-variable-grid p,
+.loop-pattern-grid p,
+.loop-safety-board p,
+.loop-troubleshoot p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.loop-visual-board {
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.98), rgba(30, 64, 175, 0.76)),
+    #10211d;
+  padding: 18px;
+  box-shadow: 0 20px 48px rgba(20, 32, 28, 0.14);
+}
+
+.loop-visual-board article {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.93);
+}
+
+.bash-loop-terminal {
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+@keyframes loopGridDrift {
+  0%,
+  100% {
+    transform: translateX(-16px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(18px);
+    opacity: 0.74;
+  }
+}
+
+@keyframes loopSweep {
+  0%,
+  100% {
+    transform: scaleX(0.18);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -4184,7 +4401,13 @@ code {
   .bash-anatomy-grid,
   .bash-use-grid,
   .bash-safety-board,
-  .bash-troubleshoot {
+  .bash-troubleshoot,
+  .loop-flow,
+  .loop-visual-board,
+  .loop-variable-grid,
+  .loop-pattern-grid,
+  .loop-safety-board,
+  .loop-troubleshoot {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -4299,6 +4522,12 @@ code {
   .bash-use-grid,
   .bash-safety-board,
   .bash-troubleshoot,
+  .loop-flow,
+  .loop-visual-board,
+  .loop-variable-grid,
+  .loop-pattern-grid,
+  .loop-safety-board,
+  .loop-troubleshoot,
   .flow-strip {
     grid-template-columns: 1fr;
   }

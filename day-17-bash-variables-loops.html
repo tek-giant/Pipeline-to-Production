@@ -1,0 +1,329 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 17: Bash variables and loops | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 17 of DevOps in 100 Days by Ebenezer Tetteh: learn Bash variables and loops for reusable DevOps automation, including service loops, endpoint checks, file processing, and CI/CD validation."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero bash-loop-hero">
+        <div>
+          <p class="eyebrow">Day 17 of 100</p>
+          <h1>Bash variables and loops: make scripts reusable</h1>
+          <p>
+            Variables and loops are what make Bash scripts flexible. Variables let you store values that may change.
+            Loops let you repeat a task across services, files, endpoints, environments, servers, or namespaces without
+            rewriting the same command again and again.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#loop-lab">Start the loop lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel bash-loop-panel" aria-label="Day 17 learning summary">
+          <span>Today's focus</span>
+          <strong>Variables and loops</strong>
+          <p>Reusable values, service loops, endpoint checks, file loops, environments, arrays, and safer automation.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="loop-flow" aria-label="Bash variables and loops workflow">
+          <article><span>01</span><strong>Store</strong><p>Use variables for values that may change.</p></article>
+          <article><span>02</span><strong>Repeat</strong><p>Use loops when an action happens more than once.</p></article>
+          <article><span>03</span><strong>Validate</strong><p>Check inputs, quote variables, and handle failures.</p></article>
+          <article><span>04</span><strong>Report</strong><p>Print clear results and return useful exit codes.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mental model</p>
+          <h2>If a value changes, use a variable. If work repeats, use a loop.</h2>
+          <p>
+            Hardcoded scripts become difficult to maintain. Variables make scripts easier to change. Loops make scripts
+            shorter, cleaner, and more useful when the same check must run against multiple targets.
+          </p>
+          <div class="loop-visual-board" aria-label="Animated Bash variable and loop model">
+            <article><span>variable</span><strong>SERVICE=nginx</strong><p>Store a value once and reuse it safely.</p></article>
+            <article><span>list</span><strong>nginx docker ssh</strong><p>Group related targets together.</p></article>
+            <article><span>loop</span><strong>for item in list</strong><p>Repeat the same task consistently.</p></article>
+            <article><span>result</span><strong>pass or fail</strong><p>Print output and return a clear exit code.</p></article>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Variables</span>
+            <h2>Stop hardcoding everything</h2>
+            <p>
+              Variables are useful for service names, log paths, thresholds, backup folders, environment names,
+              deployment versions, ports, hostnames, and command-line arguments.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">Loops</span>
+            <h2>Repeat work without repeating code</h2>
+            <p>
+              Loops help you check multiple services, process several files, validate endpoints, inspect logs, clean
+              directories, and run the same operation across environments.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="loop-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Check multiple services with one loop</h2>
+          <p>
+            This script checks several services using a variable-backed list. It counts failures and returns a useful
+            exit code for humans and CI/CD pipelines.
+          </p>
+
+          <div class="terminal-card bash-loop-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+SERVICES=("nginx" "docker" "ssh")
+FAILURES=0
+
+for SERVICE in "${SERVICES[@]}"; do
+  echo "Checking ${SERVICE}..."
+
+  if systemctl is-active --quiet "${SERVICE}"; then
+    echo "OK: ${SERVICE} is running"
+  else
+    echo "ERROR: ${SERVICE} is not running"
+    FAILURES=$((FAILURES + 1))
+  fi
+done
+
+if [ "${FAILURES}" -gt 0 ]; then
+  echo "Completed with ${FAILURES} service failure(s)"
+  exit 1
+fi
+
+echo "All services are healthy"
+exit 0</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Variable examples</p>
+          <h2>Values DevOps scripts often store</h2>
+          <div class="loop-variable-grid">
+            <article><strong>Service</strong><p>`SERVICE_NAME="nginx"` keeps service checks flexible.</p></article>
+            <article><strong>Threshold</strong><p>`DISK_THRESHOLD=80` lets teams adjust alerting behaviour.</p></article>
+            <article><strong>Path</strong><p>`LOG_DIR="/var/log/nginx"` avoids repeating paths everywhere.</p></article>
+            <article><strong>Environment</strong><p>`ENVIRONMENT="staging"` helps scripts behave differently per environment.</p></article>
+            <article><strong>Version</strong><p>`APP_VERSION="1.2.0"` supports build, tag, and deploy scripts.</p></article>
+            <article><strong>Endpoint</strong><p>`HEALTH_URL="https://example.com/health"` supports smoke testing.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Endpoint loop</p>
+          <h2>Validate several application endpoints</h2>
+          <p>
+            Endpoint loops are useful after deployments. You can check `/health`, `/ready`, documentation pages, or API
+            routes before confirming that a release is healthy.
+          </p>
+
+          <div class="terminal-card bash-loop-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+BASE_URL="${1:-http://localhost}"
+ENDPOINTS=("/" "/health" "/ready")
+
+for ENDPOINT in "${ENDPOINTS[@]}"; do
+  URL="${BASE_URL}${ENDPOINT}"
+  echo "Checking ${URL}"
+
+  STATUS_CODE=$(curl -s -o /dev/null -w "%{http_code}" "${URL}")
+
+  if [ "${STATUS_CODE}" = "200" ]; then
+    echo "OK: ${URL} returned 200"
+  else
+    echo "ERROR: ${URL} returned ${STATUS_CODE}"
+    exit 1
+  fi
+done</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">File loop</p>
+          <h2>Process multiple log files</h2>
+          <p>
+            File loops are useful for incident investigation. This example searches multiple logs for error patterns and
+            prints a small summary.
+          </p>
+
+          <div class="terminal-card bash-loop-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+LOG_FILES=(
+  "/var/log/nginx/error.log"
+  "/var/log/syslog"
+  "/var/log/auth.log"
+)
+
+for LOG_FILE in "${LOG_FILES[@]}"; do
+  echo "Scanning ${LOG_FILE}"
+
+  if [ -f "${LOG_FILE}" ]; then
+    grep -i "error\\|failed\\|denied" "${LOG_FILE}" | tail -n 5 || true
+  else
+    echo "Skipping missing file: ${LOG_FILE}"
+  fi
+done</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Loop types</p>
+          <h2>Common loop patterns</h2>
+          <div class="loop-pattern-grid">
+            <article><span>for</span><p>Best for looping through known lists such as services, files, or endpoints.</p></article>
+            <article><span>while</span><p>Useful when repeating until a condition changes, such as waiting for a service.</p></article>
+            <article><span>until</span><p>Useful for waiting until a command succeeds.</p></article>
+            <article><span>arrays</span><p>Useful for keeping lists safe, especially when items may contain spaces.</p></article>
+            <article><span>arguments</span><p>Useful for passing environment, threshold, service, or path values into scripts.</p></article>
+            <article><span>exit codes</span><p>Useful for telling CI/CD whether the loop succeeded or failed.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">CI/CD example</p>
+          <h2>Run loop-based validation before deployment</h2>
+          <p>
+            A pipeline can run a Bash loop to validate required environment variables before deployment continues.
+          </p>
+
+          <div class="terminal-card bash-loop-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>#!/usr/bin/env bash
+set -euo pipefail
+
+REQUIRED_VARS=("APP_NAME" "IMAGE_TAG" "ENVIRONMENT")
+
+for VAR_NAME in "${REQUIRED_VARS[@]}"; do
+  if [ -z "${!VAR_NAME:-}" ]; then
+    echo "ERROR: ${VAR_NAME} is not set"
+    exit 1
+  fi
+
+  echo "OK: ${VAR_NAME} is set"
+done
+
+echo "Environment validation passed"</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Good habits</p>
+          <h2>Safer variables and loops</h2>
+          <div class="loop-safety-board">
+            <article><span>Quote variables</span><p>Use `"${VALUE}"` so spaces and empty values are handled more safely.</p></article>
+            <article><span>Use arrays</span><p>Arrays are safer than plain strings for lists of values.</p></article>
+            <article><span>Validate input</span><p>Check that required values exist before using them.</p></article>
+            <article><span>Limit scope</span><p>Keep variables close to where they are used where possible.</p></article>
+            <article><span>Handle failure</span><p>Decide whether one failed item should stop the script or be counted.</p></article>
+            <article><span>Print context</span><p>Show which service, file, or endpoint the loop is currently processing.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting</p>
+          <h2>Common variable and loop problems</h2>
+          <div class="loop-troubleshoot">
+            <article><span>Unquoted variables</span><p>Can break when values contain spaces or unexpected characters.</p></article>
+            <article><span>Empty values</span><p>Can cause scripts to check the wrong target or run unsafe commands.</p></article>
+            <article><span>Wrong list format</span><p>Plain strings can behave differently from arrays.</p></article>
+            <article><span>Early exit</span><p>`set -e` may stop the script before you collect all results.</p></article>
+            <article><span>No context</span><p>Logs become hard to read if each loop iteration does not print what it is checking.</p></article>
+            <article><span>Bad exit code</span><p>A script may look successful to CI/CD if it does not return failure correctly.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio task</p>
+          <h2>Turn Day 17 into GitHub evidence</h2>
+          <p>
+            Add a `scripts/loops/` folder to your repository and include real examples that show variables, arrays,
+            loops, input validation, and useful output.
+          </p>
+          <div class="command-card command-card-large">
+            <code>scripts/loops/check-services.sh</code>
+            <code>scripts/loops/check-endpoints.sh</code>
+            <code>scripts/loops/scan-logs.sh</code>
+            <code>scripts/loops/validate-env.sh</code>
+            <code>README usage examples</code>
+            <code>CI workflow running one script</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to explain after Day 17</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 17 Bash variables and loops readiness checks">
+            <span>variable</span>
+            <span>array</span>
+            <span>for loop</span>
+            <span>while loop</span>
+            <span>input</span>
+            <span>quote</span>
+            <span>exit code</span>
+            <span>CI/CD</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>When should you use a variable instead of hardcoding a value?</p>
+            <p>Why are arrays safer than plain strings for lists?</p>
+            <p>How can a loop check multiple services or endpoints?</p>
+            <p>Why do loop exit codes matter in CI/CD pipelines?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
