@@ -1,0 +1,317 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 18: Python for DevOps | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 18 of DevOps in 100 Days by Ebenezer Tetteh: learn how Python supports DevOps automation with JSON, APIs, CLI tools, cloud inventory reports, error handling, and repeatable operational scripts."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero python-hero">
+        <div>
+          <p class="eyebrow">Day 18 of 100</p>
+          <h1>Python for DevOps: automate the work around the tools</h1>
+          <p>
+            Bash is excellent for fast Linux tasks. Python becomes powerful when DevOps work needs structure: reading
+            JSON, calling APIs, validating configuration, producing reports, handling errors, and building reusable
+            automation that other engineers can understand.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#python-lab">Start the Python lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel python-panel" aria-label="Day 18 learning summary">
+          <span>Today's focus</span>
+          <strong>Python automation</strong>
+          <p>JSON, APIs, CLI scripts, error handling, cloud inventory, reports, and DevOps-friendly code habits.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="python-flow" aria-label="Python for DevOps workflow">
+          <article><span>01</span><strong>Collect</strong><p>Read files, API responses, logs, and inventory data.</p></article>
+          <article><span>02</span><strong>Parse</strong><p>Turn JSON, YAML, and text into useful structured data.</p></article>
+          <article><span>03</span><strong>Automate</strong><p>Run repeatable checks, validations, and reports.</p></article>
+          <article><span>04</span><strong>Integrate</strong><p>Connect scripts to CI/CD, cloud APIs, and monitoring.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mental model</p>
+          <h2>Python is the glue for structured DevOps automation.</h2>
+          <p>
+            DevOps engineers rarely use Python just to prove they know Python. They use it to solve operational
+            problems: collect data, make decisions, call APIs, format output, reduce manual checks, and make automation
+            safer to repeat.
+          </p>
+          <div class="python-automation-board" aria-label="Animated Python automation board">
+            <article><span>json</span><strong>inventory</strong><p>Read cloud, app, and environment data.</p></article>
+            <article><span>api</span><strong>requests</strong><p>Talk to DevOps platforms and services.</p></article>
+            <article><span>cli</span><strong>arguments</strong><p>Make scripts flexible for different environments.</p></article>
+            <article><span>report</span><strong>output</strong><p>Show clear results for engineers and pipelines.</p></article>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why Python</span>
+            <h2>It handles structured work better than shell scripts.</h2>
+            <p>
+              Python is useful when the task involves dictionaries, lists, API responses, error handling, files,
+              conditionals, retry logic, or reports. It makes complex automation easier to read and test.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">Where it fits</span>
+            <h2>It sits beside Bash, not against it.</h2>
+            <p>
+              Use Bash for quick command-line tasks. Use Python when the logic grows, data becomes structured, or the
+              script needs to be reused by other people and pipelines.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="python-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Build a cloud inventory report from JSON</h2>
+          <p>
+            A realistic DevOps task is taking machine-readable infrastructure data and turning it into a useful report.
+            This small script reads a JSON inventory and prints the key information a team might need during support,
+            audit, migration, or incident response.
+          </p>
+
+          <div class="terminal-card python-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>{
+  "servers": [
+    {
+      "name": "payments-api-01",
+      "environment": "production",
+      "private_ip": "10.0.4.21",
+      "owner": "platform-team",
+      "status": "running",
+      "region": "eu-west-2",
+      "tags": ["api", "payments", "critical"]
+    },
+    {
+      "name": "reporting-worker-01",
+      "environment": "staging",
+      "private_ip": "10.0.8.13",
+      "owner": "data-team",
+      "status": "stopped",
+      "region": "eu-west-2",
+      "tags": ["worker", "reports"]
+    }
+  ]
+}</code></pre>
+          </div>
+
+          <div class="terminal-card python-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>#!/usr/bin/env python3
+import json
+from pathlib import Path
+
+inventory_path = Path("inventory.json")
+inventory = json.loads(inventory_path.read_text())
+
+for server in inventory["servers"]:
+    name = server["name"]
+    environment = server["environment"]
+    private_ip = server["private_ip"]
+    owner = server["owner"]
+    status = server["status"]
+    region = server["region"]
+    tags = ", ".join(server["tags"])
+
+    print(f"{name} | {environment} | {private_ip} | {owner} | {status} | {region} | {tags}")</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">What this proves</p>
+          <h2>This is more than printing a file.</h2>
+          <div class="python-data-grid">
+            <article><strong>Structured thinking</strong><p>You can read data as dictionaries and lists instead of treating everything as plain text.</p></article>
+            <article><strong>Operational reporting</strong><p>You can turn raw infrastructure data into a readable summary for people.</p></article>
+            <article><strong>Reusable automation</strong><p>You can use the same script with new inventory data without rewriting it.</p></article>
+            <article><strong>Audit support</strong><p>You can quickly answer what exists, where it runs, who owns it, and what state it is in.</p></article>
+            <article><strong>Incident response</strong><p>You can locate affected services, owners, regions, and tags faster during pressure.</p></article>
+            <article><strong>Portfolio evidence</strong><p>You can show real DevOps automation rather than only listing Python as a skill.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">API automation</p>
+          <h2>Call a service health endpoint with Python</h2>
+          <p>
+            Many DevOps platforms expose APIs: GitHub, GitLab, Jenkins, Kubernetes, AWS, Azure, monitoring tools, and
+            incident platforms. Python helps you call those APIs, handle failures, and produce useful output.
+          </p>
+
+          <div class="terminal-card python-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>#!/usr/bin/env python3
+import requests
+
+url = "https://example.com/health"
+
+try:
+    response = requests.get(url, timeout=5)
+    response.raise_for_status()
+except requests.exceptions.Timeout:
+    print(f"TIMEOUT: {url} did not respond quickly enough")
+except requests.exceptions.HTTPError as error:
+    print(f"HTTP ERROR: {url} returned {error.response.status_code}")
+except requests.exceptions.RequestException as error:
+    print(f"REQUEST FAILED: {error}")
+else:
+    print(f"OK: {url} is healthy")</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">CLI scripts</p>
+          <h2>Make scripts flexible with arguments</h2>
+          <p>
+            A script becomes more useful when the user can pass an environment, file path, service name, or threshold
+            without editing the code. This is how small scripts start becoming professional tools.
+          </p>
+
+          <div class="terminal-card python-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>#!/usr/bin/env python3
+import argparse
+
+parser = argparse.ArgumentParser(description="Check a DevOps environment name.")
+parser.add_argument("--environment", required=True, choices=["dev", "staging", "production"])
+args = parser.parse_args()
+
+print(f"Running validation for {args.environment}")</code></pre>
+          </div>
+
+          <div class="command-card command-card-large">
+            <code>python check_environment.py --environment dev</code>
+            <code>python check_environment.py --environment staging</code>
+            <code>python check_environment.py --environment production</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">DevOps use cases</p>
+          <h2>Where Python appears in real DevOps work</h2>
+          <div class="python-use-grid">
+            <article><span>Cloud</span><p>Inventory reporting, tag checks, cost summaries, backups, cleanup scripts, and account audits.</p></article>
+            <article><span>Kubernetes</span><p>Namespace reports, deployment checks, manifest validation, rollout summaries, and API queries.</p></article>
+            <article><span>CI/CD</span><p>Release notes, pipeline helpers, artifact reports, version bumping, and quality gate summaries.</p></article>
+            <article><span>Monitoring</span><p>API checks, alert enrichment, dashboard data, SLO reports, and incident evidence collection.</p></article>
+            <article><span>Security</span><p>Dependency reports, policy checks, secrets validation, configuration scanning, and exception lists.</p></article>
+            <article><span>Operations</span><p>Log parsing, runbook helpers, certificate checks, disk reports, and service ownership mapping.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Safer habits</p>
+          <h2>Write Python like an operations engineer.</h2>
+          <div class="python-safety-board">
+            <article><span>Timeouts</span><p>Always set timeouts when calling APIs so scripts do not hang forever.</p></article>
+            <article><span>Errors</span><p>Catch likely failures and print useful messages that explain the problem.</p></article>
+            <article><span>Inputs</span><p>Validate arguments and file paths before doing important work.</p></article>
+            <article><span>Secrets</span><p>Read sensitive values from environment variables or secret stores, not hardcoded strings.</p></article>
+            <article><span>Exit codes</span><p>Return success or failure clearly so CI/CD tools can react correctly.</p></article>
+            <article><span>Logs</span><p>Use readable output for small scripts and structured logging for larger automation.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting</p>
+          <h2>Common Python automation problems</h2>
+          <div class="python-troubleshoot">
+            <article><span>Missing package</span><p>The script uses a library such as requests but the environment has not installed it.</p></article>
+            <article><span>Bad JSON</span><p>The input file is not valid JSON, or the script expects a key that is not present.</p></article>
+            <article><span>No timeout</span><p>An API call hangs and blocks the pipeline or support script.</p></article>
+            <article><span>Hardcoded values</span><p>The script works only in one environment because values are fixed in the code.</p></article>
+            <article><span>Weak errors</span><p>The script fails but does not explain what went wrong or what was being checked.</p></article>
+            <article><span>No exit status</span><p>CI/CD shows success even though the script found a real problem.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio task</p>
+          <h2>Turn Day 18 into GitHub evidence</h2>
+          <p>
+            Add a `python-automation/` folder to your DevOps repository. Include scripts that read inventory data,
+            validate inputs, call a simple API, and generate readable output. Keep the README clear so employers can see
+            the operational purpose.
+          </p>
+          <div class="command-card command-card-large">
+            <code>python-automation/inventory_report.py</code>
+            <code>python-automation/check_health_api.py</code>
+            <code>python-automation/validate_environment.py</code>
+            <code>python-automation/inventory.json</code>
+            <code>python-automation/README.md</code>
+            <code>requirements.txt</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to explain after Day 18</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 18 Python for DevOps readiness checks">
+            <span>JSON</span>
+            <span>API</span>
+            <span>requests</span>
+            <span>argparse</span>
+            <span>timeouts</span>
+            <span>errors</span>
+            <span>reports</span>
+            <span>CI/CD</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>When should you use Python instead of Bash?</p>
+            <p>Why are JSON and APIs important in DevOps automation?</p>
+            <p>How can command-line arguments make scripts reusable?</p>
+            <p>Why do timeouts, error handling, and exit codes matter in CI/CD?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>
