@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 20: Automation Mini Project | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 20 of DevOps in 100 Days by Ebenezer Tetteh: build a practical service health check and reporting automation project using Bash or Python, YAML/JSON configuration, endpoint checks, reports, and CI/CD exit codes."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero automation-hero">
+        <div>
+          <p class="eyebrow">Day 20 of 100</p>
+          <h1>Automation mini project: service health check and report</h1>
+          <p>
+            Day 20 brings together Bash, variables, loops, Python, YAML, JSON, APIs, configuration, and operational
+            thinking. The goal is to build a small but realistic DevOps automation project that checks service health,
+            records the result, and returns a clear exit code for humans and CI/CD pipelines.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#automation-lab">Start the project</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel automation-panel" aria-label="Day 20 learning summary">
+          <span>Today's focus</span>
+          <strong>Health check project</strong>
+          <p>Config file, loop, endpoint checks, status report, failure handling, exit codes, and pipeline usage.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="automation-flow" aria-label="Automation mini project workflow">
+          <article><span>01</span><strong>Configure</strong><p>Define services, endpoints, owners, and environments.</p></article>
+          <article><span>02</span><strong>Check</strong><p>Loop through targets and collect health results.</p></article>
+          <article><span>03</span><strong>Report</strong><p>Write readable evidence for engineers and support teams.</p></article>
+          <article><span>04</span><strong>Signal</strong><p>Return success or failure so CI/CD can react.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Project goal</p>
+          <h2>Build automation that answers a real operations question.</h2>
+          <p>
+            The project question is simple: are the important services healthy right now? A good DevOps script should
+            answer that question consistently, without requiring someone to remember every command manually.
+          </p>
+
+          <div class="automation-board" aria-label="Animated service health report model">
+            <article><span>input</span><strong>services.yml</strong><p>Service names, URLs, owners, and expected status codes.</p></article>
+            <article><span>run</span><strong>health_check.py</strong><p>Loop through services and test each endpoint.</p></article>
+            <article><span>output</span><strong>report.txt</strong><p>Readable summary with pass, fail, and context.</p></article>
+            <article><span>signal</span><strong>exit 0 or 1</strong><p>Pipeline-friendly result for deployment gates.</p></article>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why this matters</span>
+            <h2>Automation should reduce toil.</h2>
+            <p>
+              Toil is repeated manual work that does not create lasting value. Health checks, smoke tests, log scans,
+              config validation, and report generation are good candidates for automation.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">What this proves</span>
+            <h2>You can connect several DevOps basics.</h2>
+            <p>
+              This mini project shows Linux thinking, scripting, structured configuration, loops, API checks, reporting,
+              error handling, and CI/CD readiness in one small piece of work.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="automation-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Create the project structure</h2>
+          <p>
+            Keep the project simple and clear. The folder structure should tell a reader where the configuration lives,
+            where the script lives, where reports are written, and how to run it.
+          </p>
+
+          <div class="terminal-card automation-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>service-health-check/
+  README.md
+  config/
+    services.json
+  scripts/
+    health_check.py
+  reports/
+    latest-report.txt
+  .github/
+    workflows/
+      health-check.yml</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Configuration</p>
+          <h2>Put service targets in JSON</h2>
+          <p>
+            The script should not hardcode every endpoint. A configuration file makes the automation easier to update
+            when services, URLs, environments, or owners change.
+          </p>
+
+          <div class="terminal-card automation-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>{
+  "environment": "staging",
+  "services": [
+    {
+      "name": "payments-api",
+      "url": "https://example.com/payments/health",
+      "expected_status": 200,
+      "owner": "platform-team"
+    },
+    {
+      "name": "reporting-worker",
+      "url": "https://example.com/reports/health",
+      "expected_status": 200,
+      "owner": "data-team"
+    }
+  ]
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Python script</p>
+          <h2>Check each endpoint and write a report</h2>
+          <p>
+            This script reads the JSON file, checks each service, writes a report, prints a summary, and exits with `1`
+            when one or more services fail. That final exit code is what makes the script useful in CI/CD.
+          </p>
+
+          <div class="terminal-card automation-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>#!/usr/bin/env python3
+import json
+from datetime import datetime, timezone
+from pathlib import Path
+
+import requests
+
+CONFIG_FILE = Path("config/services.json")
+REPORT_FILE = Path("reports/latest-report.txt")
+
+
+def check_service(service):
+    name = service["name"]
+    url = service["url"]
+    expected = service.get("expected_status", 200)
+
+    try:
+        response = requests.get(url, timeout=5)
+        actual = response.status_code
+        healthy = actual == expected
+        detail = f"expected {expected}, got {actual}"
+    except requests.exceptions.RequestException as error:
+        healthy = False
+        detail = str(error)
+
+    return {
+        "name": name,
+        "url": url,
+        "owner": service.get("owner", "unknown"),
+        "healthy": healthy,
+        "detail": detail,
+    }
+
+
+def main():
+    config = json.loads(CONFIG_FILE.read_text())
+    REPORT_FILE.parent.mkdir(parents=True, exist_ok=True)
+
+    results = [check_service(service) for service in config["services"]]
+    failures = [result for result in results if not result["healthy"]]
+
+    lines = [
+        f"Environment: {config['environment']}",
+        f"Checked at: {datetime.now(timezone.utc).isoformat()}",
+        "",
+    ]
+
+    for result in results:
+        status = "PASS" if result["healthy"] else "FAIL"
+        lines.append(f"{status} | {result['name']} | {result['owner']} | {result['detail']}")
+
+    REPORT_FILE.write_text("\n".join(lines) + "\n")
+    print("\n".join(lines))
+
+    return 1 if failures else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Report output</p>
+          <h2>Make the result useful to humans</h2>
+          <p>
+            A health check should not only say failed. It should say which service failed, who owns it, what was
+            expected, what actually happened, and when the check ran.
+          </p>
+
+          <div class="automation-report" aria-label="Example health check report">
+            <article><span>Environment</span><strong>staging</strong></article>
+            <article><span>Checked at</span><strong>2026-09-28T10:30:00Z</strong></article>
+            <article><span>payments-api</span><strong class="report-pass">PASS</strong><p>platform-team | expected 200, got 200</p></article>
+            <article><span>reporting-worker</span><strong class="report-fail">FAIL</strong><p>data-team | timeout after 5 seconds</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">CI/CD usage</p>
+          <h2>Use the script as a deployment gate</h2>
+          <p>
+            The same script can run after deployment. If the service check passes, the pipeline continues. If it fails,
+            the pipeline stops and stores the report as evidence.
+          </p>
+
+          <div class="terminal-card automation-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>name: service-health-check
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  health-check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install dependencies
+        run: pip install requests
+
+      - name: Run health check
+        run: python scripts/health_check.py
+
+      - name: Upload report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: health-check-report
+          path: reports/latest-report.txt</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Project options</p>
+          <h2>What else the script can check</h2>
+          <div class="automation-use-grid">
+            <article><span>Service status</span><p>Check `systemctl` for services such as Nginx, Docker, SSH, or application daemons.</p></article>
+            <article><span>HTTP endpoints</span><p>Check `/health`, `/ready`, login pages, API routes, or load balancer targets.</p></article>
+            <article><span>Disk usage</span><p>Warn when disk usage crosses a threshold before a service fails.</p></article>
+            <article><span>Log errors</span><p>Search recent logs for patterns such as error, failed, denied, timeout, or refused.</p></article>
+            <article><span>Config validity</span><p>Run JSON, YAML, Docker Compose, Ansible, Terraform, or Kubernetes validation commands.</p></article>
+            <article><span>Version check</span><p>Confirm the running version matches the version that was deployed.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Operational thinking</p>
+          <h2>Good automation exposes the right information quickly.</h2>
+          <div class="automation-safety-board">
+            <article><span>Clear input</span><p>Use config files so service targets are easy to review and change.</p></article>
+            <article><span>Useful output</span><p>Write reports that explain what passed, what failed, and why it matters.</p></article>
+            <article><span>Safe failure</span><p>Return non-zero exit codes when checks fail so pipelines can stop safely.</p></article>
+            <article><span>Timeouts</span><p>Use timeouts for endpoint checks so one slow service does not hang the whole script.</p></article>
+            <article><span>No secrets</span><p>Do not print tokens, passwords, or private headers in logs or reports.</p></article>
+            <article><span>Documentation</span><p>Explain how to run the script locally and how it behaves in CI/CD.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Troubleshooting</p>
+          <h2>What to check when the automation fails</h2>
+          <div class="automation-troubleshoot">
+            <article><span>Bad config path</span><p>The script cannot find `config/services.json` from the current working directory.</p></article>
+            <article><span>Invalid JSON</span><p>The config file has a missing comma, quote, bracket, or incorrect nesting.</p></article>
+            <article><span>Network failure</span><p>The endpoint may be blocked by DNS, firewall, proxy, routing, or TLS issues.</p></article>
+            <article><span>Wrong status code</span><p>The service may return 301, 401, 403, 500, or 503 instead of the expected 200.</p></article>
+            <article><span>Missing package</span><p>The environment may not have the `requests` package installed.</p></article>
+            <article><span>Weak report</span><p>The report may need more context, such as owner, environment, URL, and timestamp.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio task</p>
+          <h2>Turn Day 20 into GitHub evidence</h2>
+          <p>
+            Publish the mini project as a small repository or folder. Include a README, configuration file, script,
+            sample report, and a CI workflow. This gives employers a visible example of practical automation.
+          </p>
+          <div class="command-card command-card-large">
+            <code>README with project goal</code>
+            <code>config/services.json</code>
+            <code>scripts/health_check.py</code>
+            <code>reports/latest-report.txt</code>
+            <code>.github/workflows/health-check.yml</code>
+            <code>screenshots or terminal output</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to explain after Day 20</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 20 automation mini project readiness checks">
+            <span>config</span>
+            <span>loop</span>
+            <span>endpoint</span>
+            <span>timeout</span>
+            <span>report</span>
+            <span>exit code</span>
+            <span>artifact</span>
+            <span>CI/CD</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>What manual operational task does this automation reduce?</p>
+            <p>Why should service targets live in a configuration file?</p>
+            <p>Why do exit codes matter when automation runs in CI/CD?</p>
+            <p>What information should a useful health check report include?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>

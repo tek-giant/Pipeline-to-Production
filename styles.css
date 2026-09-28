@@ -753,6 +753,48 @@ code {
   animation: configSyntaxSweep 2.9s ease-in-out infinite;
 }
 
+.automation-card-visual {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(21, 128, 61, 0.82)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 40px);
+}
+
+.automation-card-visual span {
+  position: relative;
+  display: grid;
+  min-height: 74px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.automation-card-visual span::after {
+  position: absolute;
+  right: -15px;
+  width: 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: #86efac;
+  content: "";
+  animation: automationCheckSweep 2.9s ease-in-out infinite;
+}
+
+.automation-card-visual span:last-child::after {
+  display: none;
+}
+
 .post-card .card-topline,
 .post-card h3,
 .post-card p,
@@ -4743,6 +4785,215 @@ code {
   }
 }
 
+.automation-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(21, 128, 61, 0.88)),
+    radial-gradient(circle at 78% 18%, rgba(134, 239, 172, 0.22), transparent 30%),
+    var(--code);
+}
+
+.automation-hero::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 0 18%, rgba(134, 239, 172, 0.13) 18% 19%, transparent 19% 58%, rgba(250, 204, 21, 0.12) 58% 59%, transparent 59% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 46px);
+  content: "";
+  opacity: 0.62;
+  pointer-events: none;
+  animation: automationGridDrift 7.2s ease-in-out infinite;
+}
+
+.automation-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.automation-panel {
+  border-color: rgba(134, 239, 172, 0.38);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(240, 253, 244, 0.95)),
+    #ffffff;
+}
+
+.automation-flow,
+.automation-board,
+.automation-report,
+.automation-use-grid,
+.automation-safety-board,
+.automation-troubleshoot {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.automation-flow,
+.automation-board {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.automation-flow {
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.automation-report,
+.automation-use-grid,
+.automation-safety-board,
+.automation-troubleshoot {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+.automation-use-grid,
+.automation-safety-board,
+.automation-troubleshoot {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.automation-flow article,
+.automation-board article,
+.automation-report article,
+.automation-use-grid article,
+.automation-safety-board article,
+.automation-troubleshoot article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.automation-flow article::after,
+.automation-board article::after,
+.automation-safety-board article::after,
+.automation-troubleshoot article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #86efac, #38bdf8, #facc15, var(--accent));
+  content: "";
+  transform: scaleX(0.18);
+  transform-origin: left;
+  animation: automationCheckSweep 3.5s ease-in-out infinite;
+}
+
+.automation-flow article:hover,
+.automation-board article:hover,
+.automation-report article:hover,
+.automation-use-grid article:hover,
+.automation-safety-board article:hover,
+.automation-troubleshoot article:hover {
+  border-color: rgba(34, 197, 94, 0.42);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.automation-flow span,
+.automation-board span,
+.automation-report span,
+.automation-use-grid span,
+.automation-safety-board span,
+.automation-troubleshoot span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: #10211d;
+  padding: 7px 10px;
+  color: #dff3ee;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.automation-flow strong,
+.automation-board strong,
+.automation-report strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.06rem;
+}
+
+.automation-flow p,
+.automation-board p,
+.automation-report p,
+.automation-use-grid p,
+.automation-safety-board p,
+.automation-troubleshoot p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.automation-board {
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.98), rgba(21, 128, 61, 0.76)),
+    #10211d;
+  padding: 18px;
+  box-shadow: 0 20px 48px rgba(20, 32, 28, 0.14);
+}
+
+.automation-board article {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.93);
+}
+
+.automation-report {
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.98), rgba(8, 47, 73, 0.78)),
+    #10211d;
+  padding: 18px;
+  box-shadow: 0 20px 48px rgba(20, 32, 28, 0.14);
+}
+
+.automation-report article {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.report-pass {
+  color: #15803d !important;
+}
+
+.report-fail {
+  color: #b91c1c !important;
+}
+
+.automation-terminal {
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+@keyframes automationGridDrift {
+  0%,
+  100% {
+    transform: translateX(-16px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(18px);
+    opacity: 0.74;
+  }
+}
+
+@keyframes automationCheckSweep {
+  0%,
+  100% {
+    transform: scaleX(0.18);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -4861,7 +5112,13 @@ code {
   .config-code-grid,
   .config-use-grid,
   .config-safety-board,
-  .config-troubleshoot {
+  .config-troubleshoot,
+  .automation-flow,
+  .automation-board,
+  .automation-report,
+  .automation-use-grid,
+  .automation-safety-board,
+  .automation-troubleshoot {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -4994,6 +5251,12 @@ code {
   .config-use-grid,
   .config-safety-board,
   .config-troubleshoot,
+  .automation-flow,
+  .automation-board,
+  .automation-report,
+  .automation-use-grid,
+  .automation-safety-board,
+  .automation-troubleshoot,
   .flow-strip {
     grid-template-columns: 1fr;
   }
