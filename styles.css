@@ -795,6 +795,57 @@ code {
   display: none;
 }
 
+.vpc-card-visual {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(14, 116, 144, 0.82)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 42px);
+}
+
+.vpc-card-visual span {
+  position: relative;
+  display: grid;
+  min-height: 74px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.vpc-card-visual span::after {
+  position: absolute;
+  right: -15px;
+  width: 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: #67e8f9;
+  content: "";
+  animation: vpcPacketSweep 2.9s ease-in-out infinite;
+}
+
+.vpc-card-visual span:last-child::after {
+  display: none;
+}
+
+@keyframes vpcPacketSweep {
+  0%,
+  100% {
+    transform: scaleX(0.2);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
 .post-card .card-topline,
 .post-card h3,
 .post-card p,
