@@ -1,0 +1,340 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 19: YAML and JSON for DevOps | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 19 of DevOps in 100 Days by Ebenezer Tetteh: learn YAML and JSON for Kubernetes, GitHub Actions, Ansible, Terraform outputs, AWS CLI responses, validation, and safer DevOps configuration."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero config-hero">
+        <div>
+          <p class="eyebrow">Day 19 of 100</p>
+          <h1>YAML and JSON: the configuration language of DevOps</h1>
+          <p>
+            DevOps engineers work with configuration every day. YAML and JSON appear in Kubernetes, CI/CD pipelines,
+            Ansible, Terraform outputs, AWS CLI responses, monitoring payloads, policies, and automation scripts.
+            Learning their structure makes troubleshooting faster and deployments safer.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#config-lab">Start the config lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel config-panel" aria-label="Day 19 learning summary">
+          <span>Today's focus</span>
+          <strong>YAML and JSON</strong>
+          <p>Indentation, key-value pairs, lists, objects, validation, Kubernetes manifests, workflows, and API data.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="config-flow" aria-label="YAML and JSON workflow">
+          <article><span>01</span><strong>Read</strong><p>Understand keys, values, lists, objects, and nesting.</p></article>
+          <article><span>02</span><strong>Edit</strong><p>Change configuration without breaking structure.</p></article>
+          <article><span>03</span><strong>Validate</strong><p>Check syntax before pushing or applying changes.</p></article>
+          <article><span>04</span><strong>Apply</strong><p>Use clean config in pipelines, clusters, and cloud automation.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Mental model</p>
+          <h2>Configuration is code that tells tools what to do.</h2>
+          <p>
+            A deployment can fail because of one wrong space, a missing quote, an incorrect key, or a list placed at the
+            wrong level. YAML and JSON look simple, but they control serious systems. Treat them with the same care as
+            application code.
+          </p>
+
+          <div class="config-compare-board" aria-label="Animated YAML and JSON comparison">
+            <article><span>yaml</span><strong>Human-friendly</strong><p>Used heavily for Kubernetes, Ansible, GitHub Actions, Helm, and Docker Compose.</p></article>
+            <article><span>json</span><strong>Machine-friendly</strong><p>Used heavily for APIs, AWS CLI output, Terraform output, policies, and integrations.</p></article>
+            <article><span>risk</span><strong>Small syntax errors</strong><p>Indentation, commas, quotes, and nesting can break deployments.</p></article>
+            <article><span>habit</span><strong>Validate first</strong><p>Lint locally and in CI before applying changes to real environments.</p></article>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">YAML</span>
+            <h2>Designed for people to read and write.</h2>
+            <p>
+              YAML uses indentation to show structure. It is clean and readable, but that also means spacing matters.
+              One misplaced indentation level can change what a tool understands.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">JSON</span>
+            <h2>Designed for systems to exchange data.</h2>
+            <p>
+              JSON is strict: keys and strings use double quotes, objects use braces, arrays use brackets, and commas
+              separate values. It is common in APIs and automation output.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="config-lab">
+          <p class="section-kicker">Hands-on lab</p>
+          <h2>Represent the same deployment in YAML and JSON</h2>
+          <p>
+            Both formats can describe the same information. The difference is syntax. Practise reading the structure
+            first: environment, replicas, image name, image tag, ports, and labels.
+          </p>
+
+          <div class="config-code-grid">
+            <div class="terminal-card config-terminal">
+              <div class="terminal-header">
+                <span></span><span></span><span></span>
+              </div>
+              <pre><code>environment: production
+replicas: 3
+image:
+  name: payments-api
+  tag: v1.0.0
+ports:
+  - 8080
+  - 8443
+labels:
+  app: payments
+  owner: platform-team</code></pre>
+            </div>
+
+            <div class="terminal-card config-terminal">
+              <div class="terminal-header">
+                <span></span><span></span><span></span>
+              </div>
+              <pre><code>{
+  "environment": "production",
+  "replicas": 3,
+  "image": {
+    "name": "payments-api",
+    "tag": "v1.0.0"
+  },
+  "ports": [8080, 8443],
+  "labels": {
+    "app": "payments",
+    "owner": "platform-team"
+  }
+}</code></pre>
+            </div>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Real DevOps examples</p>
+          <h2>Where YAML appears in daily work</h2>
+          <div class="config-use-grid">
+            <article><span>Kubernetes</span><p>Deployments, Services, Ingress, ConfigMaps, Secrets, probes, resources, and namespaces.</p></article>
+            <article><span>GitHub Actions</span><p>Workflow triggers, jobs, steps, runners, secrets, artifacts, and deployment environments.</p></article>
+            <article><span>Ansible</span><p>Playbooks, roles, inventories, variables, handlers, package installation, and service tasks.</p></article>
+            <article><span>Helm</span><p>`values.yaml` files that customise charts across dev, staging, and production.</p></article>
+            <article><span>Docker Compose</span><p>Local application stacks, service dependencies, ports, volumes, and environment variables.</p></article>
+            <article><span>CI/CD</span><p>Pipeline definitions for build, test, scan, package, deploy, approve, and notify stages.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Kubernetes example</p>
+          <h2>YAML controls what runs in the cluster</h2>
+          <p>
+            This manifest describes a Deployment. Notice how indentation shows relationships: `containers` belongs under
+            the Pod template, `ports` belongs under the container, and `containerPort` belongs under the port item.
+          </p>
+
+          <div class="terminal-card config-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: payments-api
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: payments-api
+  template:
+    metadata:
+      labels:
+        app: payments-api
+    spec:
+      containers:
+        - name: payments-api
+          image: ghcr.io/example/payments-api:v1.0.0
+          ports:
+            - containerPort: 8080</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">GitHub Actions example</p>
+          <h2>YAML controls when automation runs</h2>
+          <p>
+            CI/CD workflows are also configuration. The structure tells GitHub which branch events should start the
+            workflow, which runner to use, and which steps should execute.
+          </p>
+
+          <div class="terminal-card config-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>name: build-and-test
+
+on:
+  pull_request:
+    branches:
+      - main
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout source
+        uses: actions/checkout@v4
+
+      - name: Run tests
+        run: npm test</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">JSON example</p>
+          <h2>JSON is common in APIs and cloud command output</h2>
+          <p>
+            AWS CLI, Terraform, monitoring systems, and internal APIs often return JSON. DevOps engineers need to read
+            it, filter it, and pass it into scripts or pipeline steps.
+          </p>
+
+          <div class="terminal-card config-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>{
+  "LoadBalancers": [
+    {
+      "LoadBalancerName": "payments-alb",
+      "DNSName": "payments.example.com",
+      "State": {
+        "Code": "active"
+      },
+      "Scheme": "internet-facing"
+    }
+  ]
+}</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Validation</p>
+          <h2>Check configuration before it reaches production</h2>
+          <p>
+            Validation is a habit, not a luxury. A good DevOps workflow checks syntax locally, checks structure in pull
+            requests, and uses dry-run commands before applying important changes.
+          </p>
+
+          <div class="command-card command-card-large config-command-stack">
+            <code>python -m json.tool config.json</code>
+            <code>yamllint deployment.yaml</code>
+            <code>kubectl apply --dry-run=client -f deployment.yaml</code>
+            <code>docker compose config</code>
+            <code>ansible-playbook playbook.yml --syntax-check</code>
+            <code>terraform output -json</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Common mistakes</p>
+          <h2>The small errors that cause big failures</h2>
+          <div class="config-troubleshoot">
+            <article><span>Wrong indentation</span><p>YAML changes meaning when an item is placed at the wrong level.</p></article>
+            <article><span>Tabs in YAML</span><p>Use spaces. Tabs can cause parsing failures or confusing behaviour.</p></article>
+            <article><span>Missing commas</span><p>JSON requires commas between fields and array items.</p></article>
+            <article><span>Bad quotes</span><p>JSON strings require double quotes. YAML values may need quotes when values are ambiguous.</p></article>
+            <article><span>Wrong data type</span><p>A value may look right but be treated as a string, number, boolean, or list incorrectly.</p></article>
+            <article><span>Unknown key</span><p>A tool may reject a key, ignore it, or apply a default you did not expect.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Good habits</p>
+          <h2>Configuration habits that make teams safer</h2>
+          <div class="config-safety-board">
+            <article><span>Keep examples</span><p>Store working examples for Kubernetes, workflows, Ansible, and Docker Compose.</p></article>
+            <article><span>Use comments carefully</span><p>YAML supports comments, but JSON does not. Avoid relying on comments for critical logic.</p></article>
+            <article><span>Review diffs</span><p>Small indentation changes can be hard to notice without careful pull request review.</p></article>
+            <article><span>Validate in CI</span><p>Run linting and dry-run checks before merge so errors are caught early.</p></article>
+            <article><span>Separate environments</span><p>Use clear files or overlays for dev, staging, and production configuration.</p></article>
+            <article><span>Protect secrets</span><p>Do not commit secret values into YAML or JSON. Use secret stores and protected variables.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio task</p>
+          <h2>Turn Day 19 into GitHub evidence</h2>
+          <p>
+            Create a `configuration-examples/` folder in your DevOps repository. Add real examples with a README that
+            explains what each file does, how to validate it, and where it would be used.
+          </p>
+          <div class="command-card command-card-large">
+            <code>configuration-examples/kubernetes/deployment.yaml</code>
+            <code>configuration-examples/github-actions/build.yml</code>
+            <code>configuration-examples/ansible/playbook.yml</code>
+            <code>configuration-examples/aws/alb-response.json</code>
+            <code>configuration-examples/docker-compose/compose.yaml</code>
+            <code>configuration-examples/README.md</code>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Readiness check</p>
+          <h2>What readers should be able to explain after Day 19</h2>
+          <div class="flow-strip verification-strip" aria-label="Day 19 YAML and JSON readiness checks">
+            <span>YAML</span>
+            <span>JSON</span>
+            <span>keys</span>
+            <span>lists</span>
+            <span>objects</span>
+            <span>indent</span>
+            <span>validate</span>
+            <span>dry-run</span>
+          </div>
+          <div class="question-list linux-questions">
+            <p>Why does indentation matter so much in YAML?</p>
+            <p>Why is JSON common in APIs and cloud tooling?</p>
+            <p>How can a YAML mistake break a Kubernetes deployment or CI/CD workflow?</p>
+            <p>Which validation commands should run before configuration reaches production?</p>
+          </div>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to 100 days</a>
+    </footer>
+  </body>
+</html>

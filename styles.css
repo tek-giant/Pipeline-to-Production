@@ -713,6 +713,46 @@ code {
   animation: pythonDataSweep 2.9s ease-in-out infinite;
 }
 
+.config-card-visual {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(88, 28, 135, 0.78)),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 40px);
+}
+
+.config-card-visual span {
+  position: relative;
+  display: grid;
+  min-height: 54px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-family: ui-monospace, SFMono-Regular, Consolas, "Liberation Mono", monospace;
+  font-size: 0.76rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.config-card-visual span::after {
+  position: absolute;
+  right: 10px;
+  bottom: 8px;
+  left: 10px;
+  height: 3px;
+  border-radius: 999px;
+  background: #c084fc;
+  content: "";
+  transform: scaleX(0.22);
+  transform-origin: left;
+  animation: configSyntaxSweep 2.9s ease-in-out infinite;
+}
+
 .post-card .card-topline,
 .post-card h3,
 .post-card p,
@@ -4519,6 +4559,190 @@ code {
   }
 }
 
+.config-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(88, 28, 135, 0.86)),
+    radial-gradient(circle at 78% 18%, rgba(192, 132, 252, 0.24), transparent 30%),
+    var(--code);
+}
+
+.config-hero::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 0 18%, rgba(192, 132, 252, 0.14) 18% 19%, transparent 19% 58%, rgba(52, 211, 153, 0.13) 58% 59%, transparent 59% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 46px);
+  content: "";
+  opacity: 0.62;
+  pointer-events: none;
+  animation: configGridDrift 7.2s ease-in-out infinite;
+}
+
+.config-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.config-panel {
+  border-color: rgba(192, 132, 252, 0.36);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(250, 245, 255, 0.95)),
+    #ffffff;
+}
+
+.config-flow,
+.config-compare-board,
+.config-code-grid,
+.config-use-grid,
+.config-safety-board,
+.config-troubleshoot {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.config-flow,
+.config-compare-board {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.config-flow {
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.config-code-grid {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  align-items: stretch;
+}
+
+.config-use-grid,
+.config-safety-board,
+.config-troubleshoot {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.config-flow article,
+.config-compare-board article,
+.config-use-grid article,
+.config-safety-board article,
+.config-troubleshoot article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.config-flow article::after,
+.config-compare-board article::after,
+.config-safety-board article::after,
+.config-troubleshoot article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #c084fc, #34d399, #facc15, var(--accent));
+  content: "";
+  transform: scaleX(0.18);
+  transform-origin: left;
+  animation: configSyntaxSweep 3.5s ease-in-out infinite;
+}
+
+.config-flow article:hover,
+.config-compare-board article:hover,
+.config-use-grid article:hover,
+.config-safety-board article:hover,
+.config-troubleshoot article:hover {
+  border-color: rgba(192, 132, 252, 0.44);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.config-flow span,
+.config-compare-board span,
+.config-use-grid span,
+.config-safety-board span,
+.config-troubleshoot span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: #10211d;
+  padding: 7px 10px;
+  color: #dff3ee;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.config-flow strong,
+.config-compare-board strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.06rem;
+}
+
+.config-flow p,
+.config-compare-board p,
+.config-use-grid p,
+.config-safety-board p,
+.config-troubleshoot p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.config-compare-board {
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.98), rgba(88, 28, 135, 0.74)),
+    #10211d;
+  padding: 18px;
+  box-shadow: 0 20px 48px rgba(20, 32, 28, 0.14);
+}
+
+.config-compare-board article {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.93);
+}
+
+.config-terminal {
+  height: 100%;
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+.config-command-stack code {
+  border-left: 4px solid #c084fc;
+}
+
+@keyframes configGridDrift {
+  0%,
+  100% {
+    transform: translateX(-16px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(18px);
+    opacity: 0.74;
+  }
+}
+
+@keyframes configSyntaxSweep {
+  0%,
+  100% {
+    transform: scaleX(0.18);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -4631,7 +4855,13 @@ code {
   .python-data-grid,
   .python-use-grid,
   .python-safety-board,
-  .python-troubleshoot {
+  .python-troubleshoot,
+  .config-flow,
+  .config-compare-board,
+  .config-code-grid,
+  .config-use-grid,
+  .config-safety-board,
+  .config-troubleshoot {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -4758,6 +4988,12 @@ code {
   .python-use-grid,
   .python-safety-board,
   .python-troubleshoot,
+  .config-flow,
+  .config-compare-board,
+  .config-code-grid,
+  .config-use-grid,
+  .config-safety-board,
+  .config-troubleshoot,
   .flow-strip {
     grid-template-columns: 1fr;
   }
