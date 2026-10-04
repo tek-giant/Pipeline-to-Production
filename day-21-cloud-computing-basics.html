@@ -1,0 +1,216 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 21: Cloud Computing Basics | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 21 of DevOps in 100 Days by Ebenezer Tetteh: understand cloud computing foundations, regions, availability zones, compute, storage, networking, IAM, monitoring, cost, and production architecture thinking."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero cloud-hero">
+        <div>
+          <p class="eyebrow">Day 21 of 100</p>
+          <h1>Cloud computing basics: the platform behind modern DevOps</h1>
+          <p>
+            Day 21 starts the cloud phase of the journey. Before running Terraform, Docker, Kubernetes, CI/CD, or
+            observability platforms, a DevOps engineer needs to understand the cloud building blocks that support real
+            production systems.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#cloud-lab">Start the cloud lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel cloud-panel" aria-label="Day 21 learning summary">
+          <span>Today's focus</span>
+          <strong>Cloud foundations</strong>
+          <p>Regions, availability zones, compute, storage, networking, IAM, monitoring, cost, and reliability.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="cloud-flow" aria-label="Cloud computing foundation workflow">
+          <article><span>01</span><strong>Place</strong><p>Choose regions and availability zones for resilience.</p></article>
+          <article><span>02</span><strong>Connect</strong><p>Design networks, routes, security boundaries, and access.</p></article>
+          <article><span>03</span><strong>Run</strong><p>Use compute, containers, databases, and storage for workloads.</p></article>
+          <article><span>04</span><strong>Operate</strong><p>Monitor, secure, scale, and control cost continuously.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Big idea</p>
+          <h2>Cloud is not only servers on the internet.</h2>
+          <p>
+            Cloud computing gives teams on-demand infrastructure and managed services. Instead of buying and managing
+            every physical server, teams can provision compute, storage, networking, databases, monitoring, and security
+            controls from a cloud provider such as AWS, Azure, or Google Cloud.
+          </p>
+          <p>
+            For DevOps, the important point is not just that resources are available quickly. The real value is that
+            infrastructure can be automated, repeated, measured, secured, scaled, and improved using code and operational
+            practices.
+          </p>
+
+          <div class="cloud-architecture" aria-label="Animated cloud application architecture">
+            <article class="cloud-user"><span>Users</span><strong>HTTPS traffic</strong><p>Customers access the application through a public endpoint.</p></article>
+            <article class="cloud-edge"><span>Edge</span><strong>Load balancer</strong><p>Routes requests to healthy application targets.</p></article>
+            <article class="cloud-app"><span>Compute</span><strong>App workload</strong><p>EC2, containers, serverless, or managed platform services run code.</p></article>
+            <article class="cloud-data"><span>Data</span><strong>Database and storage</strong><p>Managed databases and object storage protect application state.</p></article>
+            <article class="cloud-ops"><span>Ops</span><strong>Logs and metrics</strong><p>Monitoring explains health, performance, errors, and capacity.</p></article>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why this matters</span>
+            <h2>Most DevOps tools depend on cloud foundations.</h2>
+            <p>
+              Terraform provisions cloud resources. CI/CD deploys into cloud environments. Kubernetes often runs on
+              managed cloud clusters. Monitoring tools collect signals from cloud workloads. Weak cloud basics make all
+              of those areas harder to understand.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">What this proves</span>
+            <h2>You can think in systems, not isolated services.</h2>
+            <p>
+              A production application is a connected system: users, DNS, load balancers, networks, compute, storage,
+              identity, monitoring, security, cost, backups, and recovery all matter together.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="cloud-lab">
+          <p class="section-kicker">Core concepts</p>
+          <h2>The cloud terms to understand first</h2>
+          <p>
+            These are the foundations that appear again and again in DevOps interviews, architecture diagrams, migration
+            projects, troubleshooting sessions, and infrastructure-as-code work.
+          </p>
+
+          <div class="cloud-concept-grid">
+            <article><span>Region</span><strong>Geographic location</strong><p>Choose regions based on latency, compliance, resilience, and cost.</p></article>
+            <article><span>Availability Zone</span><strong>Independent data centre zone</strong><p>Use multiple zones so one data centre issue does not take down the whole application.</p></article>
+            <article><span>Compute</span><strong>Where code runs</strong><p>Virtual machines, containers, serverless functions, and managed platforms host applications.</p></article>
+            <article><span>Storage</span><strong>Where data lives</strong><p>Object storage, block storage, file systems, and databases support different data patterns.</p></article>
+            <article><span>Network</span><strong>How systems communicate</strong><p>VPCs, subnets, route tables, firewalls, NAT, private endpoints, and load balancers control traffic.</p></article>
+            <article><span>IAM</span><strong>Who can do what</strong><p>Identity and access management controls permissions for users, services, pipelines, and workloads.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Service map</p>
+          <h2>How cloud services support a real application</h2>
+          <p>
+            Do not memorise services as separate names. Learn the role each service plays in the system. That is how
+            cloud knowledge becomes useful in production.
+          </p>
+
+          <div class="cloud-service-map">
+            <article><span>Traffic</span><strong>DNS + load balancer</strong><p>Users need a reliable entry point and traffic must reach healthy targets.</p></article>
+            <article><span>Application</span><strong>VMs, containers, serverless</strong><p>The workload needs a secure and repeatable runtime.</p></article>
+            <article><span>Configuration</span><strong>Secrets + environment settings</strong><p>Applications need controlled access to credentials and runtime values.</p></article>
+            <article><span>Data</span><strong>Database + object storage</strong><p>Stateful data needs backups, encryption, access control, and recovery planning.</p></article>
+            <article><span>Operations</span><strong>Metrics + logs + alarms</strong><p>Teams need visibility before, during, and after incidents.</p></article>
+            <article><span>Governance</span><strong>Tags + policies + cost controls</strong><p>Cloud usage must be traceable, secure, and financially controlled.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">DevOps angle</p>
+          <h2>What a DevOps engineer should ask about every cloud design</h2>
+          <p>
+            A strong DevOps mindset looks beyond whether the resource exists. It asks whether the resource is secure,
+            observable, repeatable, scalable, cost-aware, and recoverable.
+          </p>
+
+          <div class="cloud-question-board" aria-label="Cloud design questions">
+            <article><span>Security</span><strong>Who has access?</strong><p>Use least privilege, managed identities or roles, MFA, encryption, and audited access.</p></article>
+            <article><span>Reliability</span><strong>What happens if one zone fails?</strong><p>Spread critical workloads across availability zones and plan failover paths.</p></article>
+            <article><span>Automation</span><strong>Can this be rebuilt?</strong><p>Use infrastructure as code, version control, reviews, and repeatable pipelines.</p></article>
+            <article><span>Observability</span><strong>How will we know it is healthy?</strong><p>Collect logs, metrics, traces, alerts, dashboards, and runbooks.</p></article>
+            <article><span>Cost</span><strong>Is this the right size?</strong><p>Tag resources, clean unused assets, set budgets, and choose cost-aware designs.</p></article>
+            <article><span>Recovery</span><strong>Can we restore quickly?</strong><p>Test backups, document recovery steps, and understand RTO and RPO targets.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Hands-on task</p>
+          <h2>Draw a simple cloud architecture</h2>
+          <p>
+            For Day 21, create a basic architecture diagram for a web application. Keep it simple, but make sure it shows
+            the flow from the user to the application and the supporting services around it.
+          </p>
+
+          <div class="terminal-card cloud-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>User
+  -> DNS
+  -> Load Balancer
+  -> Public Subnet
+  -> Private Application Subnet
+  -> Database Subnet
+  -> Logs and Metrics
+  -> IAM Roles and Secrets
+  -> Backup and Recovery Plan</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio evidence</p>
+          <h2>Turn the lesson into something visible</h2>
+          <p>
+            Do not stop at reading. Create a small GitHub note or blog section that explains your architecture. This
+            gives recruiters and interviewers something practical to see.
+          </p>
+
+          <div class="cloud-evidence-grid">
+            <article><span>Diagram</span><strong>Show the traffic path</strong><p>User, DNS, load balancer, compute, database, monitoring, and security boundaries.</p></article>
+            <article><span>README</span><strong>Explain the choices</strong><p>Why public and private areas exist, how access is controlled, and where logs go.</p></article>
+            <article><span>Checklist</span><strong>Prove production thinking</strong><p>Security, reliability, monitoring, backup, cost, and automation notes.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Day 21 takeaway</p>
+          <h2>Cloud skill is about understanding how services work together.</h2>
+          <p>
+            A DevOps engineer does not need to know every cloud service on day one. The stronger skill is understanding
+            the core building blocks, how traffic flows, how access is controlled, how systems are monitored, and how
+            designs can be automated and recovered.
+          </p>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to DevOps in 100 Days</a>
+    </footer>
+  </body>
+</html>

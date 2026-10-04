@@ -795,6 +795,59 @@ code {
   display: none;
 }
 
+.cloud-card-visual {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(14, 116, 144, 0.82)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 42px);
+}
+
+.cloud-card-visual::before {
+  position: absolute;
+  inset: 20px;
+  border: 1px dashed rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  content: "";
+  animation: cloudPulse 3.8s ease-in-out infinite;
+}
+
+.cloud-card-visual span {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 74px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.1);
+  color: #ffffff;
+  font-size: 0.72rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.cloud-card-visual span::after {
+  position: absolute;
+  right: -15px;
+  width: 18px;
+  height: 3px;
+  border-radius: 999px;
+  background: #38bdf8;
+  content: "";
+  animation: cloudSignalSweep 2.9s ease-in-out infinite;
+}
+
+.cloud-card-visual span:last-child::after {
+  display: none;
+}
+
 .vpc-card-visual {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -5096,6 +5149,222 @@ code {
   }
 }
 
+.cloud-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(14, 116, 144, 0.88)),
+    radial-gradient(circle at 78% 18%, rgba(125, 211, 252, 0.22), transparent 30%),
+    var(--code);
+}
+
+.cloud-hero::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 0 18%, rgba(125, 211, 252, 0.13) 18% 19%, transparent 19% 58%, rgba(250, 204, 21, 0.12) 58% 59%, transparent 59% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 46px);
+  content: "";
+  opacity: 0.62;
+  pointer-events: none;
+  animation: cloudGridDrift 7.2s ease-in-out infinite;
+}
+
+.cloud-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.cloud-panel {
+  border-color: rgba(125, 211, 252, 0.38);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(240, 249, 255, 0.95)),
+    #ffffff;
+}
+
+.cloud-flow,
+.cloud-architecture,
+.cloud-concept-grid,
+.cloud-service-map,
+.cloud-question-board,
+.cloud-evidence-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.cloud-flow {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.cloud-architecture {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.98), rgba(14, 116, 144, 0.76)),
+    #10211d;
+  padding: 18px;
+  box-shadow: 0 20px 48px rgba(20, 32, 28, 0.14);
+}
+
+.cloud-concept-grid,
+.cloud-service-map,
+.cloud-question-board,
+.cloud-evidence-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.cloud-flow article,
+.cloud-architecture article,
+.cloud-concept-grid article,
+.cloud-service-map article,
+.cloud-question-board article,
+.cloud-evidence-grid article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.cloud-architecture article {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.94);
+}
+
+.cloud-flow article::after,
+.cloud-architecture article::after,
+.cloud-question-board article::after,
+.cloud-evidence-grid article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #38bdf8, #22c55e, #facc15, var(--accent));
+  content: "";
+  transform: scaleX(0.18);
+  transform-origin: left;
+  animation: cloudSignalSweep 3.5s ease-in-out infinite;
+}
+
+.cloud-flow article:hover,
+.cloud-architecture article:hover,
+.cloud-concept-grid article:hover,
+.cloud-service-map article:hover,
+.cloud-question-board article:hover,
+.cloud-evidence-grid article:hover {
+  border-color: rgba(56, 189, 248, 0.42);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.cloud-flow span,
+.cloud-architecture span,
+.cloud-concept-grid span,
+.cloud-service-map span,
+.cloud-question-board span,
+.cloud-evidence-grid span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: #10211d;
+  padding: 7px 10px;
+  color: #dff3ee;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.cloud-flow strong,
+.cloud-architecture strong,
+.cloud-concept-grid strong,
+.cloud-service-map strong,
+.cloud-question-board strong,
+.cloud-evidence-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.06rem;
+}
+
+.cloud-flow p,
+.cloud-architecture p,
+.cloud-concept-grid p,
+.cloud-service-map p,
+.cloud-question-board p,
+.cloud-evidence-grid p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.cloud-user,
+.cloud-edge,
+.cloud-app,
+.cloud-data,
+.cloud-ops {
+  min-height: 180px;
+}
+
+.cloud-edge {
+  animation-delay: 0.1s;
+}
+
+.cloud-app {
+  animation-delay: 0.2s;
+}
+
+.cloud-data {
+  animation-delay: 0.3s;
+}
+
+.cloud-ops {
+  animation-delay: 0.4s;
+}
+
+.cloud-terminal {
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+@keyframes cloudGridDrift {
+  0%,
+  100% {
+    transform: translateX(-16px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(18px);
+    opacity: 0.74;
+  }
+}
+
+@keyframes cloudSignalSweep {
+  0%,
+  100% {
+    transform: scaleX(0.18);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes cloudPulse {
+  0%,
+  100% {
+    opacity: 0.35;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.72;
+    transform: scale(1.01);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -5220,7 +5489,13 @@ code {
   .automation-report,
   .automation-use-grid,
   .automation-safety-board,
-  .automation-troubleshoot {
+  .automation-troubleshoot,
+  .cloud-flow,
+  .cloud-architecture,
+  .cloud-concept-grid,
+  .cloud-service-map,
+  .cloud-question-board,
+  .cloud-evidence-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -5359,6 +5634,12 @@ code {
   .automation-use-grid,
   .automation-safety-board,
   .automation-troubleshoot,
+  .cloud-flow,
+  .cloud-architecture,
+  .cloud-concept-grid,
+  .cloud-service-map,
+  .cloud-question-board,
+  .cloud-evidence-grid,
   .flow-strip {
     grid-template-columns: 1fr;
   }
