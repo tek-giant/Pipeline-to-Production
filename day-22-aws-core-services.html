@@ -1,0 +1,225 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Day 22: AWS Core Services | Pipeline to Production</title>
+    <meta
+      name="description"
+      content="Day 22 of DevOps in 100 Days by Ebenezer Tetteh: understand AWS core services including EC2, S3, VPC, IAM, RDS, CloudWatch, load balancing, Auto Scaling, ECR, ECS, and EKS."
+    />
+    <link rel="stylesheet" href="styles.css" />
+  </head>
+  <body>
+    <header class="site-header">
+      <a class="brand" href="index.html#top" aria-label="Pipeline to Production home">
+        <span class="brand-mark">P2P</span>
+        <span>
+          <strong>Pipeline to Production</strong>
+          <small>by Ebenezer Tetteh</small>
+        </span>
+      </a>
+
+      <nav class="nav-links" aria-label="Primary navigation">
+        <a href="index.html#top">Home</a>
+        <a href="devops-in-100-days.html">DevOps in 100 Days</a>
+        <a href="index.html#articles">Articles</a>
+        <a href="index.html#projects">Projects</a>
+      </nav>
+    </header>
+
+    <main>
+      <section class="lesson-hero aws-hero">
+        <div>
+          <p class="eyebrow">Day 22 of 100</p>
+          <h1>AWS core services: the building blocks of cloud delivery</h1>
+          <p>
+            Day 22 focuses on the AWS services a DevOps engineer should understand early: compute, storage, networking,
+            identity, databases, monitoring, load balancing, scaling, and container platforms. The goal is to see how the
+            services connect inside a real application, not just memorise names.
+          </p>
+          <div class="hero-actions">
+            <a class="button primary" href="#aws-lab">Start the AWS lab</a>
+            <a class="button secondary" href="devops-in-100-days.html">Back to roadmap</a>
+          </div>
+        </div>
+
+        <aside class="lesson-panel animated-panel aws-panel" aria-label="Day 22 learning summary">
+          <span>Today's focus</span>
+          <strong>AWS service map</strong>
+          <p>EC2, S3, VPC, IAM, RDS, CloudWatch, ELB, Auto Scaling, ECR, ECS, and EKS.</p>
+        </aside>
+      </section>
+
+      <section class="lesson-shell">
+        <div class="aws-flow" aria-label="AWS service workflow">
+          <article><span>01</span><strong>Secure</strong><p>Use IAM roles, least privilege, encryption, and audit trails.</p></article>
+          <article><span>02</span><strong>Network</strong><p>Place workloads inside VPCs, subnets, routes, and security groups.</p></article>
+          <article><span>03</span><strong>Run</strong><p>Host applications on EC2, ECS, EKS, Lambda, or managed platforms.</p></article>
+          <article><span>04</span><strong>Observe</strong><p>Use CloudWatch logs, metrics, alarms, and dashboards.</p></article>
+        </div>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Big idea</p>
+          <h2>AWS services become useful when you understand their role in the system.</h2>
+          <p>
+            AWS is large, but DevOps engineers do not need to learn every service at once. Start with the core services
+            that appear in most real environments: compute for running workloads, networking for controlling traffic,
+            IAM for access, storage for files and artifacts, databases for state, monitoring for visibility, and
+            automation for repeatable delivery.
+          </p>
+
+          <div class="aws-service-diagram" aria-label="Animated AWS production service diagram">
+            <article><span>Route 53</span><strong>DNS</strong><p>Routes users to the public application endpoint.</p></article>
+            <article><span>ALB</span><strong>Traffic entry</strong><p>Distributes requests to healthy application targets.</p></article>
+            <article><span>EC2 / ECS / EKS</span><strong>Compute</strong><p>Runs the application workload.</p></article>
+            <article><span>RDS</span><strong>Database</strong><p>Stores relational application data.</p></article>
+            <article><span>CloudWatch</span><strong>Operations</strong><p>Collects logs, metrics, alarms, and dashboards.</p></article>
+          </div>
+        </section>
+
+        <div class="lesson-grid">
+          <article class="lesson-card">
+            <span class="day-number">Why this matters</span>
+            <h2>Core services show up in almost every AWS role.</h2>
+            <p>
+              Whether you are building CI/CD, writing Terraform, deploying containers, supporting production, or
+              troubleshooting a live incident, these services are the language of AWS cloud engineering.
+            </p>
+          </article>
+
+          <article class="lesson-card">
+            <span class="day-number">What this proves</span>
+            <h2>You can explain infrastructure as a working application path.</h2>
+            <p>
+              A strong explanation follows the request from DNS to load balancer, into private compute, through security
+              boundaries, toward databases and storage, then into logs, metrics, alarms, and recovery processes.
+            </p>
+          </article>
+        </div>
+
+        <section class="lesson-section" id="aws-lab">
+          <p class="section-kicker">Service groups</p>
+          <h2>The AWS services to understand first</h2>
+          <p>
+            These services are a practical starting point for DevOps. They are not isolated topics; they work together
+            to support secure, scalable, observable, and recoverable applications.
+          </p>
+
+          <div class="aws-core-grid">
+            <article><span>EC2</span><strong>Virtual servers</strong><p>Run applications, agents, workers, admin tools, and legacy workloads where server control is needed.</p></article>
+            <article><span>S3</span><strong>Object storage</strong><p>Store artifacts, logs, backups, static assets, reports, and data files durably.</p></article>
+            <article><span>VPC</span><strong>Cloud networking</strong><p>Control subnets, routing, gateways, private access, security boundaries, and traffic paths.</p></article>
+            <article><span>IAM</span><strong>Access control</strong><p>Define who or what can access AWS resources and what actions are allowed.</p></article>
+            <article><span>RDS</span><strong>Managed databases</strong><p>Run relational databases with backups, patching, Multi-AZ options, and monitoring support.</p></article>
+            <article><span>CloudWatch</span><strong>Logs and metrics</strong><p>Collect operational evidence for dashboards, alerts, troubleshooting, and incident response.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Traffic and scaling</p>
+          <h2>How AWS keeps applications reachable and resilient</h2>
+          <p>
+            Production systems need more than a running server. They need stable entry points, health checks, scaling,
+            and a way to remove unhealthy targets from traffic automatically.
+          </p>
+
+          <div class="aws-traffic-board">
+            <article><span>Route 53</span><strong>DNS routing</strong><p>Maps domain names to application endpoints and supports routing policies.</p></article>
+            <article><span>ALB / NLB</span><strong>Load balancing</strong><p>Sends traffic to healthy targets and supports listener rules, TLS, and health checks.</p></article>
+            <article><span>Target groups</span><strong>Health checks</strong><p>Decide which application instances or containers should receive traffic.</p></article>
+            <article><span>Auto Scaling</span><strong>Elastic capacity</strong><p>Adds or removes compute capacity based on demand, schedules, or metrics.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Containers</p>
+          <h2>Where container workflows fit in AWS</h2>
+          <p>
+            Modern DevOps delivery often turns application code into container images. AWS provides services for storing
+            images, running containers, and integrating deployments with CI/CD pipelines.
+          </p>
+
+          <div class="aws-container-flow" aria-label="Container delivery flow on AWS">
+            <article><span>Build</span><strong>Docker image</strong><p>The pipeline builds a repeatable application image.</p></article>
+            <article><span>Store</span><strong>ECR</strong><p>Amazon Elastic Container Registry stores versioned container images.</p></article>
+            <article><span>Run</span><strong>ECS or EKS</strong><p>Containers run on a managed orchestration platform.</p></article>
+            <article><span>Observe</span><strong>CloudWatch</strong><p>Logs and metrics support troubleshooting and scaling decisions.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Production view</p>
+          <h2>What a DevOps engineer checks in an AWS environment</h2>
+          <p>
+            When looking at an AWS workload, think like an operator. Ask whether the system is secure, reachable,
+            observable, recoverable, cost-aware, and easy to rebuild using automation.
+          </p>
+
+          <div class="aws-checklist-grid">
+            <article><span>Access</span><strong>Are IAM permissions least privilege?</strong><p>Prefer roles over long-lived access keys and review production permissions regularly.</p></article>
+            <article><span>Network</span><strong>Are private resources protected?</strong><p>Keep databases and internal workloads away from direct public exposure.</p></article>
+            <article><span>Deploy</span><strong>Can the build be repeated?</strong><p>Use CI/CD, image tags, infrastructure as code, and documented rollback steps.</p></article>
+            <article><span>Monitor</span><strong>Can we see failures quickly?</strong><p>Use logs, metrics, alarms, dashboards, and runbooks before incidents happen.</p></article>
+            <article><span>Recover</span><strong>Can the system be restored?</strong><p>Test backups, Multi-AZ designs, restore procedures, and recovery objectives.</p></article>
+            <article><span>Cost</span><strong>Are resources right-sized?</strong><p>Use tags, budgets, cleanup routines, reserved options, and usage reviews.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Hands-on task</p>
+          <h2>Sketch a simple AWS web application</h2>
+          <p>
+            Create a diagram or README that connects the services below. The point is to show how AWS services work
+            together from user request to application response and operational monitoring.
+          </p>
+
+          <div class="terminal-card aws-terminal">
+            <div class="terminal-header">
+              <span></span><span></span><span></span>
+            </div>
+            <pre><code>Users
+  -> Route 53
+  -> Application Load Balancer
+  -> Public Subnets
+  -> Private App Subnets
+  -> EC2 / ECS / EKS
+  -> RDS Database
+  -> S3 for assets, logs, or backups
+  -> IAM roles for service access
+  -> CloudWatch logs, metrics, and alarms</code></pre>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Portfolio evidence</p>
+          <h2>Turn Day 22 into something recruiters can see</h2>
+          <p>
+            Add a small AWS core services page or repository note to your portfolio. Keep it practical: show the diagram,
+            explain each service, describe security choices, and include monitoring and cost considerations.
+          </p>
+
+          <div class="aws-evidence-grid">
+            <article><span>Diagram</span><strong>Show service connections</strong><p>Route 53, ALB, VPC, compute, database, S3, IAM, and CloudWatch.</p></article>
+            <article><span>Table</span><strong>Explain service purpose</strong><p>State what each service does and why it appears in the architecture.</p></article>
+            <article><span>Checklist</span><strong>Add production thinking</strong><p>Security, scaling, observability, backup, cost, and recovery notes.</p></article>
+          </div>
+        </section>
+
+        <section class="lesson-section">
+          <p class="section-kicker">Day 22 takeaway</p>
+          <h2>Do not learn AWS as disconnected service names.</h2>
+          <p>
+            Learn AWS by following a real workload: how traffic enters, where code runs, where data lives, how access is
+            controlled, how logs are collected, how scaling happens, and how the team recovers from failure.
+          </p>
+        </section>
+      </section>
+    </main>
+
+    <footer class="site-footer">
+      <p>© 2026 Pipeline to Production by Ebenezer Tetteh.</p>
+      <a href="devops-in-100-days.html">Back to DevOps in 100 Days</a>
+    </footer>
+  </body>
+</html>

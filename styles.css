@@ -848,6 +848,57 @@ code {
   display: none;
 }
 
+.aws-card-visual {
+  position: relative;
+  overflow: hidden;
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 10px;
+  align-items: center;
+  padding: 18px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(180, 83, 9, 0.82)),
+    repeating-linear-gradient(90deg, rgba(255, 255, 255, 0.055) 0 1px, transparent 1px 42px);
+}
+
+.aws-card-visual::before {
+  position: absolute;
+  inset: 18px;
+  border: 1px dashed rgba(255, 255, 255, 0.22);
+  border-radius: 8px;
+  content: "";
+  animation: awsPulse 3.8s ease-in-out infinite;
+}
+
+.aws-card-visual span {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  min-height: 50px;
+  place-items: center;
+  border: 1px solid rgba(255, 255, 255, 0.24);
+  border-radius: 8px;
+  background: rgba(255, 255, 255, 0.11);
+  color: #ffffff;
+  font-size: 0.74rem;
+  font-weight: 900;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.aws-card-visual span::after {
+  position: absolute;
+  right: 8px;
+  bottom: 7px;
+  width: 8px;
+  height: 8px;
+  border-radius: 999px;
+  background: #fbbf24;
+  content: "";
+  box-shadow: 0 0 0 7px rgba(251, 191, 36, 0.12);
+  animation: awsNodeGlow 2.7s ease-in-out infinite;
+}
+
 .vpc-card-visual {
   display: grid;
   grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -5365,6 +5416,223 @@ code {
   }
 }
 
+.aws-hero {
+  position: relative;
+  overflow: hidden;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.96), rgba(180, 83, 9, 0.88)),
+    radial-gradient(circle at 78% 18%, rgba(251, 191, 36, 0.22), transparent 30%),
+    var(--code);
+}
+
+.aws-hero::before {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(115deg, transparent 0 18%, rgba(251, 191, 36, 0.13) 18% 19%, transparent 19% 58%, rgba(56, 189, 248, 0.12) 58% 59%, transparent 59% 100%),
+    repeating-linear-gradient(0deg, rgba(255, 255, 255, 0.035) 0 1px, transparent 1px 46px);
+  content: "";
+  opacity: 0.62;
+  pointer-events: none;
+  animation: awsGridDrift 7.2s ease-in-out infinite;
+}
+
+.aws-hero > * {
+  position: relative;
+  z-index: 1;
+}
+
+.aws-panel {
+  border-color: rgba(251, 191, 36, 0.38);
+  background:
+    linear-gradient(145deg, rgba(255, 255, 255, 0.96), rgba(255, 251, 235, 0.95)),
+    #ffffff;
+}
+
+.aws-flow,
+.aws-service-diagram,
+.aws-core-grid,
+.aws-traffic-board,
+.aws-container-flow,
+.aws-checklist-grid,
+.aws-evidence-grid {
+  display: grid;
+  gap: 14px;
+  margin-top: 24px;
+}
+
+.aws-flow,
+.aws-container-flow,
+.aws-traffic-board {
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+}
+
+.aws-flow {
+  margin-top: 0;
+  margin-bottom: 34px;
+}
+
+.aws-service-diagram {
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background:
+    linear-gradient(135deg, rgba(16, 33, 29, 0.98), rgba(180, 83, 9, 0.76)),
+    #10211d;
+  padding: 18px;
+  box-shadow: 0 20px 48px rgba(20, 32, 28, 0.14);
+}
+
+.aws-core-grid,
+.aws-checklist-grid,
+.aws-evidence-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+.aws-flow article,
+.aws-service-diagram article,
+.aws-core-grid article,
+.aws-traffic-board article,
+.aws-container-flow article,
+.aws-checklist-grid article,
+.aws-evidence-grid article {
+  position: relative;
+  overflow: hidden;
+  border: 1px solid rgba(15, 118, 110, 0.16);
+  border-radius: 8px;
+  background: #ffffff;
+  padding: 20px;
+  box-shadow: 0 12px 28px rgba(20, 32, 28, 0.07);
+  transition: transform 180ms ease, box-shadow 180ms ease, border-color 180ms ease;
+}
+
+.aws-service-diagram article {
+  border-color: rgba(255, 255, 255, 0.16);
+  background: rgba(255, 255, 255, 0.94);
+  min-height: 180px;
+}
+
+.aws-flow article::after,
+.aws-service-diagram article::after,
+.aws-traffic-board article::after,
+.aws-container-flow article::after,
+.aws-checklist-grid article::after,
+.aws-evidence-grid article::after {
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  height: 4px;
+  background: linear-gradient(90deg, #fbbf24, #38bdf8, #22c55e, var(--accent));
+  content: "";
+  transform: scaleX(0.18);
+  transform-origin: left;
+  animation: awsSignalSweep 3.5s ease-in-out infinite;
+}
+
+.aws-flow article:hover,
+.aws-service-diagram article:hover,
+.aws-core-grid article:hover,
+.aws-traffic-board article:hover,
+.aws-container-flow article:hover,
+.aws-checklist-grid article:hover,
+.aws-evidence-grid article:hover {
+  border-color: rgba(251, 191, 36, 0.48);
+  box-shadow: 0 20px 38px rgba(20, 32, 28, 0.12);
+  transform: translateY(-4px);
+}
+
+.aws-flow span,
+.aws-service-diagram span,
+.aws-core-grid span,
+.aws-traffic-board span,
+.aws-container-flow span,
+.aws-checklist-grid span,
+.aws-evidence-grid span {
+  display: inline-flex;
+  margin-bottom: 14px;
+  border-radius: 8px;
+  background: #10211d;
+  padding: 7px 10px;
+  color: #dff3ee;
+  font-weight: 900;
+  text-transform: uppercase;
+}
+
+.aws-flow strong,
+.aws-service-diagram strong,
+.aws-core-grid strong,
+.aws-traffic-board strong,
+.aws-container-flow strong,
+.aws-checklist-grid strong,
+.aws-evidence-grid strong {
+  display: block;
+  margin-bottom: 8px;
+  color: var(--ink);
+  font-size: 1.06rem;
+}
+
+.aws-flow p,
+.aws-service-diagram p,
+.aws-core-grid p,
+.aws-traffic-board p,
+.aws-container-flow p,
+.aws-checklist-grid p,
+.aws-evidence-grid p {
+  margin: 0;
+  color: var(--muted);
+}
+
+.aws-terminal {
+  animation: terminalGlow 4s ease-in-out infinite;
+}
+
+@keyframes awsGridDrift {
+  0%,
+  100% {
+    transform: translateX(-16px);
+    opacity: 0.5;
+  }
+  50% {
+    transform: translateX(18px);
+    opacity: 0.74;
+  }
+}
+
+@keyframes awsSignalSweep {
+  0%,
+  100% {
+    transform: scaleX(0.18);
+  }
+  50% {
+    transform: scaleX(1);
+  }
+}
+
+@keyframes awsPulse {
+  0%,
+  100% {
+    opacity: 0.34;
+    transform: scale(0.98);
+  }
+  50% {
+    opacity: 0.72;
+    transform: scale(1.01);
+  }
+}
+
+@keyframes awsNodeGlow {
+  0%,
+  100% {
+    opacity: 0.7;
+    transform: scale(0.84);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.18);
+  }
+}
+
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
@@ -5495,7 +5763,14 @@ code {
   .cloud-concept-grid,
   .cloud-service-map,
   .cloud-question-board,
-  .cloud-evidence-grid {
+  .cloud-evidence-grid,
+  .aws-flow,
+  .aws-service-diagram,
+  .aws-core-grid,
+  .aws-traffic-board,
+  .aws-container-flow,
+  .aws-checklist-grid,
+  .aws-evidence-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
@@ -5640,6 +5915,13 @@ code {
   .cloud-service-map,
   .cloud-question-board,
   .cloud-evidence-grid,
+  .aws-flow,
+  .aws-service-diagram,
+  .aws-core-grid,
+  .aws-traffic-board,
+  .aws-container-flow,
+  .aws-checklist-grid,
+  .aws-evidence-grid,
   .flow-strip {
     grid-template-columns: 1fr;
   }
